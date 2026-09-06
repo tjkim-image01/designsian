@@ -1,0 +1,204 @@
+- generic [ref=f9e1]:
+  - banner [ref=f9e2]:
+    - link "T 아틀리에 테라조 Librarian Acquisition Desk" [ref=f9e3] [cursor=pointer]:
+      - /url: "#home"
+      - generic [ref=f9e4]: T
+      - generic [ref=f9e5]:
+        - strong [ref=f9e6]: 아틀리에 테라조
+        - generic [ref=f9e7]: Librarian Acquisition Desk
+    - navigation [ref=f9e8]:
+      - link "메인" [ref=f9e9] [cursor=pointer]:
+        - /url: "#home"
+      - link "도서 검색" [ref=f9e10] [cursor=pointer]:
+        - /url: "#search"
+      - link "큐레이션" [ref=f9e11] [cursor=pointer]:
+        - /url: "#curation"
+      - link "견적함" [ref=f9e12] [cursor=pointer]:
+        - /url: "#cart"
+    - generic [ref=f9e13]:
+      - generic [ref=f9e14]:
+        - button "KO" [ref=f9e15] [cursor=pointer]
+        - button "EN" [ref=f9e16] [cursor=pointer]
+        - button "VI" [ref=f9e17] [cursor=pointer]
+        - button "ZH" [ref=f9e18] [cursor=pointer]
+      - link "inventory_2 견적함 0" [ref=f9e19] [cursor=pointer]:
+        - /url: "#cart"
+        - generic [ref=f9e20]: inventory_2
+        - generic [ref=f9e21]: 견적함
+        - generic [ref=f9e22]: "0"
+  - main [ref=f9e23]:
+    - generic [ref=f9e24]:
+      - generic [ref=f9e26]:
+        - generic [ref=f9e27]:
+          - generic [ref=f9e28]: 다문화 도서관 납품 · 사서 우선 설계
+          - heading "사서의 책상 위 가장 단정한 수서 도구" [level=1] [ref=f9e29]: 사서의 책상 위가장 단정한수서 도구
+          - paragraph [ref=f9e30]: ISBN 일괄 검색, 언어·연령 필터, 기관 할인 견적서까지. 검수된 다문화 도서를 도면처럼 정확하게 납품합니다.
+          - generic [ref=f9e31]:
+            - link "manage_search ISBN 일괄 검색" [ref=f9e32] [cursor=pointer]:
+              - /url: "#search"
+              - generic [ref=f9e33]: manage_search
+              - generic [ref=f9e34]: ISBN 일괄 검색
+            - link "shelves 3D 서가 벽 보기" [ref=f9e35] [cursor=pointer]:
+              - /url: "#curation"
+              - generic [ref=f9e36]: shelves
+              - generic [ref=f9e37]: 3D 서가 벽 보기
+          - generic [ref=f9e38]:
+            - generic [ref=f9e39]:
+              - generic [ref=f9e40]: 납품 예정
+              - generic [ref=f9e41]:
+                - text: "3"
+                - emphasis [ref=f9e42]: 건
+            - generic [ref=f9e43]:
+              - generic [ref=f9e44]: 승인 대기 견적
+              - generic [ref=f9e45]:
+                - text: "1"
+                - emphasis [ref=f9e46]: 건
+            - generic [ref=f9e47]:
+              - generic [ref=f9e48]: 이번 달 입고 신간
+              - generic [ref=f9e49]:
+                - text: "9"
+                - emphasis [ref=f9e50]: 권
+        - generic [ref=f9e51]:
+          - generic [ref=f9e52] [cursor=pointer]
+          - generic [ref=f9e53]: 마우스로 기울이기 · 클릭하면 블록이 서가로 정렬됩니다
+      - generic [ref=f9e54]:
+        - generic [ref=f9e55]: campaign
+        - generic [ref=f9e56]: 2026 하반기 공공도서관 다문화자료 구입 지원사업 — 9월 30일 견적 마감 · MARC 데이터 무상 제공
+        - link "견적서 발급" [ref=f9e57] [cursor=pointer]:
+          - /url: "#cart"
+      - generic [ref=f9e58]:
+        - generic [ref=f9e59]:
+          - generic [ref=f9e60]: 기획전 · Exhibitions
+          - heading "세 가지 전시 형태의 이달 기획전" [level=2] [ref=f9e61]
+          - paragraph [ref=f9e62]: 3D 서가 벽, 도면 격자, 회전 북스탠드. 사서가 실제 서가를 상상할 수 있도록 설계했습니다.
+        - generic [ref=f9e63]:
+          - link "3D 서가 벽 세계 그림책 비엔날레 수상작 BIB·볼로냐 라가치 수상작 중 다문화 가정 아동을 위한 원서+번역서 세트. 8권 수록" [ref=f9e64] [cursor=pointer]:
+            - /url: "#curation/1"
+            - generic [ref=f9e65]: 3D 서가 벽
+            - heading "세계 그림책 비엔날레 수상작" [level=3] [ref=f9e66]
+            - paragraph [ref=f9e67]: BIB·볼로냐 라가치 수상작 중 다문화 가정 아동을 위한 원서+번역서 세트.
+            - generic [ref=f9e68]: 8권 수록
+          - link "도면 격자 아시아의 축제와 등불 연등회, 원소절, 송크란, 마츠리 — 축제로 배우는 이웃 나라 문화. 8권 수록" [ref=f9e69] [cursor=pointer]:
+            - /url: "#curation/2"
+            - generic [ref=f9e70]: 도면 격자
+            - heading "아시아의 축제와 등불" [level=3] [ref=f9e71]
+            - paragraph [ref=f9e72]: 연등회, 원소절, 송크란, 마츠리 — 축제로 배우는 이웃 나라 문화.
+            - generic [ref=f9e73]: 8권 수록
+          - link "회전 북스탠드 다문화 가정 부모·사서 필독서 생활 한국어, 장서 개발 가이드, 성장기 청소년 문학까지. 6권 수록" [ref=f9e74] [cursor=pointer]:
+            - /url: "#curation/3"
+            - generic [ref=f9e75]: 회전 북스탠드
+            - heading "다문화 가정 부모·사서 필독서" [level=3] [ref=f9e76]
+            - paragraph [ref=f9e77]: 생활 한국어, 장서 개발 가이드, 성장기 청소년 문학까지.
+            - generic [ref=f9e78]: 6권 수록
+      - generic [ref=f9e79]:
+        - generic [ref=f9e80]:
+          - generic [ref=f9e81]: 3D Shelf Wall
+          - heading "세계 그림책 비엔날레 수상작" [level=2] [ref=f9e82]
+          - paragraph [ref=f9e83]: 마우스를 움직이면 서가가 기울고, 책등에 올리면 책이 앞으로 나옵니다. 클릭하면 서지정보.
+        - generic [ref=f9e86]:
+          - button "세계 그림책 비엔날레 수상작" [ref=f9e87] [cursor=pointer]
+          - button "아시아의 축제와 등불" [ref=f9e88] [cursor=pointer]
+          - button "다문화 가정 부모·사서 필독서" [ref=f9e89] [cursor=pointer]
+      - generic [ref=f9e90]:
+        - generic [ref=f9e91]:
+          - generic [ref=f9e92]:
+            - generic [ref=f9e93]: 신간 · New Arrivals
+            - heading "이번 달 입고 신간" [level=2] [ref=f9e94]
+          - generic [ref=f9e95]:
+            - button "view_in_ar 3D 틸트" [ref=f9e96] [cursor=pointer]:
+              - generic [ref=f9e97]: view_in_ar
+              - generic [ref=f9e98]: 3D 틸트
+            - button "table_chart 데이터 테이블" [ref=f9e99] [cursor=pointer]:
+              - generic [ref=f9e100]: table_chart
+              - generic [ref=f9e101]: 데이터 테이블
+        - generic [ref=f9e102]:
+          - link "달빛 아래 연등 VI · 베트남 달빛 아래 연등 베트남어 · Kim Đồng · 9791162341001 15,000 원" [ref=f9e103] [cursor=pointer]:
+            - /url: "#detail/1"
+            - generic [ref=f9e104]:
+              - generic [ref=f9e105]: 달빛 아래 연등
+              - generic [ref=f9e106]: VI · 베트남
+            - heading "달빛 아래 연등" [level=4] [ref=f9e107]
+            - generic [ref=f9e108]: 베트남어 · Kim Đồng · 9791162341001
+            - generic [ref=f9e109]: 15,000 원
+          - link "우리 집 두 개의 설날 EN · 미국 우리 집 두 개의 설날 영어 · Candlewick · 9791162341002 16,800 원" [ref=f9e110] [cursor=pointer]:
+            - /url: "#detail/2"
+            - generic [ref=f9e111]:
+              - generic [ref=f9e112]: 우리 집 두 개의 설날
+              - generic [ref=f9e113]: EN · 미국
+            - heading "우리 집 두 개의 설날" [level=4] [ref=f9e114]
+            - generic [ref=f9e115]: 영어 · Candlewick · 9791162341002
+            - generic [ref=f9e116]: 16,800 원
+          - link "할머니의 아오자이 VI · 베트남 할머니의 아오자이 베트남어 · Nhã Nam · 9791162341003 14,500 원" [ref=f9e117] [cursor=pointer]:
+            - /url: "#detail/3"
+            - generic [ref=f9e118]:
+              - generic [ref=f9e119]: 할머니의 아오자이
+              - generic [ref=f9e120]: VI · 베트남
+            - heading "할머니의 아오자이" [level=4] [ref=f9e121]
+            - generic [ref=f9e122]: 베트남어 · Nhã Nam · 9791162341003
+            - generic [ref=f9e123]: 14,500 원
+          - link "별을 세는 밤 ZH · 중국 별을 세는 밤 중국어 · 接力出版社 · 9791162341004 15,500 원" [ref=f9e124] [cursor=pointer]:
+            - /url: "#detail/4"
+            - generic [ref=f9e125]:
+              - generic [ref=f9e126]: 별을 세는 밤
+              - generic [ref=f9e127]: ZH · 중국
+            - heading "별을 세는 밤" [level=4] [ref=f9e128]
+            - generic [ref=f9e129]: 중국어 · 接力出版社 · 9791162341004
+            - generic [ref=f9e130]: 15,500 원
+          - link "필리핀 할아버지의 바다 지도 TL · 필리핀 필리핀 할아버지의 바다 지도 필리핀어 · Adarna House · 9791162341006 16,000 원" [ref=f9e131] [cursor=pointer]:
+            - /url: "#detail/6"
+            - generic [ref=f9e132]:
+              - generic [ref=f9e133]: 필리핀 할아버지의 바다 지도
+              - generic [ref=f9e134]: TL · 필리핀
+            - heading "필리핀 할아버지의 바다 지도" [level=4] [ref=f9e135]
+            - generic [ref=f9e136]: 필리핀어 · Adarna House · 9791162341006
+            - generic [ref=f9e137]: 16,000 원
+          - link "태국의 물축제 송크란 TH · 태국 태국의 물축제 송크란 태국어 · Nanmeebooks · 9791162341008 15,000 원" [ref=f9e138] [cursor=pointer]:
+            - /url: "#detail/8"
+            - generic [ref=f9e139]:
+              - generic [ref=f9e140]: 태국의 물축제 송크란
+              - generic [ref=f9e141]: TH · 태국
+            - heading "태국의 물축제 송크란" [level=4] [ref=f9e142]
+            - generic [ref=f9e143]: 태국어 · Nanmeebooks · 9791162341008
+            - generic [ref=f9e144]: 15,000 원
+          - link "우즈베키스탄의 빵, 논 UZ · 우즈베키스탄 우즈베키스탄의 빵, 논 우즈베크어 · Yangi asr · 9791162341010 14,800 원" [ref=f9e145] [cursor=pointer]:
+            - /url: "#detail/10"
+            - generic [ref=f9e146]:
+              - generic [ref=f9e147]: 우즈베키스탄의 빵, 논
+              - generic [ref=f9e148]: UZ · 우즈베키스탄
+            - heading "우즈베키스탄의 빵, 논" [level=4] [ref=f9e149]
+            - generic [ref=f9e150]: 우즈베크어 · Yangi asr · 9791162341010
+            - generic [ref=f9e151]: 14,800 원
+          - link "사서를 위한 다문화 장서 개발 가이드 KO · 한국 사서를 위한 다문화 장서 개발 가이드 한국어 · 도서관문화사 · 9791162341011 28,000 원" [ref=f9e152] [cursor=pointer]:
+            - /url: "#detail/11"
+            - generic [ref=f9e153]:
+              - generic [ref=f9e154]: 사서를 위한 다문화 장서 개발 가이드
+              - generic [ref=f9e155]: KO · 한국
+            - heading "사서를 위한 다문화 장서 개발 가이드" [level=4] [ref=f9e156]
+            - generic [ref=f9e157]: 한국어 · 도서관문화사 · 9791162341011
+            - generic [ref=f9e158]: 28,000 원
+          - link "일본 여름 축제 마츠리 JA · 일본 일본 여름 축제 마츠리 일본어 · 福音館 · 9791162341013 15,800 원" [ref=f9e159] [cursor=pointer]:
+            - /url: "#detail/13"
+            - generic [ref=f9e160]:
+              - generic [ref=f9e161]: 일본 여름 축제 마츠리
+              - generic [ref=f9e162]: JA · 일본
+            - heading "일본 여름 축제 마츠리" [level=4] [ref=f9e163]
+            - generic [ref=f9e164]: 일본어 · 福音館 · 9791162341013
+            - generic [ref=f9e165]: 15,800 원
+      - generic [ref=f9e166]:
+        - generic [ref=f9e167]:
+          - generic [ref=f9e168]: fact_check
+          - heading "사서 검수 도서만" [level=3] [ref=f9e169]
+          - paragraph [ref=f9e170]: 현직 사서 12명이 내용·번역·제본 품질을 검수한 도서만 등록합니다.
+        - generic [ref=f9e171]:
+          - generic [ref=f9e172]: data_object
+          - heading "KORMARC · 장비 작업" [level=3] [ref=f9e173]
+          - paragraph [ref=f9e174]: 서지 데이터, 라벨, 바코드, RFID 태그까지 납품과 함께 제공.
+        - generic [ref=f9e175]:
+          - generic [ref=f9e176]: approval
+          - heading "공문용 견적서" [level=3] [ref=f9e177]
+          - paragraph [ref=f9e178]: 기관 할인이 반영된 견적서를 PDF로 즉시 출력해 기안에 첨부.
+  - contentinfo [ref=f9e179]:
+    - generic [ref=f9e180]:
+      - strong [ref=f9e181]: 아틀리에 테라조
+      - paragraph [ref=f9e182]: 다문화 도서관 납품 · 사서 우선 수서 데스크
+    - generic [ref=f9e183]: © 2026 Atelier Terrazzo · v8 concept

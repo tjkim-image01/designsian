@@ -1,0 +1,218 @@
+/* styles.css - Cosmos Multicultural Library web_v1 */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
+:root {
+  --bg-dark: #0c1324;
+  --surface-card: #151b2d;
+  --surface-high: #23293c;
+  --primary-gold: #facc15;
+  --accent-purple: #8b5cf6;
+  --accent-indigo: #6366f1;
+  --text-main: #dce1fb;
+  --text-muted: #9a9078;
+}
+
+body {
+  font-family: 'Inter', 'Noto Sans KR', sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  overflow-x: hidden;
+}
+
+h1, h2, h3, .font-headline {
+  font-family: 'Playfair Display', 'Noto Sans KR', serif;
+}
+
+/* Glassmorphism Panels */
+.glass-panel {
+  background: rgba(21, 27, 45, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(250, 204, 21, 0.12);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-panel:hover {
+  border-color: rgba(250, 204, 21, 0.35);
+  box-shadow: 0 12px 40px 0 rgba(139, 92, 246, 0.25);
+}
+
+.glass-nav {
+  background: rgba(12, 19, 36, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-modal {
+  background: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(250, 204, 21, 0.25);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+}
+
+/* Custom Scrollbar */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0c1324;
+}
+::-webkit-scrollbar-thumb {
+  background: #23293c;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #facc15;
+}
+
+/* 3D Book Interactive Flip Preview in Modal */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.book-3d-wrapper {
+  perspective: 1200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.book-3d {
+  width: 200px;
+  height: 280px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  cursor: pointer;
+}
+
+.book-3d:hover {
+  transform: rotateY(-30deg) rotateX(10deg) scale(1.05);
+}
+
+.book-3d.open {
+  transform: rotateY(-160deg);
+}
+
+.book-cover-front {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 4px 12px 12px 4px;
+  background-size: cover;
+  background-position: center;
+  backface-visibility: hidden;
+  box-shadow: 5px 5px 20px rgba(0,0,0,0.5), inset 3px 0 10px rgba(255,255,255,0.2);
+  transform-origin: left;
+  transition: transform 0.8s ease;
+  z-index: 2;
+}
+
+.book-spine {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 24px;
+  height: 100%;
+  background: #1e1b4b;
+  transform: rotateY(-90deg) translateZ(12px);
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+}
+
+.book-pages-stack {
+  position: absolute;
+  width: 190px;
+  height: 270px;
+  top: 5px;
+  left: 5px;
+  background: #fffdfa;
+  background-image: linear-gradient(to right, #e2e8f0 1px, transparent 1px);
+  background-size: 3px 100%;
+  border-radius: 2px 8px 8px 2px;
+  box-shadow: 2px 2px 15px rgba(0,0,0,0.3);
+  z-index: 1;
+}
+
+.book-inner-page {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  padding: 16px;
+  box-sizing: border-box;
+  color: #1e293b;
+  font-size: 11px;
+  line-height: 1.5;
+  overflow-y: auto;
+}
+
+/* Glowing Animations */
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.08);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 4s infinite ease-in-out;
+}
+
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: floatSlow 5s infinite ease-in-out;
+}
+
+/* Three.js Canvas Hover Cursor */
+#three-globe-container canvas {
+  cursor: grab;
+}
+
+#three-globe-container canvas:active {
+  cursor: grabbing;
+}
+
+/* Toast styling */
+.toast-enter {
+  transform: translateY(100%) scale(0.9);
+  opacity: 0;
+}
+.toast-show {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.toast-exit {
+  transform: translateY(-20px) scale(0.95);
+  opacity: 0;
+  transition: all 0.3s ease;
+}

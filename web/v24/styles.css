@@ -1,0 +1,1300 @@
+/* ==========================================================================
+   KENNEY PIXEL ADVENTURE 8-BIT RETRO LIBRARY PORTAL (v24) - STYLESHEET
+   Design System: Kenney UI Pack Pixel Adventure Aesthetic
+   Colors: Dark Arcade (#0d0b18), Pixel Gold (#ffc825), Retro Cyan (#00e5ff), Neon Green (#39ff14), Arcade Red (#ff0055)
+   Fonts: Press Start 2P, Silkscreen, VT323, Noto Sans KR, Plus Jakarta Sans
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. CSS VARIABLES & BASE RESET
+   -------------------------------------------------------------------------- */
+:root {
+  --bg-app: #0d0b18;
+  --bg-panel: #1b152e;
+  --bg-panel-inner: #130f24;
+  --bg-panel-hover: #261f3e;
+  
+  --pixel-gold: #ffc825;
+  --pixel-yellow: #ffe600;
+  --pixel-cyan: #00e5ff;
+  --pixel-green: #39ff14;
+  --pixel-red: #ff0055;
+  --pixel-purple: #e040fb;
+  --pixel-blue: #2979ff;
+  
+  --text-white: #ffffff;
+  --text-cream: #fff4d1;
+  --text-muted: #a6a0c7;
+  --text-dark: #000000;
+
+  --border-dark: #000000;
+  --shadow-pixel: 4px 4px 0px #000000;
+  --shadow-pixel-sm: 2px 2px 0px #000000;
+  --shadow-pixel-lg: 6px 6px 0px #000000;
+
+  --font-pixel-title: 'Press Start 2P', monospace;
+  --font-pixel-sub: 'Silkscreen', monospace;
+  --font-pixel-retro: 'VT323', monospace;
+  --font-sans: 'Noto Sans KR', 'Plus Jakarta Sans', sans-serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body.pixel-arcade-theme {
+  background-color: var(--bg-app);
+  color: var(--text-white);
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  background-image: 
+    radial-gradient(rgba(255, 200, 37, 0.07) 1px, transparent 0),
+    radial-gradient(rgba(0, 229, 255, 0.05) 1px, transparent 0);
+  background-size: 32px 32px;
+  background-position: 0 0, 16px 16px;
+}
+
+/* Custom Pixel Scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-app);
+  border-left: 2px solid #000;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--pixel-gold);
+  border: 2px solid #000;
+  box-shadow: inset 2px 2px 0px #fff, inset -2px -2px 0px #000;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--pixel-yellow);
+}
+
+/* --------------------------------------------------------------------------
+   2. PIXEL STARBURST OVERLAY CANVAS
+   -------------------------------------------------------------------------- */
+#pixel-starburst-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 99999;
+}
+
+/* --------------------------------------------------------------------------
+   3. KENNEY PIXEL FRAME COMPONENTS (.pixel-panel, .pixel-badge, .pixel-btn)
+   -------------------------------------------------------------------------- */
+.pixel-panel {
+  background-color: var(--bg-panel);
+  border: 4px solid var(--border-dark);
+  box-shadow: var(--shadow-pixel);
+  position: relative;
+  border-radius: 2px;
+}
+
+.pixel-panel-inner {
+  background-color: var(--bg-panel-inner);
+  border: 3px solid var(--border-dark);
+  box-shadow: inset 2px 2px 0px rgba(0,0,0,0.5), inset -2px -2px 0px rgba(255,255,255,0.05);
+  padding: 1rem;
+}
+
+.pixel-panel-sm {
+  background-color: var(--bg-panel-inner);
+  border: 2px solid var(--border-dark);
+  box-shadow: 2px 2px 0px #000;
+  padding: 0.5rem 0.75rem;
+}
+
+/* Pixel Badges */
+.pixel-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.6rem;
+  font-family: var(--font-pixel-sub);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 2px solid var(--border-dark);
+  box-shadow: 2px 2px 0px #000;
+  border-radius: 0;
+}
+.badge-gold { background-color: var(--pixel-gold); color: #000; }
+.badge-cyan { background-color: var(--pixel-cyan); color: #000; }
+.badge-green { background-color: var(--pixel-green); color: #000; }
+.badge-purple { background-color: var(--pixel-purple); color: #000; }
+.badge-red { background-color: var(--pixel-red); color: #fff; }
+
+/* Pixel Buttons */
+.pixel-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  font-family: var(--font-pixel-sub);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  border: 3px solid #000;
+  box-shadow: 4px 4px 0px #000;
+  transition: transform 0.05s ease, box-shadow 0.05s ease, background 0.15s ease;
+  user-select: none;
+  position: relative;
+}
+
+.pixel-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px #000;
+  filter: brightness(1.1);
+}
+
+.pixel-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px #000;
+}
+
+.pixel-btn-gold { background-color: var(--pixel-gold); color: #000; }
+.pixel-btn-cyan { background-color: var(--pixel-cyan); color: #000; }
+.pixel-btn-green { background-color: var(--pixel-green); color: #000; }
+.pixel-btn-purple { background-color: var(--pixel-purple); color: #fff; }
+.pixel-btn-red { background-color: var(--pixel-red); color: #fff; }
+
+.pixel-btn-sm { padding: 0.4rem 0.8rem; font-size: 0.75rem; border-width: 2px; box-shadow: 2px 2px 0px #000; }
+.pixel-btn-xs { padding: 0.25rem 0.5rem; font-size: 0.7rem; border: 2px solid #000; background: var(--bg-panel); color: var(--text-white); cursor: pointer; }
+.pixel-btn-xs.active { background: var(--pixel-gold); color: #000; }
+.btn-lg { padding: 0.8rem 1.6rem; font-size: 0.95rem; }
+
+/* Pixel Form Inputs & Selects */
+.pixel-input, .pixel-select {
+  width: 100%;
+  background-color: var(--bg-panel-inner);
+  color: var(--text-white);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  padding: 0.6rem 0.8rem;
+  border: 3px solid #000;
+  box-shadow: inset 2px 2px 0px rgba(0,0,0,0.8);
+  outline: none;
+}
+.pixel-input:focus, .pixel-select:focus {
+  border-color: var(--pixel-cyan);
+  box-shadow: inset 2px 2px 0px #000, 0 0 8px rgba(0,229,255,0.4);
+}
+.pixel-input-sm {
+  width: 60px;
+  text-align: center;
+  background-color: var(--bg-panel-inner);
+  color: var(--pixel-gold);
+  font-family: var(--font-pixel-sub);
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 0.3rem;
+  border: 2px solid #000;
+}
+
+/* --------------------------------------------------------------------------
+   4. TOP NAVIGATION HEADER
+   -------------------------------------------------------------------------- */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  margin: 0.75rem auto 1.5rem auto;
+  width: calc(100% - 2rem);
+  max-width: 1320px;
+  background-color: var(--bg-panel);
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 1.2rem;
+  gap: 1rem;
+}
+
+/* Logo */
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: var(--text-white);
+}
+
+.logo-box {
+  width: 44px;
+  height: 44px;
+  background: var(--pixel-gold);
+  border: 3px solid #000;
+  box-shadow: 2px 2px 0px #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  position: relative;
+  animation: floatBounce 3s ease-in-out infinite;
+}
+
+@keyframes floatBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.brand-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.brand-title {
+  font-family: var(--font-pixel-title);
+  font-size: 0.95rem;
+  color: var(--pixel-gold);
+  text-shadow: 2px 2px 0px #000;
+}
+
+.brand-subtitle {
+  font-family: var(--font-pixel-sub);
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  display: block;
+}
+
+/* Nav Tabs */
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.85rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-family: var(--font-pixel-sub);
+  font-size: 0.8rem;
+  font-weight: 700;
+  border: 2px solid transparent;
+  transition: all 0.15s ease;
+}
+
+.nav-link:hover {
+  color: var(--pixel-cyan);
+  background: rgba(0, 229, 255, 0.1);
+  border-color: #000;
+}
+
+.nav-link.active {
+  color: #000;
+  background-color: var(--pixel-gold);
+  border: 2px solid #000;
+  box-shadow: 2px 2px 0px #000;
+}
+
+.nav-badge {
+  font-size: 0.65rem;
+  padding: 0.1rem 0.4rem;
+  margin-left: 0.2rem;
+}
+
+/* Header Tools */
+.header-tools {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.lang-switcher {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+.lang-icon { font-size: 0.9rem; margin-right: 0.2rem; }
+
+.lang-btn {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid transparent;
+  padding: 0.2rem 0.4rem;
+  font-family: var(--font-pixel-sub);
+  font-size: 0.7rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.lang-btn:hover { color: var(--pixel-cyan); }
+.lang-btn.active {
+  background: var(--pixel-cyan);
+  color: #000;
+  border: 1px solid #000;
+}
+
+.sound-btn {
+  padding: 0.4rem 0.7rem;
+  font-size: 0.75rem;
+}
+
+/* --------------------------------------------------------------------------
+   5. MAIN LAYOUT & SECTIONS
+   -------------------------------------------------------------------------- */
+.main-content {
+  width: calc(100% - 2rem);
+  max-width: 1320px;
+  margin: 0 auto 3rem auto;
+}
+
+.page-section {
+  display: none;
+}
+.page-section.active {
+  display: block;
+  animation: fadeIn 0.25s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.section-container {
+  margin-top: 2rem;
+}
+
+.section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 1.2rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 3px dashed rgba(255, 200, 37, 0.3);
+}
+
+.section-title {
+  font-family: var(--font-pixel-title);
+  font-size: 1.15rem;
+  color: var(--pixel-gold);
+  margin-top: 0.4rem;
+  text-shadow: 2px 2px 0px #000;
+}
+
+.section-desc {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.page-title {
+  font-family: var(--font-pixel-title);
+  font-size: 1.3rem;
+  color: var(--pixel-gold);
+  margin-top: 0.4rem;
+  text-shadow: 2px 2px 0px #000;
+}
+
+.page-desc {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-top: 0.3rem;
+}
+
+/* --------------------------------------------------------------------------
+   6. PAGE 1: #home (HERO & 3D PIXEL FLOATING ISLAND)
+   -------------------------------------------------------------------------- */
+.hero-container {
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.hero-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.hero-badge-row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.hero-title {
+  font-family: var(--font-pixel-title);
+  font-size: 1.4rem;
+  line-height: 1.4;
+  color: var(--text-white);
+  text-shadow: 3px 3px 0px #000;
+}
+
+.hero-subtitle {
+  color: var(--text-cream);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.stat-icon { font-size: 1.5rem; }
+.stat-value { font-family: var(--font-pixel-sub); font-size: 0.75rem; font-weight: 700; color: var(--pixel-gold); }
+.stat-label { font-size: 0.7rem; color: var(--text-muted); }
+
+/* 3D Voxel Floating Island Canvas Box */
+.hero-3d-box {
+  height: 420px;
+  position: relative;
+  overflow: hidden;
+}
+
+#hero-3d-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.hero-3d-hud {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.hud-chip {
+  background: rgba(0,0,0,0.75);
+  border: 2px solid var(--pixel-gold);
+  color: var(--pixel-gold);
+  font-family: var(--font-pixel-sub);
+  font-size: 0.65rem;
+  padding: 0.3rem 0.6rem;
+  pointer-events: auto;
+}
+
+.hero-3d-hud button { pointer-events: auto; }
+
+/* 3D Arcade Dungeon Gallery Exhibition */
+.arcade-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.gallery-card {
+  background: var(--bg-panel-inner);
+  border: 3px solid #000;
+  box-shadow: 4px 4px 0px #000;
+  padding: 1.2rem;
+  position: relative;
+  transition: transform 0.15s ease;
+}
+.gallery-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--pixel-gold);
+}
+
+.gallery-pedestal {
+  height: 120px;
+  background: radial-gradient(circle, rgba(255,200,37,0.15) 0%, transparent 70%);
+  border: 2px dashed rgba(255,200,37,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.5rem;
+  margin-bottom: 0.75rem;
+  position: relative;
+}
+
+.gallery-book-title {
+  font-family: var(--font-pixel-title);
+  font-size: 0.85rem;
+  color: var(--pixel-gold);
+  margin-bottom: 0.3rem;
+}
+.gallery-book-sub { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem; }
+
+/* View Toggle Buttons */
+.view-toggle {
+  display: flex;
+  gap: 0.2rem;
+  padding: 0.2rem;
+}
+.toggle-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font-pixel-sub);
+  font-size: 0.75rem;
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.toggle-btn.active {
+  background: var(--pixel-gold);
+  color: #000;
+  border: 1px solid #000;
+  font-weight: 700;
+}
+
+/* Book Cards Grid */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+.cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+/* Book Card Component */
+.book-card {
+  background: var(--bg-panel);
+  border: 3px solid #000;
+  box-shadow: 4px 4px 0px #000;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.book-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--pixel-gold);
+}
+
+.book-card-top {
+  display: flex;
+  gap: 0.85rem;
+  margin-bottom: 0.75rem;
+}
+
+.book-cover-box {
+  width: 90px;
+  height: 120px;
+  flex-shrink: 0;
+  background: var(--bg-panel-inner);
+  border: 2px solid #000;
+  box-shadow: 2px 2px 0px #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.book-cover-icon {
+  font-size: 2.2rem;
+  margin-bottom: 0.2rem;
+}
+.book-cover-tag {
+  font-family: var(--font-pixel-sub);
+  font-size: 0.55rem;
+  background: rgba(0,0,0,0.8);
+  color: var(--pixel-gold);
+  padding: 0.1rem 0.3rem;
+}
+
+.book-card-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.book-badges-row {
+  display: flex;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+}
+
+.book-card-title {
+  font-family: var(--font-pixel-sub);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-white);
+  line-height: 1.3;
+}
+
+.book-card-sub {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.book-meta-line {
+  font-size: 0.75rem;
+  color: var(--text-cream);
+  margin-top: 0.2rem;
+}
+
+.book-price-box {
+  margin-top: 0.4rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.price-regular {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+
+.price-supply {
+  font-family: var(--font-pixel-sub);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--pixel-gold);
+}
+
+.book-card-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.center-cta {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+/* --------------------------------------------------------------------------
+   7. PAGE 2: #search (RETRO 8-BIT ARCADE SEARCH CONSOLE)
+   -------------------------------------------------------------------------- */
+.search-header {
+  margin-bottom: 1.5rem;
+}
+
+.search-console-box {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.search-bar-row {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.search-input-wrap {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.search-icon {
+  position: absolute;
+  left: 12px;
+  color: var(--pixel-gold);
+  pointer-events: none;
+}
+.search-input-wrap .pixel-input {
+  padding-left: 2.4rem;
+  padding-right: 2.2rem;
+}
+.btn-clear-input {
+  position: absolute;
+  right: 12px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.filters-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.85rem;
+}
+
+.filter-group label {
+  display: block;
+  font-family: var(--font-pixel-sub);
+  font-size: 0.7rem;
+  color: var(--pixel-cyan);
+  margin-bottom: 0.3rem;
+}
+
+.quest-tags-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-top: 0.5rem;
+  border-top: 2px dashed rgba(255,255,255,0.1);
+  flex-wrap: wrap;
+}
+
+.quest-label {
+  font-family: var(--font-pixel-sub);
+  font-size: 0.75rem;
+  color: var(--pixel-gold);
+}
+
+.tags-container {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.quest-tag-btn {
+  background: var(--bg-panel);
+  color: var(--text-muted);
+  border: 2px solid #000;
+  padding: 0.25rem 0.5rem;
+  font-family: var(--font-pixel-sub);
+  font-size: 0.7rem;
+  cursor: pointer;
+}
+.quest-tag-btn:hover { color: var(--pixel-gold); }
+.quest-tag-btn.active {
+  background: var(--pixel-purple);
+  color: #fff;
+  font-weight: 700;
+}
+
+.results-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1.5rem 0 1rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #000;
+}
+
+.results-count {
+  font-family: var(--font-pixel-sub);
+  font-size: 0.9rem;
+}
+
+/* --------------------------------------------------------------------------
+   8. PAGE 3: #curation (SPECIAL 3D PIXEL DUNGEON PACKAGES)
+   -------------------------------------------------------------------------- */
+.curation-header {
+  margin-bottom: 1.5rem;
+}
+
+.curation-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 1.5rem;
+}
+
+.package-card {
+  background: var(--bg-panel);
+  border: 4px solid #000;
+  box-shadow: 6px 6px 0px #000;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.package-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.package-title {
+  font-family: var(--font-pixel-title);
+  font-size: 1.05rem;
+  color: var(--pixel-gold);
+  line-height: 1.4;
+
+}
+
+.package-reward-badge {
+  background: var(--pixel-green);
+  color: #000;
+  font-family: var(--font-pixel-sub);
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border: 2px solid #000;
+}
+
+.package-desc {
+  color: var(--text-cream);
+  font-size: 0.85rem;
+}
+
+.package-books-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background: var(--bg-panel-inner);
+  border: 2px solid #000;
+  padding: 0.75rem;
+}
+
+.pkg-book-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  border-bottom: 1px dashed rgba(255,255,255,0.1);
+  padding-bottom: 0.3rem;
+}
+.pkg-book-item:last-child { border-bottom: none; padding-bottom: 0; }
+
+.pkg-title { color: var(--text-white); font-weight: 500; }
+.pkg-price { color: var(--pixel-gold); font-family: var(--font-pixel-sub); font-size: 0.75rem; }
+
+.package-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+  padding-top: 0.75rem;
+  border-top: 2px solid #000;
+}
+
+.package-total-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.pkg-total-label { font-size: 0.7rem; color: var(--text-muted); }
+.pkg-total-price { font-family: var(--font-pixel-sub); font-size: 1.1rem; color: var(--pixel-gold); font-weight: 700; }
+
+/* --------------------------------------------------------------------------
+   9. PAGE 4: #cart (ARCADE LIBRARIAN BULK ORDER CART)
+   -------------------------------------------------------------------------- */
+.cart-header {
+  margin-bottom: 1.5rem;
+}
+
+.cart-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.summary-card {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.summary-icon { font-size: 1.8rem; }
+.summary-label { font-size: 0.75rem; color: var(--text-muted); }
+.summary-value { font-family: var(--font-pixel-sub); font-size: 1.1rem; font-weight: 700; }
+
+.highlight-card {
+  background: var(--bg-panel);
+  border: 3px solid var(--pixel-gold);
+}
+
+.inst-form-box {
+  margin-bottom: 1.5rem;
+}
+
+.form-title {
+  font-family: var(--font-pixel-sub);
+  font-size: 0.95rem;
+  color: var(--pixel-gold);
+  margin-bottom: 1rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text-cream);
+  margin-bottom: 0.3rem;
+}
+
+.cart-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.toolbar-left, .toolbar-right {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Cart Table */
+.cart-table-wrap {
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+}
+
+.cart-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.cart-table th {
+  background: #000;
+  color: var(--pixel-gold);
+  font-family: var(--font-pixel-sub);
+  font-size: 0.75rem;
+  padding: 0.75rem;
+  border-bottom: 2px solid var(--pixel-gold);
+}
+
+.cart-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  vertical-align: middle;
+}
+
+.col-chk { width: 40px; text-align: center; }
+.col-cover { width: 70px; }
+.col-price, .col-discount, .col-subtotal { font-family: var(--font-pixel-sub); font-size: 0.85rem; }
+.col-subtotal { color: var(--pixel-gold); font-weight: 700; }
+
+.cart-book-title { font-weight: 700; color: var(--text-white); font-size: 0.9rem; }
+.cart-book-sub { font-size: 0.75rem; color: var(--text-muted); }
+.cart-book-meta { font-size: 0.75rem; color: var(--text-cream); }
+
+.empty-banner {
+  text-align: center;
+  padding: 3rem 1rem;
+  display: none;
+}
+.empty-icon { font-size: 3.5rem; margin-bottom: 0.5rem; }
+
+.cart-export-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.notice-title {
+  font-family: var(--font-pixel-sub);
+  font-size: 0.95rem;
+  color: var(--pixel-gold);
+  margin-bottom: 0.2rem;
+}
+.notice-desc { font-size: 0.8rem; color: var(--text-muted); }
+.export-buttons { display: flex; gap: 1rem; }
+
+/* --------------------------------------------------------------------------
+   10. PAGE 5: #detail (BOOK METADATA & 360° 3D VOXEL PREVIEW)
+   -------------------------------------------------------------------------- */
+.detail-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.detail-layout-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 1.5rem;
+}
+
+.detail-3d-box {
+  height: 480px;
+  position: relative;
+}
+
+#detail-3d-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.detail-3d-hud {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.hud-hint {
+  background: rgba(0,0,0,0.8);
+  color: var(--pixel-cyan);
+  font-family: var(--font-pixel-sub);
+  font-size: 0.65rem;
+  padding: 0.3rem 0.6rem;
+  border: 1px solid var(--pixel-cyan);
+}
+
+.hud-btn-group { display: flex; gap: 0.3rem; }
+
+.detail-info-box {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.detail-book-title {
+  font-family: var(--font-pixel-title);
+  font-size: 1.3rem;
+  color: var(--pixel-gold);
+  line-height: 1.4;
+  text-shadow: 2px 2px 0px #000;
+}
+
+.detail-book-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.detail-price-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.price-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.price-row.highlight {
+  border-top: 1px dashed rgba(255,200,37,0.4);
+  padding-top: 0.4rem;
+}
+.price-val-regular { text-decoration: line-through; color: var(--text-muted); }
+.price-val-supply { font-family: var(--font-pixel-sub); font-size: 1.2rem; color: var(--pixel-gold); font-weight: 700; }
+
+.spec-title {
+  font-family: var(--font-pixel-sub);
+  font-size: 0.85rem;
+  color: var(--pixel-cyan);
+  margin-bottom: 0.6rem;
+}
+
+.spec-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+
+.spec-table th {
+  background: rgba(0,0,0,0.4);
+  color: var(--text-muted);
+  padding: 0.4rem 0.6rem;
+  width: 22%;
+  border: 1px solid rgba(255,255,255,0.1);
+  text-align: left;
+}
+
+.spec-table td {
+  padding: 0.4rem 0.6rem;
+  border: 1px solid rgba(255,255,255,0.1);
+  width: 28%;
+}
+
+.audio-player-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.audio-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.audio-title { font-family: var(--font-pixel-sub); font-size: 0.8rem; color: var(--pixel-purple); }
+.audio-status { font-size: 0.75rem; color: var(--text-muted); }
+
+.audio-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.audio-visualizer-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 24px;
+}
+
+.v-bar {
+  width: 4px;
+  height: 6px;
+  background: var(--pixel-purple);
+  transition: height 0.1s ease;
+}
+.v-bar.playing {
+  animation: barPulse 0.4s ease-in-out infinite alternate;
+}
+.v-bar:nth-child(1) { animation-delay: 0.0s; }
+.v-bar:nth-child(2) { animation-delay: 0.1s; }
+.v-bar:nth-child(3) { animation-delay: 0.2s; }
+.v-bar:nth-child(4) { animation-delay: 0.3s; }
+
+@keyframes barPulse {
+  from { height: 4px; }
+  to { height: 24px; background: var(--pixel-gold); }
+}
+
+.detail-cart-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.qty-control {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.qty-btn {
+  width: 32px;
+  height: 32px;
+  background: var(--bg-panel);
+  color: var(--text-white);
+  border: 2px solid #000;
+  font-family: var(--font-pixel-sub);
+  font-size: 1rem;
+  cursor: pointer;
+}
+.qty-btn:hover { background: var(--pixel-gold); color: #000; }
+
+.synopsis-title { font-family: var(--font-pixel-sub); font-size: 0.85rem; color: var(--pixel-gold); margin-bottom: 0.4rem; }
+.synopsis-text { font-size: 0.85rem; color: var(--text-cream); line-height: 1.6; }
+
+/* --------------------------------------------------------------------------
+   11. FOOTER & TOAST
+   -------------------------------------------------------------------------- */
+.app-footer {
+  margin: 3rem auto 1rem auto;
+  width: calc(100% - 2rem);
+  max-width: 1320px;
+  padding: 1.5rem;
+}
+
+.footer-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1.5fr;
+  gap: 2rem;
+}
+
+.footer-logo { font-family: var(--font-pixel-title); font-size: 0.9rem; color: var(--pixel-gold); margin-bottom: 0.5rem; }
+.footer-desc { font-size: 0.8rem; color: var(--text-muted); }
+.footer-nav h4, .footer-contact h4 { font-family: var(--font-pixel-sub); font-size: 0.8rem; color: var(--pixel-cyan); margin-bottom: 0.5rem; }
+.footer-nav ul { list-style: none; display: flex; flex-direction: column; gap: 0.3rem; }
+.footer-nav a { color: var(--text-muted); text-decoration: none; font-size: 0.8rem; }
+.footer-nav a:hover { color: var(--pixel-gold); }
+.footer-contact p { font-size: 0.8rem; color: var(--text-muted); }
+.copyright { margin-top: 0.5rem; font-size: 0.75rem; color: var(--text-muted); }
+
+/* Toast Notifications */
+.toast-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 100000;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.pixel-toast {
+  background: var(--bg-panel);
+  border: 3px solid #000;
+  box-shadow: 4px 4px 0px #000;
+  padding: 0.75rem 1rem;
+  font-family: var(--font-pixel-sub);
+  font-size: 0.8rem;
+  color: var(--text-white);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  animation: slideInRight 0.2s ease-out;
+}
+.toast-success { border-color: var(--pixel-green); }
+.toast-info { border-color: var(--pixel-cyan); }
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .hero-grid, .detail-layout-grid, .footer-container { grid-template-columns: 1fr; }
+  .filters-grid, .cart-summary-grid { grid-template-columns: repeat(2, 1fr); }
+  .form-grid { grid-template-columns: 1fr; }
+  .cart-export-box { flex-direction: column; text-align: center; }
+  .header-container { flex-wrap: wrap; }
+}
+
+@media (max-width: 600px) {
+  .filters-grid, .cart-summary-grid { grid-template-columns: 1fr; }
+  .main-nav { flex-wrap: wrap; }
+  .hero-stats { grid-template-columns: 1fr; }
+}
+

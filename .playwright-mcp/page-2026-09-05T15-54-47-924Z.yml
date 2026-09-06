@@ -1,0 +1,199 @@
+- generic [ref=f8e1]:
+  - banner [ref=f8e2]:
+    - link "light 등불 도서관 Lantern Night Library · 다문화 도서 납품" [ref=f8e3] [cursor=pointer]:
+      - /url: "#home"
+      - generic [ref=f8e4]: light
+      - generic [ref=f8e6]:
+        - strong [ref=f8e7]: 등불 도서관
+        - generic [ref=f8e8]: Lantern Night Library · 다문화 도서 납품
+    - navigation [ref=f8e9]:
+      - link "메인" [ref=f8e10] [cursor=pointer]:
+        - /url: "#home"
+      - link "도서 검색" [ref=f8e11] [cursor=pointer]:
+        - /url: "#search"
+      - link "큐레이션" [ref=f8e12] [cursor=pointer]:
+        - /url: "#curation"
+      - link "견적함" [ref=f8e13] [cursor=pointer]:
+        - /url: "#cart"
+    - generic [ref=f8e14]:
+      - generic [ref=f8e15]:
+        - button "KO" [ref=f8e16] [cursor=pointer]
+        - button "EN" [ref=f8e17] [cursor=pointer]
+        - button "VI" [ref=f8e18] [cursor=pointer]
+        - button "ZH" [ref=f8e19] [cursor=pointer]
+      - link "shopping_basket 견적함 0" [ref=f8e20] [cursor=pointer]:
+        - /url: "#cart"
+        - generic [ref=f8e21]: shopping_basket
+        - generic [ref=f8e22]: 견적함
+        - generic [ref=f8e23]: "0"
+  - main [ref=f8e24]:
+    - generic [ref=f8e25]:
+      - generic [ref=f8e26]:
+        - generic [ref=f8e28]:
+          - generic [ref=f8e29]: 2026 다문화 도서관 납품 전문 플랫폼
+          - heading [level=1] [ref=f8e30]:
+            - text: 등불 아래세계의
+            - emphasis [ref=f8e31]: 이야기
+            - text: 가모입니다
+          - paragraph [ref=f8e32]: 12개 언어, 480개 출판사의 다문화 도서를 사서의 기준으로 검수해 납품합니다. 견적서 발급부터 서지 데이터(MARC) 제공까지 한 번에.
+          - generic [ref=f8e33]:
+            - link "search 도서 검색·수서" [ref=f8e34] [cursor=pointer]:
+              - /url: "#search"
+              - generic [ref=f8e35]: search
+              - generic [ref=f8e36]: 도서 검색·수서
+            - link "festival 등불 전시관 입장" [ref=f8e37] [cursor=pointer]:
+              - /url: "#curation"
+              - generic [ref=f8e38]: festival
+              - generic [ref=f8e39]: 등불 전시관 입장
+          - list [ref=f8e40]:
+            - listitem [ref=f8e41]:
+              - generic [ref=f8e42]: "12"
+              - text: 지원 언어
+            - listitem [ref=f8e43]:
+              - generic [ref=f8e44]: 8,420
+              - text: 등록 도서
+            - listitem [ref=f8e45]:
+              - generic [ref=f8e46]: "312"
+              - text: 납품 도서관
+        - generic [ref=f8e47]: 마우스를 움직여 등불을 흔들어 보세요 · 클릭하면 불티가 날립니다
+      - generic [ref=f8e48]:
+        - generic [ref=f8e49]: campaign
+        - generic [ref=f8e50]: 2026 하반기 공공도서관 다문화자료 구입 지원사업 납품 일정 안내 — 9월 말 견적 마감
+        - link "견적서 발급하기" [ref=f8e51] [cursor=pointer]:
+          - /url: "#cart"
+      - generic [ref=f8e52]:
+        - generic [ref=f8e53]:
+          - generic [ref=f8e54]: 기획전 · Curated Exhibitions
+          - heading "등불처럼 걸어둔 이달의 기획전" [level=2] [ref=f8e55]
+          - paragraph [ref=f8e56]: 전시 형태가 각기 다른 세 개의 기획전. 3D 등불 전시관은 드래그해서 둘러볼 수 있습니다.
+        - generic [ref=f8e57]:
+          - link "3D 등불 전시관 세계 그림책 비엔날레 수상작 BIB·볼로냐 라가치 수상작 중 다문화 가정 아동을 위한 원서+번역서 세트. 8권 수록" [ref=f8e58] [cursor=pointer]:
+            - /url: "#curation/1"
+            - generic [ref=f8e67]: 3D 등불 전시관
+            - heading "세계 그림책 비엔날레 수상작" [level=3] [ref=f8e68]
+            - paragraph [ref=f8e69]: BIB·볼로냐 라가치 수상작 중 다문화 가정 아동을 위한 원서+번역서 세트.
+            - generic [ref=f8e70]: 8권 수록
+          - link "야시장 가판대 아시아의 축제와 등불 연등회, 원소절, 송크란, 마츠리 — 축제로 배우는 이웃 나라 문화. 8권 수록" [ref=f8e71] [cursor=pointer]:
+            - /url: "#curation/2"
+            - generic [ref=f8e82]: 야시장 가판대
+            - heading "아시아의 축제와 등불" [level=3] [ref=f8e83]
+            - paragraph [ref=f8e84]: 연등회, 원소절, 송크란, 마츠리 — 축제로 배우는 이웃 나라 문화.
+            - generic [ref=f8e85]: 8권 수록
+          - link "하늘 등불 다문화 가정 부모·사서 필독서 생활 한국어, 장서 개발 가이드, 성장기 청소년 문학까지. 6권 수록" [ref=f8e86] [cursor=pointer]:
+            - /url: "#curation/3"
+            - generic [ref=f8e94]: 하늘 등불
+            - heading "다문화 가정 부모·사서 필독서" [level=3] [ref=f8e95]
+            - paragraph [ref=f8e96]: 생활 한국어, 장서 개발 가이드, 성장기 청소년 문학까지.
+            - generic [ref=f8e97]: 6권 수록
+      - generic [ref=f8e98]:
+        - generic [ref=f8e99]:
+          - generic [ref=f8e100]: 3D Lantern Hall
+          - heading "세계 그림책 비엔날레 수상작" [level=2] [ref=f8e101]
+          - paragraph [ref=f8e102]: 드래그로 회랑을 돌려보고, 등불(표지)을 클릭하면 서지정보로 이동합니다.
+        - generic [ref=f8e105]:
+          - button "세계 그림책 비엔날레 수상작" [ref=f8e106] [cursor=pointer]
+          - button "아시아의 축제와 등불" [ref=f8e107] [cursor=pointer]
+          - button "다문화 가정 부모·사서 필독서" [ref=f8e108] [cursor=pointer]
+      - generic [ref=f8e109]:
+        - generic [ref=f8e110]:
+          - generic [ref=f8e111]:
+            - generic [ref=f8e112]: 신간 · New Arrivals
+            - heading "이번 달 입고 신간" [level=2] [ref=f8e113]
+          - generic [ref=f8e114]:
+            - button "auto_awesome 액티브" [ref=f8e115] [cursor=pointer]:
+              - generic [ref=f8e116]: auto_awesome
+              - generic [ref=f8e117]: 액티브
+            - button "table_rows 서지 목록" [ref=f8e118] [cursor=pointer]:
+              - generic [ref=f8e119]: table_rows
+              - generic [ref=f8e120]: 서지 목록
+        - generic [ref=f8e121]:
+          - link "달빛 아래 연등 VI · 베트남 달빛 아래 연등 베트남어 · Kim Đồng 15,000 원" [ref=f8e122] [cursor=pointer]:
+            - /url: "#detail/1"
+            - generic [ref=f8e124]:
+              - generic [ref=f8e125]: 달빛 아래 연등
+              - generic [ref=f8e126]: VI · 베트남
+            - heading "달빛 아래 연등" [level=4] [ref=f8e127]
+            - generic [ref=f8e128]: 베트남어 · Kim Đồng
+            - generic [ref=f8e129]: 15,000 원
+          - link "우리 집 두 개의 설날 EN · 미국 우리 집 두 개의 설날 영어 · Candlewick 16,800 원" [ref=f8e130] [cursor=pointer]:
+            - /url: "#detail/2"
+            - generic [ref=f8e132]:
+              - generic [ref=f8e133]: 우리 집 두 개의 설날
+              - generic [ref=f8e134]: EN · 미국
+            - heading "우리 집 두 개의 설날" [level=4] [ref=f8e135]
+            - generic [ref=f8e136]: 영어 · Candlewick
+            - generic [ref=f8e137]: 16,800 원
+          - link "할머니의 아오자이 VI · 베트남 할머니의 아오자이 베트남어 · Nhã Nam 14,500 원" [ref=f8e138] [cursor=pointer]:
+            - /url: "#detail/3"
+            - generic [ref=f8e140]:
+              - generic [ref=f8e141]: 할머니의 아오자이
+              - generic [ref=f8e142]: VI · 베트남
+            - heading "할머니의 아오자이" [level=4] [ref=f8e143]
+            - generic [ref=f8e144]: 베트남어 · Nhã Nam
+            - generic [ref=f8e145]: 14,500 원
+          - link "별을 세는 밤 ZH · 중국 별을 세는 밤 중국어 · 接力出版社 15,500 원" [ref=f8e146] [cursor=pointer]:
+            - /url: "#detail/4"
+            - generic [ref=f8e148]:
+              - generic [ref=f8e149]: 별을 세는 밤
+              - generic [ref=f8e150]: ZH · 중국
+            - heading "별을 세는 밤" [level=4] [ref=f8e151]
+            - generic [ref=f8e152]: 중국어 · 接力出版社
+            - generic [ref=f8e153]: 15,500 원
+          - link "필리핀 할아버지의 바다 지도 TL · 필리핀 필리핀 할아버지의 바다 지도 필리핀어 · Adarna House 16,000 원" [ref=f8e154] [cursor=pointer]:
+            - /url: "#detail/6"
+            - generic [ref=f8e156]:
+              - generic [ref=f8e157]: 필리핀 할아버지의 바다 지도
+              - generic [ref=f8e158]: TL · 필리핀
+            - heading "필리핀 할아버지의 바다 지도" [level=4] [ref=f8e159]
+            - generic [ref=f8e160]: 필리핀어 · Adarna House
+            - generic [ref=f8e161]: 16,000 원
+          - link "태국의 물축제 송크란 TH · 태국 태국의 물축제 송크란 태국어 · Nanmeebooks 15,000 원" [ref=f8e162] [cursor=pointer]:
+            - /url: "#detail/8"
+            - generic [ref=f8e164]:
+              - generic [ref=f8e165]: 태국의 물축제 송크란
+              - generic [ref=f8e166]: TH · 태국
+            - heading "태국의 물축제 송크란" [level=4] [ref=f8e167]
+            - generic [ref=f8e168]: 태국어 · Nanmeebooks
+            - generic [ref=f8e169]: 15,000 원
+          - link "우즈베키스탄의 빵, 논 UZ · 우즈베키스탄 우즈베키스탄의 빵, 논 우즈베크어 · Yangi asr 14,800 원" [ref=f8e170] [cursor=pointer]:
+            - /url: "#detail/10"
+            - generic [ref=f8e172]:
+              - generic [ref=f8e173]: 우즈베키스탄의 빵, 논
+              - generic [ref=f8e174]: UZ · 우즈베키스탄
+            - heading "우즈베키스탄의 빵, 논" [level=4] [ref=f8e175]
+            - generic [ref=f8e176]: 우즈베크어 · Yangi asr
+            - generic [ref=f8e177]: 14,800 원
+          - link "사서를 위한 다문화 장서 개발 가이드 KO · 한국 사서를 위한 다문화 장서 개발 가이드 한국어 · 도서관문화사 28,000 원" [ref=f8e178] [cursor=pointer]:
+            - /url: "#detail/11"
+            - generic [ref=f8e180]:
+              - generic [ref=f8e181]: 사서를 위한 다문화 장서 개발 가이드
+              - generic [ref=f8e182]: KO · 한국
+            - heading "사서를 위한 다문화 장서 개발 가이드" [level=4] [ref=f8e183]
+            - generic [ref=f8e184]: 한국어 · 도서관문화사
+            - generic [ref=f8e185]: 28,000 원
+          - link "일본 여름 축제 마츠리 JA · 일본 일본 여름 축제 마츠리 일본어 · 福音館 15,800 원" [ref=f8e186] [cursor=pointer]:
+            - /url: "#detail/13"
+            - generic [ref=f8e188]:
+              - generic [ref=f8e189]: 일본 여름 축제 마츠리
+              - generic [ref=f8e190]: JA · 일본
+            - heading "일본 여름 축제 마츠리" [level=4] [ref=f8e191]
+            - generic [ref=f8e192]: 일본어 · 福音館
+            - generic [ref=f8e193]: 15,800 원
+      - generic [ref=f8e194]:
+        - generic [ref=f8e195]:
+          - generic [ref=f8e196]: verified
+          - heading "사서 검수 완료 도서" [level=3] [ref=f8e197]
+          - paragraph [ref=f8e198]: 현직 사서 12명이 내용·번역·제본 품질을 검수한 도서만 등록합니다.
+        - generic [ref=f8e199]:
+          - generic [ref=f8e200]: description
+          - heading "MARC/서지 데이터 제공" [level=3] [ref=f8e201]
+          - paragraph [ref=f8e202]: 납품 도서의 KORMARC 데이터와 장비 작업(라벨·바코드)을 함께 제공합니다.
+        - generic [ref=f8e203]:
+          - generic [ref=f8e204]: receipt_long
+          - heading "공문용 견적서 즉시 발급" [level=3] [ref=f8e205]
+          - paragraph [ref=f8e206]: 기관 할인율이 반영된 견적서를 PDF로 바로 출력해 기안에 첨부하세요.
+  - contentinfo [ref=f8e207]:
+    - generic [ref=f8e208]:
+      - strong [ref=f8e209]: 등불 도서관
+      - paragraph [ref=f8e210]: 다문화 도서관 납품 전문 · 사서와 함께 만드는 세계의 서가
+    - generic [ref=f8e211]: © 2026 Lantern Night Library · v7 concept

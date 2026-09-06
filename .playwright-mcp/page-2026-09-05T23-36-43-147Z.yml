@@ -1,0 +1,217 @@
+- generic [ref=f4e1]:
+  - banner [ref=f4e2]:
+    - generic [ref=f4e3]:
+      - link "다문화도서관 수서 몰 v17 · Grand Storybook Carousel" [ref=f4e4] [cursor=pointer]:
+        - /url: "#home"
+        - generic [ref=f4e8]:
+          - generic [ref=f4e9]: 다문화도서관 수서 몰
+          - generic [ref=f4e10]: v17 · Grand Storybook Carousel
+      - navigation [ref=f4e11]:
+        - link "메인" [ref=f4e12] [cursor=pointer]:
+          - /url: "#home"
+        - link "도서 검색" [ref=f4e13] [cursor=pointer]:
+          - /url: "#search"
+        - link "큐레이션" [ref=f4e14] [cursor=pointer]:
+          - /url: "#curation"
+        - link "공문 견적함0" [ref=f4e15] [cursor=pointer]:
+          - /url: "#cart"
+      - generic [ref=f4e16]:
+        - generic "Librarian mode" [ref=f4e17] [cursor=pointer]: 사서 모드
+        - button "sound" [ref=f4e21] [cursor=pointer]:
+          - generic [ref=f4e22]: ♪
+        - combobox "Language" [ref=f4e24] [cursor=pointer]:
+          - option "🇰🇷 한국어" [selected]
+          - option "🇺🇸 English"
+          - option "🇻🇳 Tiếng Việt"
+          - option "🇨🇳 中文"
+          - option "🇷🇺 Русский"
+          - option "🇯🇵 日本語"
+        - link "견적 장바구니 0" [ref=f4e25] [cursor=pointer]:
+          - /url: "#cart"
+          - generic [ref=f4e26]: 견적 장바구니
+          - generic [ref=f4e27]: "0"
+  - main [ref=f4e28]:
+    - generic [ref=f4e29]:
+      - generic [ref=f4e30]:
+        - paragraph [ref=f4e31]: CURATION EXHIBITIONS
+        - heading "기획전 3D 전시실" [level=2] [ref=f4e32]
+        - paragraph [ref=f4e33]: 회전목마·열기구·계단, 세 가지 3D 전시 형태의 기획전. 사서 패키지 일괄 담기를 지원합니다.
+      - generic [ref=f4e34]:
+        - button "황금 회전목마 세계 동화 회전목마전" [ref=f4e35] [cursor=pointer]:
+          - generic [ref=f4e36]: 황금 회전목마
+          - text: 세계 동화 회전목마전
+        - button "열기구 갤러리 이중언어 그림책 열기구전" [ref=f4e37] [cursor=pointer]:
+          - generic [ref=f4e38]: 열기구 갤러리
+          - text: 이중언어 그림책 열기구전
+        - button "스토리북 계단 청소년 세계문학 계단전" [ref=f4e39] [cursor=pointer]:
+          - generic [ref=f4e40]: 스토리북 계단
+          - text: 청소년 세계문학 계단전
+      - generic [ref=f4e41]:
+        - generic:
+          - generic: 황금 회전목마 · 드래그하여 회전 · 책 클릭 시 상세
+          - text: 세계 동화 회전목마전
+      - generic [ref=f4e43]:
+        - generic [ref=f4e44]:
+          - paragraph [ref=f4e45]: 황금 회전목마
+          - heading "세계 동화 회전목마전" [level=3] [ref=f4e46]
+          - paragraph [ref=f4e47]: 아시아·유럽 전래동화를 회전목마 좌석에 앉혀 한 바퀴 돌아봅니다.
+          - generic [ref=f4e48]:
+            - generic [ref=f4e49]: 수록 도서
+            - generic [ref=f4e50]: "8"
+          - generic [ref=f4e51]:
+            - generic [ref=f4e52]: 전시 형태
+            - generic [ref=f4e53]: 황금 회전목마
+          - generic [ref=f4e54]:
+            - generic [ref=f4e55]: 패키지 납품가
+            - generic [ref=f4e56]: 112,950원
+          - button "기획전 전체 담기" [ref=f4e57] [cursor=pointer]
+        - generic [ref=f4e58]:
+          - article [ref=f4e59] [cursor=pointer]:
+            - generic [ref=f4e60]:
+              - img "달을 먹은 호랑이" [ref=f4e61]
+              - generic [ref=f4e62]: 🇻🇳 VI
+            - generic [ref=f4e63]:
+              - heading "달을 먹은 호랑이" [level=3] [ref=f4e64]
+              - generic [ref=f4e65]: Con Hổ Ăn Mặt Trăng
+              - generic [ref=f4e66]: Nguyễn Thị Lan · 무지개책방
+            - generic [ref=f4e67]:
+              - generic [ref=f4e68]: 유아 (0–6)
+              - generic [ref=f4e69]: KDC 813.8
+            - generic [ref=f4e70]:
+              - generic [ref=f4e71]: 15,000원
+              - generic [ref=f4e72]: 13,500원-10%
+            - generic [ref=f4e73]:
+              - button "견적함 담기" [ref=f4e74]
+              - link "상세" [ref=f4e75]:
+                - /url: "#detail/b01"
+          - article [ref=f4e76] [cursor=pointer]:
+            - generic [ref=f4e77]:
+              - img "봄바람 편지" [ref=f4e78]
+              - generic [ref=f4e79]: 🇨🇳 ZH
+            - generic [ref=f4e80]:
+              - heading "봄바람 편지" [level=3] [ref=f4e81]
+              - generic [ref=f4e82]: 春风的信
+              - generic [ref=f4e83]: 林小雨 · 무지개책방
+            - generic [ref=f4e84]:
+              - generic [ref=f4e85]: 아동 (7–12)
+              - generic [ref=f4e86]: KDC 813.8
+            - generic [ref=f4e87]:
+              - generic [ref=f4e88]: 15,000원
+              - generic [ref=f4e89]: 13,500원-10%
+            - generic [ref=f4e90]:
+              - button "견적함 담기" [ref=f4e91]
+              - link "상세" [ref=f4e92]:
+                - /url: "#detail/b02"
+          - article [ref=f4e93] [cursor=pointer]:
+            - generic [ref=f4e94]:
+              - img "눈의 여왕과 사모바르" [ref=f4e95]
+              - generic [ref=f4e96]: 🇷🇺 RU
+            - generic [ref=f4e97]:
+              - heading "눈의 여왕과 사모바르" [level=3] [ref=f4e98]
+              - generic [ref=f4e99]: Снежная королева и самовар
+              - generic [ref=f4e100]: Ольга Петрова · 세계숲
+            - generic [ref=f4e101]:
+              - generic [ref=f4e102]: 아동 (7–12)
+              - generic [ref=f4e103]: KDC 892.8
+            - generic [ref=f4e104]:
+              - generic [ref=f4e105]: 18,000원
+              - generic [ref=f4e106]: 16,200원-10%
+            - generic [ref=f4e107]:
+              - button "견적함 담기" [ref=f4e108]
+              - link "상세" [ref=f4e109]:
+                - /url: "#detail/b03"
+          - article [ref=f4e110] [cursor=pointer]:
+            - generic [ref=f4e111]:
+              - img "초원의 말과 소년" [ref=f4e112]
+              - generic [ref=f4e113]: 🇲🇳 MN
+            - generic [ref=f4e114]:
+              - heading "초원의 말과 소년" [level=3] [ref=f4e115]
+              - generic [ref=f4e116]: Талын морь ба хүү
+              - generic [ref=f4e117]: Батбаяр Дорж · 세계숲
+            - generic [ref=f4e118]:
+              - generic [ref=f4e119]: 아동 (7–12)
+              - generic [ref=f4e120]: KDC 899.9
+            - generic [ref=f4e121]:
+              - generic [ref=f4e122]: 16,500원
+              - generic [ref=f4e123]: 14,850원-10%
+            - generic [ref=f4e124]:
+              - button "견적함 담기" [ref=f4e125]
+              - link "상세" [ref=f4e126]:
+                - /url: "#detail/b07"
+          - article [ref=f4e127] [cursor=pointer]:
+            - generic [ref=f4e128]:
+              - img "방콕 골목의 코끼리" [ref=f4e129]
+              - generic [ref=f4e130]: 🇹🇭 TH
+            - generic [ref=f4e131]:
+              - heading "방콕 골목의 코끼리" [level=3] [ref=f4e132]
+              - generic [ref=f4e133]: ช้างในตรอกกรุงเทพ
+              - generic [ref=f4e134]: สมชาย วงศ์ดี · 무지개책방
+            - generic [ref=f4e135]:
+              - generic [ref=f4e136]: 유아 (0–6)
+              - generic [ref=f4e137]: KDC 899.1
+            - generic [ref=f4e138]:
+              - generic [ref=f4e139]: 15,500원
+              - generic [ref=f4e140]: 13,950원-10%
+            - generic [ref=f4e141]:
+              - button "견적함 담기" [ref=f4e142]
+              - link "상세" [ref=f4e143]:
+                - /url: "#detail/b08"
+          - article [ref=f4e144] [cursor=pointer]:
+            - generic [ref=f4e145]:
+              - img "마닐라의 종이배" [ref=f4e146]
+              - generic [ref=f4e147]: 🇵🇭 TL
+            - generic [ref=f4e148]:
+              - heading "마닐라의 종이배" [level=3] [ref=f4e149]
+              - generic [ref=f4e150]: Ang Bangkang Papel ng Maynila
+              - generic [ref=f4e151]: Maria Santos · 별빛출판
+            - generic [ref=f4e152]:
+              - generic [ref=f4e153]: 아동 (7–12)
+              - generic [ref=f4e154]: KDC 899
+            - generic [ref=f4e155]:
+              - generic [ref=f4e156]: 14,000원
+              - generic [ref=f4e157]: 12,600원-10%
+            - generic [ref=f4e158]:
+              - button "견적함 담기" [ref=f4e159]
+              - link "상세" [ref=f4e160]:
+                - /url: "#detail/b06"
+          - article [ref=f4e161] [cursor=pointer]:
+            - generic [ref=f4e162]:
+              - img "하노이 아침 시장" [ref=f4e163]
+              - generic [ref=f4e164]: 🇻🇳 VI
+            - generic [ref=f4e165]:
+              - heading "하노이 아침 시장" [level=3] [ref=f4e166]
+              - generic [ref=f4e167]: Chợ sáng Hà Nội
+              - generic [ref=f4e168]: Phạm Quang Huy · 지식나무
+            - generic [ref=f4e169]:
+              - generic [ref=f4e170]: 아동 (7–12)
+              - generic [ref=f4e171]: KDC 981
+            - generic [ref=f4e172]:
+              - generic [ref=f4e173]: 14,500원
+              - generic [ref=f4e174]: 13,050원-10%
+            - generic [ref=f4e175]:
+              - button "견적함 담기" [ref=f4e176]
+              - link "상세" [ref=f4e177]:
+                - /url: "#detail/b12"
+          - article [ref=f4e178] [cursor=pointer]:
+            - generic [ref=f4e179]:
+              - img "레인보우 김치" [ref=f4e180]
+              - generic [ref=f4e181]: 🇺🇸 EN
+            - generic [ref=f4e182]:
+              - heading "레인보우 김치" [level=3] [ref=f4e183]
+              - generic [ref=f4e184]: Rainbow Kimchi
+              - generic [ref=f4e185]: Grace Park · 별빛출판
+            - generic [ref=f4e186]:
+              - generic [ref=f4e187]: 유아 (0–6)
+              - generic [ref=f4e188]: KDC 843
+            - generic [ref=f4e189]:
+              - generic [ref=f4e190]: 17,000원
+              - generic [ref=f4e191]: 15,300원-10%
+            - generic [ref=f4e192]:
+              - button "견적함 담기" [ref=f4e193]
+              - link "상세" [ref=f4e194]:
+                - /url: "#detail/b05"
+  - contentinfo [ref=f4e195]:
+    - generic [ref=f4e196]:
+      - strong [ref=f4e197]: 다문화도서관 수서 몰
+      - paragraph [ref=f4e198]: 공공·학교 다문화 도서관 납품 전문 · 원서 및 이중언어 도서 · 사서 공문 견적 지원
+    - paragraph [ref=f4e199]: © 2026 Multicultural Library Mall · v17 Grand Storybook Carousel

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>문화 항로 도서관 | Cartographic Journey v9</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;800&family=Noto+Sans+KR:wght@400;500;700&family=Cinzel:wght@500;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+<div class="grain"></div>
+<header class="site-header">
+  <a href="#home" class="brand"><span class="brand-mark"><span class="material-symbols-outlined">explore</span></span><span class="brand-text"><strong data-i18n="brand">문화 항로 도서관</strong><small data-i18n="brand_sub">Cartographic Journey · 다문화 도서 납품</small></span></a>
+  <nav class="main-nav">
+    <a href="#home" data-route="home" data-i18n="nav_home">메인</a>
+    <a href="#search" data-route="search" data-i18n="nav_search">도서 검색</a>
+    <a href="#curation" data-route="curation" data-i18n="nav_curation">큐레이션</a>
+    <a href="#cart" data-route="cart" data-i18n="nav_cart">견적함</a>
+  </nav>
+  <div class="header-tools">
+    <div class="lang-switch" id="lang-switch"><button data-lang="ko">KO</button><button data-lang="en">EN</button><button data-lang="vi">VI</button><button data-lang="zh">ZH</button></div>
+    <a href="#cart" class="cart-btn seal-btn" id="cart-btn"><span class="material-symbols-outlined">luggage</span><span data-i18n="nav_cart">견적함</span><b id="cart-count">0</b></a>
+  </div>
+</header>
+
+<main>
+<section class="page" id="page-home">
+  <div class="hero">
+    <canvas id="hero-canvas"></canvas>
+    <div class="hero-content">
+      <span class="eyebrow" data-i18n="hero_eyebrow">다문화 도서관 납품 · 세계 문화 항로</span>
+      <h1 data-i18n="hero_title">책으로 잇는<br><em>SILK ROAD</em><br>문화 항로</h1>
+      <p data-i18n="hero_desc">하노이에서 울란바토르까지, 다문화 가정의 고향을 잇는 항로를 따라 사서가 검수한 도서를 납품합니다. 원산국별 탐색, 견적서, MARC 데이터까지.</p>
+      <div class="hero-actions">
+        <a href="#search" class="btn btn-primary seal-btn"><span class="material-symbols-outlined">travel_explore</span><span data-i18n="hero_cta1">원산국으로 검색</span></a>
+        <a href="#curation" class="btn btn-ghost seal-btn"><span class="material-symbols-outlined">route</span><span data-i18n="hero_cta2">항로 전시 떠나기</span></a>
+      </div>
+      <div class="compass-row"><span class="material-symbols-outlined">near_me</span><span data-i18n="hero_hint">지구본을 드래그해 돌려보세요 · 항로를 따라 빛이 흐릅니다</span></div>
+    </div>
+    <div class="hero-legend" id="hero-legend"></div>
+  </div>
+
+  <div class="notice-bar"><span class="material-symbols-outlined">mail</span><span data-i18n="notice">2026 하반기 다문화자료 구입 지원사업 — 9월 30일 견적 마감 · 원산국 12개국 원서 직수입</span><a href="#cart" class="seal-btn" data-i18n="notice_link">견적서 발급</a></div>
+
+  <section class="section">
+    <div class="section-head"><span class="eyebrow" data-i18n="cur_eyebrow">기획전 · Expeditions</span><h2 data-i18n="cur_title">이달의 항로 기획전</h2><p data-i18n="cur_desc">항로 정거장, 캐러밴 커버플로우, 보물지도 핀 — 세 가지 형태로 떠나는 도서 탐험.</p></div>
+    <div class="curation-grid" id="home-curations"></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><span class="eyebrow" data-i18n="route_eyebrow">3D Route Exhibition</span><h2 id="route-title">세계 그림책 비엔날레 수상작</h2><p data-i18n="route_desc">정거장 버튼이나 휠 스크롤로 카메라가 항로를 따라 이동합니다. 책을 클릭하면 서지정보.</p></div>
+    <div class="route-wrap"><canvas id="route-canvas"></canvas><div class="route-tabs" id="route-tabs"></div><div class="route-nav"><button class="seal-btn" id="route-prev"><span class="material-symbols-outlined">arrow_back</span></button><span id="route-station"></span><button class="seal-btn" id="route-next"><span class="material-symbols-outlined">arrow_forward</span></button></div><div class="route-tooltip" id="route-tooltip"></div></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head row"><div><span class="eyebrow" data-i18n="new_eyebrow">신간 · New Arrivals</span><h2 data-i18n="new_title">이번 달 입항한 신간</h2></div>
+      <div class="view-toggle" id="new-toggle"><button class="seal-btn active" data-view="active"><span class="material-symbols-outlined">view_carousel</span><span data-i18n="view_active">캐러밴</span></button><button class="seal-btn" data-view="list"><span class="material-symbols-outlined">list_alt</span><span data-i18n="view_list">서지 목록</span></button></div></div>
+    <div id="new-active" class="caravan"><div class="caravan-track" id="caravan-track"></div><div class="caravan-hint" data-i18n="caravan_hint">← 드래그 또는 휠로 넘기기 →</div></div>
+    <div id="new-list" class="new-list hidden"></div>
+  </section>
+
+  <section class="section librarian">
+    <div class="lib-card"><span class="material-symbols-outlined">verified_user</span><h3 data-i18n="lib1_t">원서 직수입 · 사서 검수</h3><p data-i18n="lib1_d">12개국 현지 출판사와 직거래하고 현직 사서가 내용·제본을 검수합니다.</p></div>
+    <div class="lib-card"><span class="material-symbols-outlined">database</span><h3 data-i18n="lib2_t">KORMARC · 원어 서지</h3><p data-i18n="lib2_d">원어 표제·저자 병기 서지 데이터와 장비 작업을 함께 제공합니다.</p></div>
+    <div class="lib-card"><span class="material-symbols-outlined">workspace_premium</span><h3 data-i18n="lib3_t">밀랍 인장 견적서</h3><p data-i18n="lib3_d">기관 할인 반영 견적서를 PDF로 즉시 발급, 기안 첨부용 공문 서식 제공.</p></div>
+  </section>
+</section>
+
+<section class="page hidden" id="page-search">
+  <div class="page-head"><span class="eyebrow" data-i18n="search_eyebrow">도서 검색 · 수서</span><h2 data-i18n="search_title">원산국 지도에서 고르는 다문화 도서</h2></div>
+  <div class="map-picker" id="map-picker"></div>
+  <div class="search-layout">
+    <aside class="filters">
+      <label class="search-box"><span class="material-symbols-outlined">search</span><input id="q" type="text" data-i18n-ph="search_ph" placeholder="제목, 원제, 출판사, ISBN"></label>
+      <div class="filter-group"><h4 data-i18n="f_country">원산국</h4><div id="f-country" class="chips"></div></div>
+      <div class="filter-group"><h4 data-i18n="f_age">대상 연령</h4><div id="f-age" class="chips"></div></div>
+      <div class="filter-group"><h4 data-i18n="f_stock">납품 상태</h4><div id="f-stock" class="chips"></div></div>
+      <button class="btn btn-ghost seal-btn small" id="f-reset" data-i18n="f_reset">필터 초기화</button>
+    </aside>
+    <div class="results"><div class="results-head"><span id="result-count"></span><select id="sort"><option value="new" data-i18n="sort_new">최신 입항순</option><option value="price" data-i18n="sort_price">가격순</option><option value="title" data-i18n="sort_title">제목순</option></select></div><div id="results" class="results-grid"></div></div>
+  </div>
+</section>
+
+<section class="page hidden" id="page-curation">
+  <div class="page-head"><span class="eyebrow" data-i18n="cur_eyebrow">기획전 · Expeditions</span><h2 data-i18n="curpage_title">기획전 전체</h2></div>
+  <div class="curation-grid" id="cur-list"></div>
+  <div class="cur-detail" id="cur-detail"></div>
+</section>
+
+<section class="page hidden" id="page-cart">
+  <div class="page-head"><span class="eyebrow" data-i18n="cart_eyebrow">견적함 · Manifest</span><h2 data-i18n="cart_title">납품 견적함 (선적 목록)</h2></div>
+  <div class="cart-layout">
+    <div class="cart-items" id="cart-items"></div>
+    <aside class="cart-summary">
+      <h3 data-i18n="cart_summary">견적 요약</h3>
+      <label data-i18n="cart_org">기관 유형</label>
+      <select id="org-type"><option value="0.12" data-i18n="org_public">공공도서관 (12% 할인)</option><option value="0.10" data-i18n="org_school">학교도서관 (10% 할인)</option><option value="0.15" data-i18n="org_multi">다문화가족지원센터 (15% 할인)</option><option value="0" data-i18n="org_personal">개인 구매 (0%)</option></select>
+      <div class="sum-row"><span data-i18n="cart_sub">정가 합계</span><b id="sum-sub">0</b></div>
+      <div class="sum-row"><span data-i18n="cart_disc">기관 할인</span><b id="sum-disc">0</b></div>
+      <div class="sum-row total"><span data-i18n="cart_total">납품 예정 금액</span><b id="sum-total">0</b></div>
+      <p class="muted" data-i18n="cart_note">부가세 면세(도서). 해외 원서는 환율 변동 시 ±3% 조정될 수 있습니다.</p>
+      <button class="btn btn-primary seal-btn block" id="btn-quote"><span class="material-symbols-outlined">approval</span><span data-i18n="cart_quote">인장 찍어 견적서 발급</span></button>
+      <button class="btn btn-ghost seal-btn block" id="btn-clear" data-i18n="cart_clear">견적함 비우기</button>
+    </aside>
+  </div>
+</section>
+
+<section class="page hidden" id="page-detail">
+  <a href="#search" class="back seal-btn"><span class="material-symbols-outlined">arrow_back</span><span data-i18n="back">목록으로</span></a>
+  <div class="detail-layout" id="detail"></div>
+</section>
+</main>
+
+<footer class="site-footer"><div><strong data-i18n="brand">문화 항로 도서관</strong><p data-i18n="footer_desc">다문화 도서관 납품 · 세계를 잇는 문화 항로</p></div><div class="muted">© 2026 Cartographic Journey · v9 concept</div></footer>
+<div class="toast" id="toast"></div>
+<script src="app.js"></script>
+</body>
+</html>

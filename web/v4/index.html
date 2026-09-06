@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>국립 다문화도서관 수서 포털 | Grand Archival Hall & Book Supply</title>
+  
+  <!-- Google Fonts: Source Serif 4, Be Vietnam Pro, JetBrains Mono, Noto Sans KR -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+KR:wght@300;400;500;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Three.js & OrbitControls -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Top Glassmorphic Navigation Header -->
+  <header class="app-header">
+    <div class="header-container">
+      <a href="#home" class="brand-logo" data-stamp="true">
+        <div class="logo-icon">
+          <i class="fa-solid fa-landmark"></i>
+        </div>
+        <div class="logo-text">
+          <span class="brand-title" data-i18n="brand_title">국립다문화도서관 수서포털</span>
+          <span class="brand-sub" data-i18n="brand_sub">Grand Archival Hall & B2B Book Supply</span>
+        </div>
+      </a>
+
+      <!-- SPA Nav Tabs -->
+      <nav class="main-nav">
+        <a href="#home" class="nav-link active" data-page="home" data-stamp="true">
+          <i class="fa-solid fa-monument"></i>
+          <span data-i18n="nav_home">홈 & 3D 아카이브</span>
+        </a>
+        <a href="#search" class="nav-link" data-page="search" data-stamp="true">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <span data-i18n="nav_search">도서 수서/검색</span>
+        </a>
+        <a href="#curation" class="nav-link" data-page="curation" data-stamp="true">
+          <i class="fa-solid fa-boxes-stacked"></i>
+          <span data-i18n="nav_curation">3D 기획 전시관</span>
+        </a>
+        <a href="#cart" class="nav-link" data-page="cart" data-stamp="true">
+          <i class="fa-solid fa-file-invoice-dollar"></i>
+          <span data-i18n="nav_cart">수서 견적함</span>
+          <span class="badge cart-count-badge" id="header-cart-count">0</span>
+        </a>
+        <a href="#detail" class="nav-link" data-page="detail" data-stamp="true">
+          <i class="fa-solid fa-book-open"></i>
+          <span data-i18n="nav_detail">360° 서지정보</span>
+        </a>
+      </nav>
+
+      <!-- Right Header Actions (Language Switcher, Sound Toggle, Quote Quick Btn) -->
+      <div class="header-actions">
+        <!-- Audio Synth Toggle -->
+        <button id="sound-toggle-btn" class="icon-btn" title="사서 직인 마이크로 사운드 효과" data-stamp="true">
+          <i class="fa-solid fa-volume-high"></i>
+        </button>
+
+        <!-- Multi-language Dropdown (KO, EN, VI, ZH, TL) -->
+        <div class="lang-selector-wrapper">
+          <button class="lang-selector-btn" id="lang-menu-btn" data-stamp="true">
+            <i class="fa-solid fa-globe"></i>
+            <span id="current-lang-code">KO</span>
+            <i class="fa-solid fa-chevron-down text-xs"></i>
+          </button>
+          <div class="lang-dropdown-menu" id="lang-dropdown">
+            <button class="lang-option active" data-lang="ko" data-stamp="true">
+              <span class="flag">🇰🇷</span> Korean (한국어)
+            </button>
+            <button class="lang-option" data-lang="en" data-stamp="true">
+              <span class="flag">🇺🇸</span> English (영어)
+            </button>
+            <button class="lang-option" data-lang="vi" data-stamp="true">
+              <span class="flag">🇻🇳</span> Vietnamese (Tiếng Việt)
+            </button>
+            <button class="lang-option" data-lang="zh" data-stamp="true">
+              <span class="flag">🇨🇳</span> Chinese (中文)
+            </button>
+            <button class="lang-option" data-lang="tl" data-stamp="true">
+              <span class="flag">🇵🇭</span> Tagalog (Filipino)
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick Cart Invoice Button -->
+        <a href="#cart" class="btn btn-gold cart-btn-quick" id="header-cart-btn" data-stamp="true">
+          <i class="fa-solid fa-receipt"></i>
+          <span data-i18n="header_quote_btn">공문 견적함</span>
+          <span class="cart-total-mini" id="header-cart-total">₩0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- SPA Views Container -->
+  <main class="app-main">
+
+    <!-- ========================================== -->
+    <!-- 1. HOME VIEW (#home)                       -->
+    <!-- ========================================== -->
+    <section id="view-home" class="page-view active">
+      <!-- 3D Hero Archival Hall Canvas Container -->
+      <div class="hero-archival-wrapper">
+        <canvas id="hero-3d-canvas"></canvas>
+        
+        <div class="hero-content-overlay">
+          <div class="hero-container">
+            <div class="hero-badge">
+              <i class="fa-solid fa-crown text-gold"></i>
+              <span data-i18n="hero_badge">국립 다문화 도서관 B2B/B2C 수서 전문 아카이브</span>
+            </div>
+            
+            <h1 class="hero-title" data-i18n="hero_title">
+              전 세계 지혜를 품은 <br>
+              <span class="text-gold">3D 웅장한 아카이브 홀</span>
+            </h1>
+            
+            <p class="hero-desc" data-i18n="hero_desc">
+              전국 공공·학교 도서관 사서 및 수서 담당자를 위한 맞춤형 다국어 도서 공급 플랫폼. 
+              Three.js 3D 가상 전시관 탐색과 1초 공문서 견적서 발급 서비스를 경험해보세요.
+            </p>
+            
+            <div class="hero-cta-group">
+              <a href="#search" class="btn btn-gold btn-lg" data-stamp="true">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <span data-i18n="hero_btn_search">도서 수서/검색 시작</span>
+              </a>
+              <a href="#curation" class="btn btn-outline-white btn-lg" data-stamp="true">
+                <i class="fa-solid fa-cube"></i>
+                <span data-i18n="hero_btn_exhibition">3D 가상 전시관 둘러보기</span>
+              </a>
+            </div>
+
+            <div class="hero-stats-row">
+              <div class="stat-card">
+                <span class="stat-num">50,000+</span>
+                <span class="stat-label" data-i18n="stat_books">수장 다문화 도서</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-num">25+</span>
+                <span class="stat-label" data-i18n="stat_languages">지원 원서 언어</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-num">1,200+</span>
+                <span class="stat-label" data-i18n="stat_libraries">전국 납품 도서관</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-num">15%</span>
+                <span class="stat-label" data-i18n="stat_discount">사서 수서 특별할인</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-canvas-hint">
+          <i class="fa-solid fa-arrows-spin"></i>
+          <span data-i18n="hero_canvas_hint">마우스를 드래그하여 3D 아카이브 링 & 부유하는 도서 노드를 360° 살펴보세요</span>
+        </div>
+      </div>
+
+      <!-- 3D Virtual Exhibition Gallery Room Section -->
+      <section class="section-container exhibition-section">
+        <div class="section-header">
+          <div>
+            <div class="section-badge">
+              <i class="fa-solid fa-vr-cardboard text-gold"></i>
+              <span data-i18n="exhibition_badge">3D Virtual Exhibition Gallery Room</span>
+            </div>
+            <h2 class="section-title" data-i18n="exhibition_title">3D 가상 전시 기획관 (Interactive Room)</h2>
+            <p class="section-subtitle" data-i18n="exhibition_sub">마우스 드래그로 3D 기획 전시관 내부를 거닐며 이달의 수서 기획전 도서를 탐색해보세요.</p>
+          </div>
+          <div class="exhibition-controls">
+            <button class="btn btn-sm btn-dark active" data-exhibit="1" data-stamp="true">
+              <i class="fa-solid fa-globe"></i> 동남아 5개국 동화전
+            </button>
+            <button class="btn btn-sm btn-dark" data-exhibit="2" data-stamp="true">
+              <i class="fa-solid fa-book-bookmark"></i> 이중언어(Bilingual) 50선
+            </button>
+            <button class="btn btn-sm btn-dark" data-exhibit="3" data-stamp="true">
+              <i class="fa-solid fa-graduation-cap"></i> KDC 다문화 원서전
+            </button>
+          </div>
+        </div>
+
+        <div class="exhibition-3d-viewport">
+          <canvas id="exhibition-3d-canvas"></canvas>
+          <div class="exhibition-overlay-info" id="exhibition-info-panel">
+            <span class="badge badge-gold" id="exhibit-tag">특가 기획전</span>
+            <h3 id="exhibit-title">동남아시아 5개국 전래동화 3D 특별 전시관</h3>
+            <p id="exhibit-desc">베트남, 필리핀, 태국, 인도네시아, 캄보디아의 대표 이중언어 전래동화 30권을 3D 서가에서 만납니다.</p>
+            <button class="btn btn-gold btn-sm" id="exhibit-add-cart-btn" data-stamp="true">
+              <i class="fa-solid fa-cart-plus"></i> 기획전 30권 일괄 견적함 담기
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- New Releases & Active 3D Cards Mix -->
+      <section class="section-container">
+        <div class="section-header">
+          <div>
+            <div class="section-badge">
+              <i class="fa-solid fa-sparkles text-gold"></i>
+              <span data-i18n="new_release_badge">New Arrivals & Librarian Picks</span>
+            </div>
+            <h2 class="section-title" data-i18n="new_release_title">금주의 신간 및 사서 추천 수서 도서</h2>
+          </div>
+          <a href="#search" class="btn btn-outline-dark" data-stamp="true">
+            <span data-i18n="view_all_books">전체 도서 보기</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+
+        <div class="books-grid-3d" id="home-featured-books">
+          <!-- Dynamically populated home book cards -->
+        </div>
+      </section>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 2. SEARCH & ACQUISITION VIEW (#search)    -->
+    <!-- ========================================== -->
+    <section id="view-search" class="page-view">
+      <div class="section-container">
+        <div class="search-header-panel">
+          <div class="search-title-group">
+            <h1 class="page-title" data-i18n="search_page_title">🔍 다문화 도서 검색 & 사서 수서 시스템</h1>
+            <p class="page-desc" data-i18n="search_page_desc">ISBN, KDC 분류기호, 국가/언어, 연령별 맞춤 필터링으로 필요 서적을 빠르게 탐색하고 견적함에 담으세요.</p>
+          </div>
+
+          <!-- Main Search Input -->
+          <div class="search-bar-primary">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" id="search-input" placeholder="도서명, 저자, 출판사, ISBN-13, KDC 분류기호 검색..." data-i18n-ph="search_ph">
+            <button class="btn btn-gold" id="search-submit-btn" data-stamp="true">
+              <span data-i18n="btn_search">실시간 검색</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Faceted Filter Controls -->
+        <div class="filter-panel-card">
+          <div class="filter-row">
+            <div class="filter-group">
+              <label class="filter-label"><i class="fa-solid fa-language"></i> <span data-i18n="filter_lang">지원 언어 (Language)</span></label>
+              <div class="filter-chips" id="filter-lang-chips">
+                <button class="chip active" data-lang="all" data-stamp="true">전체 (All)</button>
+                <button class="chip" data-lang="KO" data-stamp="true">🇰🇷 한국어 (KO)</button>
+                <button class="chip" data-lang="EN" data-stamp="true">🇺🇸 영어 (EN)</button>
+                <button class="chip" data-lang="VI" data-stamp="true">🇻🇳 베트남어 (VI)</button>
+                <button class="chip" data-lang="ZH" data-stamp="true">🇨🇳 중국어 (ZH)</button>
+                <button class="chip" data-lang="TL" data-stamp="true">🇵🇭 타갈로그어 (TL)</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="filter-grid-secondary">
+            <div class="filter-group">
+              <label class="filter-label"><i class="fa-solid fa-child"></i> <span data-i18n="filter_age">대상 연령 (Target Age)</span></label>
+              <select id="filter-age-select" class="filter-select">
+                <option value="all">전체 연령대</option>
+                <option value="toddler">유아 (0~3세)</option>
+                <option value="child">아동 (4~7세)</option>
+                <option value="elementary">초등 (8~13세)</option>
+                <option value="adult">청소년 & 성인</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label class="filter-label"><i class="fa-solid fa-layer-group"></i> <span data-i18n="filter_kdc">KDC 한국십진분류</span></label>
+              <select id="filter-kdc-select" class="filter-select">
+                <option value="all">전체 분류기호</option>
+                <option value="000">000 총류 (General)</option>
+                <option value="100">100 철학 (Philosophy)</option>
+                <option value="300">300 사회과학 (Social Sci)</option>
+                <option value="800">800 문학 (Literature)</option>
+                <option value="900">900 역사 (History)</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label class="filter-label"><i class="fa-solid fa-building"></i> <span data-i18n="filter_publisher">출판사 (Publisher)</span></label>
+              <select id="filter-pub-select" class="filter-select">
+                <option value="all">전체 출판사</option>
+                <option value="다문화아시아">다문화아시아 출판</option>
+                <option value="글로벌키즈">글로벌키즈 북스</option>
+                <option value="오리엔탈북스">오리엔탈 문화사</option>
+                <option value="세계동화미디어">세계동화미디어</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label class="filter-label"><i class="fa-solid fa-sliders"></i> <span data-i18n="filter_sort">정렬 기준</span></label>
+              <select id="filter-sort-select" class="filter-select">
+                <option value="popular">사서 최다 수서순</option>
+                <option value="newest">최신 발행일순</option>
+                <option value="price-asc">낮은 가격순</option>
+                <option value="price-desc">높은 가격순</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Search Toolbar (Count & View Mode Switcher) -->
+        <div class="search-toolbar">
+          <div class="search-count-info">
+            <span data-i18n="search_result_prefix">검색 결과 총</span>
+            <strong class="text-gold" id="search-result-count">0</strong>
+            <span data-i18n="search_result_suffix">권의 도서가 검색되었습니다.</span>
+          </div>
+
+          <div class="toolbar-right">
+            <button class="btn btn-sm btn-gold" id="batch-add-cart-btn" data-stamp="true">
+              <i class="fa-solid fa-cart-arrow-down"></i>
+              <span data-i18n="btn_batch_add">선택 항목 일괄 견적함 담기</span>
+            </button>
+
+            <div class="view-mode-toggle">
+              <button class="view-btn active" id="view-mode-grid" title="3D Flip Card View" data-stamp="true">
+                <i class="fa-solid fa-table-cells-large"></i>
+              </button>
+              <button class="view-btn" id="view-mode-table" title="Librarian High-Density Data Grid" data-stamp="true">
+                <i class="fa-solid fa-list-check"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dynamic Search Results Container -->
+        <div class="search-results-container grid-view" id="search-results-wrapper">
+          <!-- Populated by app.js (Cards or High-Density Table Grid) -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 3. CURATION PACKAGES VIEW (#curation)     -->
+    <!-- ========================================== -->
+    <section id="view-curation" class="page-view">
+      <div class="section-container">
+        <div class="curation-hero-card">
+          <div class="curation-hero-text">
+            <div class="section-badge">
+              <i class="fa-solid fa-cube text-gold"></i>
+              <span data-i18n="curation_badge">Special 3D Exhibition Curation Packages</span>
+            </div>
+            <h1 class="page-title" data-i18n="curation_title">📦 사서 맞춤 3D 기획 전시 큐레이션 패키지</h1>
+            <p class="page-desc" data-i18n="curation_desc">
+              공공 및 학교 도서관 수서 예산 집행에 최적화된 테마별 맞춤 도서 패키지입니다.
+              3D 360° 번들 입체 미리보기와 원클릭 15% 할인 일괄 견적 담기를 이용해보세요.
+            </p>
+          </div>
+          
+          <div class="curation-3d-bundle-canvas-wrapper">
+            <canvas id="curation-package-3d-canvas"></canvas>
+            <div class="curation-3d-hint"><i class="fa-solid fa-arrows-spin"></i> 드래그하여 패키지 번들 3D 구성 확인</div>
+          </div>
+        </div>
+
+        <!-- Curation Packages Grid -->
+        <div class="curation-packages-grid" id="curation-packages-list">
+          <!-- Dynamically populated package cards -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 4. CART & QUOTE REQUEST VIEW (#cart)       -->
+    <!-- ========================================== -->
+    <section id="view-cart" class="page-view">
+      <div class="section-container">
+        <div class="cart-header-row">
+          <div>
+            <h1 class="page-title" data-i18n="cart_page_title">📋 사서 수서 견적함 (Bulk Order Quote Cart)</h1>
+            <p class="page-desc" data-i18n="cart_page_desc">선택된 수서 도서 목록을 확인하고, 1-Click 공문서 표준 견적서(PDF/출력) 및 엑셀 명세서를 바로 발급받으세요.</p>
+          </div>
+
+          <div class="cart-actions-top">
+            <button class="btn btn-outline-dark btn-sm" id="cart-clear-btn" data-stamp="true">
+              <i class="fa-solid fa-trash-can"></i> <span data-i18n="btn_cart_clear">견적함 전체 비우기</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="cart-layout-grid">
+          <!-- Left: Cart Items List -->
+          <div class="cart-items-card">
+            <div class="cart-table-header">
+              <div class="col-chk">
+                <input type="checkbox" id="cart-select-all" checked>
+              </div>
+              <div class="col-info" data-i18n="col_book_info">도서 서지 정보</div>
+              <div class="col-kdc" data-i18n="col_kdc">KDC / ISBN</div>
+              <div class="col-price" data-i18n="col_price">정가</div>
+              <div class="col-qty" data-i18n="col_qty">수량</div>
+              <div class="col-total" data-i18n="col_discount_total">할인가 합계</div>
+              <div class="col-del"></div>
+            </div>
+
+            <div class="cart-items-list" id="cart-items-wrapper">
+              <!-- Dynamically populated cart items -->
+            </div>
+          </div>
+
+          <!-- Right: Quote Summary & Document Generator Card -->
+          <div class="cart-summary-card">
+            <h3 class="summary-title"><i class="fa-solid fa-calculator text-gold"></i> <span data-i18n="summary_title">수서 예산 견적 요약</span></h3>
+            
+            <div class="summary-row">
+              <span data-i18n="sum_item_count">선택 도서 종수</span>
+              <strong id="sum-kinds-count">0종 (0권)</strong>
+            </div>
+            
+            <div class="summary-row">
+              <span data-i18n="sum_total_msrp">도서 정가 총액</span>
+              <span id="sum-msrp-total">₩0</span>
+            </div>
+
+            <div class="summary-row discount">
+              <span><i class="fa-solid fa-tags text-gold"></i> <span data-i18n="sum_librarian_discount">사서 수서 특별할인 (-15%)</span></span>
+              <span class="text-gold" id="sum-discount-amount">-₩0</span>
+            </div>
+
+            <div class="summary-row">
+              <span data-i18n="sum_tax">부가가치세 (면세)</span>
+              <span>₩0</span>
+            </div>
+
+            <div class="summary-divider"></div>
+
+            <div class="summary-total-row">
+              <span class="total-label" data-i18n="sum_final_quote">최종 납품 견적 금액</span>
+              <strong class="total-price" id="sum-final-total">₩0</strong>
+            </div>
+
+            <div class="quote-document-actions">
+              <button class="btn btn-gold btn-block btn-lg" id="generate-pdf-invoice-btn" data-stamp="true">
+                <i class="fa-solid fa-file-pdf"></i>
+                <span data-i18n="btn_generate_pdf">1-Click 공문서 표준 견적서 발급</span>
+              </button>
+
+              <button class="btn btn-outline-dark btn-block" id="export-excel-btn" data-stamp="true">
+                <i class="fa-solid fa-file-excel"></i>
+                <span data-i18n="btn_export_excel">엑셀/CSV 수서 목록 다운로드</span>
+              </button>
+            </div>
+
+            <div class="quote-notice-box">
+              <i class="fa-solid fa-shield-halved text-gold"></i>
+              <p data-i18n="quote_notice">본 견적서는 전국 지자체, 공공도서관, 교육청 수서 규정에 적합한 표준 공문서 양식으로 즉시 인쇄 및 PDF 저장이 가능합니다.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 5. BOOK DETAIL & 360° PREVIEW VIEW (#detail) -->
+    <!-- ========================================== -->
+    <section id="view-detail" class="page-view">
+      <div class="section-container">
+        <!-- Detail Header Navigation -->
+        <div class="detail-top-nav">
+          <a href="#search" class="btn btn-sm btn-outline-dark" data-stamp="true">
+            <i class="fa-solid fa-arrow-left"></i> <span data-i18n="btn_back_search">검색목록으로 돌아가기</span>
+          </a>
+          <span class="detail-breadcrumbs" id="detail-breadcrumbs">도서 상세 정보 > 서지정보 & 360° 3D 뷰어</span>
+        </div>
+
+        <div class="detail-main-layout">
+          <!-- Left Column: 360° Three.js 3D Book Viewer -->
+          <div class="detail-3d-card">
+            <div class="viewer-3d-header">
+              <span class="badge badge-gold"><i class="fa-solid fa-vr-cardboard"></i> Three.js Interactive 360°</span>
+              <div class="viewer-controls-row">
+                <button class="btn btn-xs btn-outline-dark" id="btn-toggle-book-open" data-stamp="true">
+                  <i class="fa-solid fa-book-open"></i> <span id="lbl-toggle-open">책 펼치기</span>
+                </button>
+                <button class="btn btn-xs btn-outline-dark" id="btn-reset-3d-cam" data-stamp="true">
+                  <i class="fa-solid fa-rotate"></i> 시점 초기화
+                </button>
+              </div>
+            </div>
+
+            <div class="viewer-3d-canvas-container">
+              <canvas id="detail-3d-canvas"></canvas>
+            </div>
+
+            <div class="viewer-3d-hint">
+              <i class="fa-solid fa-hand-pointer"></i> 3D 공간 상에서 책을 마우스 드래그하여 360도 회전 및 양장 본 입체 질감을 살펴보세요.
+            </div>
+          </div>
+
+          <!-- Right Column: Bibliographic Record & Procurement Controls -->
+          <div class="detail-info-card">
+            <div class="detail-header-tags" id="detail-tags">
+              <!-- Dynamically populated tags -->
+            </div>
+
+            <h1 class="detail-book-title" id="detail-title">에펠탑 아래의 작은 하마</h1>
+            <h2 class="detail-book-subtitle" id="detail-subtitle">The Little Hippo Under Eiffel Tower</h2>
+
+            <div class="detail-author-pub">
+              <span><i class="fa-solid fa-user-pen"></i> 저자: <strong id="detail-author">클로드 뒤퐁</strong></span>
+              <span><i class="fa-solid fa-building"></i> 출판사: <strong id="detail-publisher">다문화아시아 출판</strong></span>
+              <span><i class="fa-solid fa-calendar-day"></i> 발행년도: <span id="detail-year">2026.03</span></span>
+            </div>
+
+            <div class="detail-price-box">
+              <div class="price-item">
+                <span class="price-label">정가</span>
+                <span class="price-original" id="detail-msrp">₩15,000</span>
+              </div>
+              <div class="price-item highlighted">
+                <span class="price-label">사서 수서 할인가 (-15%)</span>
+                <span class="price-final" id="detail-discount-price">₩12,750</span>
+              </div>
+            </div>
+
+            <!-- Multi-language Audio Sample Reader -->
+            <div class="audio-sample-card">
+              <div class="audio-header">
+                <div class="audio-title">
+                  <i class="fa-solid fa-headphones-simple text-gold"></i>
+                  <span>다국어 낭독 오디오 샘플 미리듣기 (Audio Sample)</span>
+                </div>
+                <select id="audio-lang-select" class="filter-select-sm">
+                  <option value="ko">🇰🇷 한국어 낭독</option>
+                  <option value="en">🇺🇸 영어 낭독</option>
+                  <option value="vi">🇻🇳 베트남어 낭독</option>
+                  <option value="zh">🇨🇳 중국어 낭독</option>
+                  <option value="tl">🇵🇭 타갈로그어 낭독</option>
+                </select>
+              </div>
+
+              <div class="audio-player-bar">
+                <button class="audio-play-btn" id="audio-play-btn" data-stamp="true">
+                  <i class="fa-solid fa-play"></i>
+                </button>
+                <div class="audio-progress-container">
+                  <div class="audio-waveform-bar" id="audio-waveform">
+                    <span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span>
+                  </div>
+                  <span class="audio-transcript-text" id="audio-transcript">"에펠탑 아래 정원에는 작은 아기 하마가 살고 있었어요..."</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Official Librarian MARC Bibliographic Table -->
+            <div class="marc-table-card">
+              <h3 class="marc-title"><i class="fa-solid fa-bookmark text-gold"></i> 도서 사서 서지 정보 (MARC Metadata)</h3>
+              <table class="marc-table">
+                <tbody>
+                  <tr>
+                    <th>ISBN-13</th>
+                    <td id="detail-isbn" class="font-mono">978-89-98214-01-5</td>
+                    <th>KDC 분류기호</th>
+                    <td id="detail-kdc" class="font-mono">808.9 (어린이 문학)</td>
+                  </tr>
+                  <tr>
+                    <th>원서 언어</th>
+                    <td id="detail-orig-lang">프랑스어 / 이중언어</td>
+                    <th>대상 연령</th>
+                    <td id="detail-target-age">유아~아동 (4~7세)</td>
+                  </tr>
+                  <tr>
+                    <th>쪽수 / 판형</th>
+                    <td id="detail-pages">48쪽 / 210x297mm (A4)</td>
+                    <th>제본 형태</th>
+                    <td id="detail-binding">양장본 (Hardcover)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Description -->
+            <div class="detail-description-box">
+              <h3><i class="fa-solid fa-file-lines text-gold"></i> 도서 줄거리 및 수서 추천 사유</h3>
+              <p id="detail-summary">
+                파리 에펠탑 아래 작은 정원에서 살고 있는 아기 하마가 세계 여행자를 만나며 나누는 우정과 파리의 가을 풍경 이야기입니다.
+                다문화 가정 어린이들에게 문화 다양성과 포용의 가치를 전달하는 사서 강력 추천 서적입니다.
+              </p>
+            </div>
+
+            <!-- Add to Cart Form -->
+            <div class="detail-buy-bar">
+              <div class="qty-picker">
+                <button class="qty-btn" id="detail-qty-minus" data-stamp="true"><i class="fa-solid fa-minus"></i></button>
+                <input type="number" id="detail-qty-input" value="1" min="1" max="999">
+                <button class="qty-btn" id="detail-qty-plus" data-stamp="true"><i class="fa-solid fa-plus"></i></button>
+              </div>
+
+              <button class="btn btn-gold btn-lg flex-1" id="detail-add-cart-btn" data-stamp="true">
+                <i class="fa-solid fa-cart-plus"></i>
+                <span data-i18n="btn_add_to_cart">수서 견적함에 담기</span>
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <div class="brand-logo">
+          <div class="logo-icon"><i class="fa-solid fa-landmark"></i></div>
+          <span class="brand-title">국립다문화도서관 수서포털</span>
+        </div>
+        <p class="footer-desc" data-i18n="footer_desc">
+          본 포털은 전국 공공도서관, 학교도서관, 다문화 교육센터 사서 선생님들을 위해 
+          3D 가상 전시 연출과 표준 공문서 견적 발급 서비스를 제공하는 다문화 전문 도서 수서 플랫폼입니다.
+        </p>
+      </div>
+
+      <div class="footer-links-grid">
+        <div class="footer-col">
+          <h4>포털 안내</h4>
+          <ul>
+            <li><a href="#home">홈 & 3D 아카이브</a></li>
+            <li><a href="#search">실시간 도서 수서/검색</a></li>
+            <li><a href="#curation">3D 기획 전시 큐레이션</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>사서 지원</h4>
+          <ul>
+            <li><a href="#cart">공문 표준 견적서 발급</a></li>
+            <li><a href="#cart">MARC / 엑셀 목록 다운로드</a></li>
+            <li><a href="#detail">360° 도서 미리보기</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>고객센터 & 수서 문의</h4>
+          <p class="contact-info"><i class="fa-solid fa-phone"></i> 1588-9920 (수서 전용핫라인)</p>
+          <p class="contact-info"><i class="fa-solid fa-envelope"></i> library@multiculture.go.kr</p>
+          <p class="contact-info"><i class="fa-solid fa-clock"></i> 평일 09:00 ~ 18:00</p>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-bottom-container">
+        <p>© 2026 National Multicultural Library Procurement Portal. All rights reserved.</p>
+        <span class="tech-badge"><i class="fa-solid fa-cube"></i> Three.js 3D Archival Hall Engine v4.0</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================== -->
+  <!-- MODAL: Official Printable Quote Invoice    -->
+  <!-- ========================================== -->
+  <div class="modal-overlay" id="quote-invoice-modal">
+    <div class="modal-card printable-document">
+      <div class="modal-header-actions no-print">
+        <button class="btn btn-gold btn-sm" onclick="window.print()" data-stamp="true">
+          <i class="fa-solid fa-print"></i> 공문서 인쇄 / PDF 저장
+        </button>
+        <button class="btn btn-outline-dark btn-sm modal-close-btn" id="modal-close-btn" data-stamp="true">
+          <i class="fa-solid fa-xmark"></i> 닫기
+        </button>
+      </div>
+
+      <!-- Printable Invoice Document Sheet -->
+      <div class="official-invoice-sheet" id="invoice-sheet-content">
+        <div class="invoice-header">
+          <div class="doc-title-box">
+            <h1 class="doc-title">다문화 도서 수서 납품 표준 견적서</h1>
+            <span class="doc-sub">[공문서 수서 증빙용 표준 양식]</span>
+          </div>
+          <div class="doc-meta-table">
+            <table>
+              <tr>
+                <th>문서 번호</th>
+                <td id="inv-doc-no" class="font-mono">LIB-20260906-8821</td>
+              </tr>
+              <tr>
+                <th>발급 일자</th>
+                <td id="inv-doc-date">2026년 09월 06일</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="invoice-parties-grid">
+          <!-- Recipient Library -->
+          <div class="party-box recipient">
+            <h3>[수신 기관 정보]</h3>
+            <div class="form-row">
+              <label>도서관/기관명:</label>
+              <input type="text" id="inv-recipient-name" value="서울특별시립 다문화도서관" class="inv-input">
+            </div>
+            <div class="form-row">
+              <label>수서 담당 사서:</label>
+              <input type="text" id="inv-recipient-librarian" value="김사서 사서관" class="inv-input">
+            </div>
+            <div class="form-row">
+              <label>연락처/이메일:</label>
+              <input type="text" id="inv-recipient-contact" value="02-1234-5678 / librarian@seoul.go.kr" class="inv-input">
+            </div>
+          </div>
+
+          <!-- Supplier Info -->
+          <div class="party-box supplier">
+            <h3>[공급 자 정보]</h3>
+            <p><strong>상호명:</strong> 국립다문화도서관 도서공급센터</p>
+            <p><strong>사업자등록번호:</strong> 105-82-99120</p>
+            <p><strong>대표자:</strong> 홍길동 | <strong>업태/종목:</strong> 도서 출판 및 납품</p>
+            <p><strong>주소:</strong> 서울특별시 서초구 반포대로 201 국립도서관관</p>
+            
+            <!-- Official Red Library Stamp Seal -->
+            <div class="official-stamp-seal">
+              <span>국립다문화<br>도서관인</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="invoice-statement">
+          <p>아래와 같이 다문화 도서 수서 납품 견적 금액을 제출합니다.</p>
+          <div class="invoice-grand-total">
+            <span>총 수서 견적 금액 (부가세 면세):</span>
+            <strong class="price-large" id="inv-grand-total">₩0</strong>
+          </div>
+        </div>
+
+        <!-- Itemized Table -->
+        <table class="invoice-items-table">
+          <thead>
+            <tr>
+              <th style="width: 40px;">No</th>
+              <th>도서명 (Title)</th>
+              <th style="width: 140px;">ISBN-13</th>
+              <th style="width: 70px;">KDC</th>
+              <th style="width: 60px;">언어</th>
+              <th style="width: 50px;">수량</th>
+              <th style="width: 90px;">정가</th>
+              <th style="width: 90px;">할인가(-15%)</th>
+              <th style="width: 100px;">합계금액</th>
+            </tr>
+          </thead>
+          <tbody id="invoice-table-body">
+            <!-- Dynamic rows -->
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="5" class="text-center font-bold">합 계 (Total Summary)</td>
+              <td id="inv-total-qty" class="font-bold">0</td>
+              <td id="inv-total-msrp">₩0</td>
+              <td id="inv-total-discount" class="text-gold font-bold">-₩0</td>
+              <td id="inv-total-final" class="font-bold">₩0</td>
+            </tr>
+          </tfoot>
+        </table>
+
+        <div class="invoice-footer-terms">
+          <p>* 본 견적서는 발급일로부터 30일간 유효합니다.</p>
+          <p>* 본 도서는 모두 도서정가제 법정 사서 수서 할인율(15%)이 적용되었습니다.</p>
+          <p>* 납품 완료 후 전자세금계산서 및 도서 납품서, 마크(MARC) 데이터가 함께 전달됩니다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Main JavaScript App -->
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>팝업북 시티 도서관 | Pop-up Book City v10</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+<canvas id="fx-canvas"></canvas>
+<header class="site-header">
+  <a href="#home" class="brand"><span class="brand-mark"><span class="material-symbols-rounded">apartment</span></span><span class="brand-text"><strong data-i18n="brand">팝업북 시티</strong><small data-i18n="brand_sub">Pop-up Book City · 어린이 다문화 도서 납품</small></span></a>
+  <nav class="main-nav">
+    <a href="#home" data-route="home" data-i18n="nav_home">메인</a>
+    <a href="#search" data-route="search" data-i18n="nav_search">도서 검색</a>
+    <a href="#curation" data-route="curation" data-i18n="nav_curation">큐레이션</a>
+    <a href="#cart" data-route="cart" data-i18n="nav_cart">견적함</a>
+  </nav>
+  <div class="header-tools">
+    <div class="lang-switch" id="lang-switch"><button data-lang="ko">KO</button><button data-lang="en">EN</button><button data-lang="vi">VI</button><button data-lang="zh">ZH</button><button data-lang="ja">JA</button></div>
+    <a href="#cart" class="cart-btn pop-btn" id="cart-btn"><span class="material-symbols-rounded">shopping_bag</span><span data-i18n="nav_cart">견적함</span><b id="cart-count">0</b></a>
+  </div>
+</header>
+
+<main>
+<section class="page" id="page-home">
+  <div class="hero">
+    <canvas id="hero-canvas"></canvas>
+    <div class="hero-content">
+      <span class="eyebrow" data-i18n="hero_eyebrow">어린이·다문화 도서관 납품 플랫폼</span>
+      <h1 data-i18n="hero_title">책으로 지은<br><span>알록달록</span><br>세계 마을</h1>
+      <p data-i18n="hero_desc">빌딩 하나가 책 한 권. 12개 언어의 그림책과 이중언어 동화를 사서가 검수해 납품합니다. 연령별 필터, 견적서, MARC 데이터까지 놀이처럼 쉽게.</p>
+      <div class="hero-actions">
+        <a href="#search" class="btn btn-primary pop-btn"><span class="material-symbols-rounded">search</span><span data-i18n="hero_cta1">연령별 도서 찾기</span></a>
+        <a href="#curation" class="btn btn-white pop-btn"><span class="material-symbols-rounded">celebration</span><span data-i18n="hero_cta2">회전 전시대 보기</span></a>
+      </div>
+      <div class="hero-hint"><span class="material-symbols-rounded">mouse</span><span data-i18n="hero_hint">마우스로 도시를 둘러보고 · 빌딩을 클릭하면 통통!</span></div>
+    </div>
+  </div>
+
+  <div class="notice-bar"><span class="material-symbols-rounded">campaign</span><span data-i18n="notice">2026 하반기 어린이도서관 다문화자료 구입 지원사업 — 9월 30일 견적 마감 · 보드북·빅북 특가</span><a href="#cart" class="pop-btn" data-i18n="notice_link">견적서 발급</a></div>
+
+  <section class="section">
+    <div class="section-head"><span class="eyebrow" data-i18n="cur_eyebrow">기획전 · Exhibitions</span><h2 data-i18n="cur_title">이달의 놀이 같은 기획전</h2><p data-i18n="cur_desc">회전 전시대, 팝업북 펼침, 책 빌딩 거리 — 세 가지 전시 형태.</p></div>
+    <div class="curation-grid" id="home-curations"></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><span class="eyebrow" data-i18n="turn_eyebrow">3D Turntable Pedestal</span><h2 id="turn-title">세계 그림책 비엔날레 수상작</h2><p data-i18n="turn_desc">전시대가 천천히 돌아갑니다. 드래그로 돌리고, 정면 책을 클릭하면 서지정보.</p></div>
+    <div class="turn-wrap"><canvas id="turn-canvas"></canvas><div class="turn-tabs" id="turn-tabs"></div><div class="turn-tooltip" id="turn-tooltip"></div></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head row"><div><span class="eyebrow" data-i18n="new_eyebrow">신간 · New Arrivals</span><h2 data-i18n="new_title">이번 달 도착한 신간</h2></div>
+      <div class="view-toggle" id="new-toggle"><button class="pop-btn active" data-view="active"><span class="material-symbols-rounded">sports_basketball</span><span data-i18n="view_active">통통 뷰</span></button><button class="pop-btn" data-view="list"><span class="material-symbols-rounded">format_list_bulleted</span><span data-i18n="view_list">서지 목록</span></button></div></div>
+    <div id="new-active" class="new-active"></div>
+    <div id="new-list" class="new-list hidden"></div>
+  </section>
+
+  <section class="section librarian">
+    <div class="lib-card"><span class="material-symbols-rounded">child_care</span><h3 data-i18n="lib1_t">연령 적합성 검수</h3><p data-i18n="lib1_d">어린이 사서 12명이 연령 적합성·번역 품질·제본 안전성을 검수합니다.</p></div>
+    <div class="lib-card"><span class="material-symbols-rounded">label</span><h3 data-i18n="lib2_t">KORMARC · 장비 작업</h3><p data-i18n="lib2_d">서지 데이터, 라벨, 바코드, 비닐 커버링까지 납품과 함께.</p></div>
+    <div class="lib-card"><span class="material-symbols-rounded">receipt_long</span><h3 data-i18n="lib3_t">공문용 견적서</h3><p data-i18n="lib3_d">기관 할인 반영 견적서를 PDF로 즉시 출력해 기안에 첨부.</p></div>
+  </section>
+</section>
+
+<section class="page hidden" id="page-search">
+  <div class="page-head"><span class="eyebrow" data-i18n="search_eyebrow">도서 검색 · 수서</span><h2 data-i18n="search_title">연령과 언어로 고르는 그림책</h2></div>
+  <div class="search-layout">
+    <aside class="filters">
+      <label class="search-box"><span class="material-symbols-rounded">search</span><input id="q" type="text" data-i18n-ph="search_ph" placeholder="제목, 원제, 출판사, ISBN"></label>
+      <div class="filter-group"><h4 data-i18n="f_age">대상 연령</h4><div id="f-age" class="chips"></div></div>
+      <div class="filter-group"><h4 data-i18n="f_lang">언어</h4><div id="f-lang" class="chips"></div></div>
+      <div class="filter-group"><h4 data-i18n="f_stock">납품 상태</h4><div id="f-stock" class="chips"></div></div>
+      <button class="btn btn-white pop-btn small" id="f-reset" data-i18n="f_reset">필터 초기화</button>
+    </aside>
+    <div class="results"><div class="results-head"><span id="result-count"></span><select id="sort"><option value="new" data-i18n="sort_new">최신 도착순</option><option value="price" data-i18n="sort_price">가격순</option><option value="title" data-i18n="sort_title">제목순</option></select></div><div id="results" class="results-grid"></div></div>
+  </div>
+</section>
+
+<section class="page hidden" id="page-curation">
+  <div class="page-head"><span class="eyebrow" data-i18n="cur_eyebrow">기획전 · Exhibitions</span><h2 data-i18n="curpage_title">기획전 전체</h2></div>
+  <div class="curation-grid" id="cur-list"></div>
+  <div class="cur-detail" id="cur-detail"></div>
+</section>
+
+<section class="page hidden" id="page-cart">
+  <div class="page-head"><span class="eyebrow" data-i18n="cart_eyebrow">견적함 · Quotation</span><h2 data-i18n="cart_title">납품 견적함</h2></div>
+  <div class="cart-layout">
+    <div class="cart-items" id="cart-items"></div>
+    <aside class="cart-summary">
+      <h3 data-i18n="cart_summary">견적 요약</h3>
+      <label data-i18n="cart_org">기관 유형</label>
+      <select id="org-type"><option value="0.12" data-i18n="org_public">공공·어린이도서관 (12% 할인)</option><option value="0.10" data-i18n="org_school">학교도서관 (10% 할인)</option><option value="0.15" data-i18n="org_multi">다문화가족지원센터 (15% 할인)</option><option value="0" data-i18n="org_personal">개인 구매 (0%)</option></select>
+      <div class="sum-row"><span data-i18n="cart_sub">정가 합계</span><b id="sum-sub">0</b></div>
+      <div class="sum-row"><span data-i18n="cart_disc">기관 할인</span><b id="sum-disc">0</b></div>
+      <div class="sum-row total"><span data-i18n="cart_total">납품 예정 금액</span><b id="sum-total">0</b></div>
+      <p class="muted" data-i18n="cart_note">부가세 면세(도서). 배송·장비작업비 별도 협의.</p>
+      <button class="btn btn-primary pop-btn block" id="btn-quote"><span class="material-symbols-rounded">print</span><span data-i18n="cart_quote">공문용 견적서 발급</span></button>
+      <button class="btn btn-white pop-btn block" id="btn-clear" data-i18n="cart_clear">견적함 비우기</button>
+    </aside>
+  </div>
+</section>
+
+<section class="page hidden" id="page-detail">
+  <a href="#search" class="back pop-btn"><span class="material-symbols-rounded">arrow_back</span><span data-i18n="back">목록으로</span></a>
+  <div class="detail-layout" id="detail"></div>
+</section>
+</main>
+
+<footer class="site-footer"><div><strong data-i18n="brand">팝업북 시티</strong><p data-i18n="footer_desc">어린이·다문화 도서관 납품 · 책으로 짓는 세계 마을</p></div><div class="muted">© 2026 Pop-up Book City · v10 concept</div></footer>
+<div class="toast" id="toast"></div>
+<script src="app.js"></script>
+</body>
+</html>

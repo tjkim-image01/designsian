@@ -1,0 +1,209 @@
+- generic [ref=f10e1]:
+  - banner [ref=f10e2]:
+    - link "explore 문화 항로 도서관 Cartographic Journey · 다문화 도서 납품" [ref=f10e3] [cursor=pointer]:
+      - /url: "#home"
+      - generic [ref=f10e4]: explore
+      - generic [ref=f10e6]:
+        - strong [ref=f10e7]: 문화 항로 도서관
+        - generic [ref=f10e8]: Cartographic Journey · 다문화 도서 납품
+    - navigation [ref=f10e9]:
+      - link "메인" [ref=f10e10] [cursor=pointer]:
+        - /url: "#home"
+      - link "도서 검색" [ref=f10e11] [cursor=pointer]:
+        - /url: "#search"
+      - link "큐레이션" [ref=f10e12] [cursor=pointer]:
+        - /url: "#curation"
+      - link "견적함" [ref=f10e13] [cursor=pointer]:
+        - /url: "#cart"
+    - generic [ref=f10e14]:
+      - generic [ref=f10e15]:
+        - button "KO" [ref=f10e16] [cursor=pointer]
+        - button "EN" [ref=f10e17] [cursor=pointer]
+        - button "VI" [ref=f10e18] [cursor=pointer]
+        - button "ZH" [ref=f10e19] [cursor=pointer]
+      - link "luggage 견적함 0" [ref=f10e20] [cursor=pointer]:
+        - /url: "#cart"
+        - generic [ref=f10e21]: luggage
+        - generic [ref=f10e22]: 견적함
+        - generic [ref=f10e23]: "0"
+  - main [ref=f10e24]:
+    - generic [ref=f10e25]:
+      - generic [ref=f10e26]:
+        - generic:
+          - generic: 다문화 도서관 납품 · 세계 문화 항로
+          - heading "책으로 잇는 SILK ROAD 문화 항로" [level=1]:
+            - text: 책으로 잇는
+            - emphasis: SILK ROAD
+            - text: 문화 항로
+          - paragraph: 하노이에서 울란바토르까지, 다문화 가정의 고향을 잇는 항로를 따라 사서가 검수한 도서를 납품합니다. 원산국별 탐색, 견적서, MARC 데이터까지.
+          - generic:
+            - link "travel_explore 원산국으로 검색" [ref=f10e28] [cursor=pointer]:
+              - /url: "#search"
+              - generic [ref=f10e29]: travel_explore
+              - generic [ref=f10e30]: 원산국으로 검색
+            - link "route 항로 전시 떠나기" [ref=f10e31] [cursor=pointer]:
+              - /url: "#curation"
+              - generic [ref=f10e32]: route
+              - generic [ref=f10e33]: 항로 전시 떠나기
+          - generic:
+            - generic: near_me
+            - generic: 지구본을 드래그해 돌려보세요 · 항로를 따라 빛이 흐릅니다
+        - generic [ref=f10e34]:
+          - generic [ref=f10e35]: 항로 · 원산국 → 서울
+          - generic [ref=f10e36]: HANOI → SEOUL
+          - generic [ref=f10e37]: NEW YORK → SEOUL
+          - generic [ref=f10e38]: BEIJING → SEOUL
+          - generic [ref=f10e39]: ULAANBAATAR → SEOUL
+          - generic [ref=f10e40]: MANILA → SEOUL
+          - generic [ref=f10e41]: BANGKOK → SEOUL
+      - generic [ref=f10e42]:
+        - generic [ref=f10e43]: mail
+        - generic [ref=f10e44]: 2026 하반기 다문화자료 구입 지원사업 — 9월 30일 견적 마감 · 원산국 12개국 원서 직수입
+        - link "견적서 발급" [ref=f10e45] [cursor=pointer]:
+          - /url: "#cart"
+      - generic [ref=f10e46]:
+        - generic [ref=f10e47]:
+          - generic [ref=f10e48]: 기획전 · Expeditions
+          - heading "이달의 항로 기획전" [level=2] [ref=f10e49]
+          - paragraph [ref=f10e50]: 항로 정거장, 캐러밴 커버플로우, 보물지도 핀 — 세 가지 형태로 떠나는 도서 탐험.
+        - generic [ref=f10e51]:
+          - link "항로 정거장 세계 그림책 비엔날레 수상작 BIB·볼로냐 라가치 수상작 중 다문화 가정 아동을 위한 원서+번역서 세트. 8권 수록" [ref=f10e52] [cursor=pointer]:
+            - /url: "#curation/1"
+            - generic [ref=f10e53]: 항로 정거장
+            - heading "세계 그림책 비엔날레 수상작" [level=3] [ref=f10e54]
+            - paragraph [ref=f10e55]: BIB·볼로냐 라가치 수상작 중 다문화 가정 아동을 위한 원서+번역서 세트.
+            - generic [ref=f10e56]: 8권 수록
+          - link "캐러밴 커버플로우 아시아의 축제와 등불 연등회, 원소절, 송크란, 마츠리 — 축제로 배우는 이웃 나라 문화. 8권 수록" [ref=f10e57] [cursor=pointer]:
+            - /url: "#curation/2"
+            - generic [ref=f10e58]: 캐러밴 커버플로우
+            - heading "아시아의 축제와 등불" [level=3] [ref=f10e59]
+            - paragraph [ref=f10e60]: 연등회, 원소절, 송크란, 마츠리 — 축제로 배우는 이웃 나라 문화.
+            - generic [ref=f10e61]: 8권 수록
+          - link "보물지도 핀 다문화 가정 부모·사서 필독서 생활 한국어, 장서 개발 가이드, 성장기 청소년 문학까지. 6권 수록" [ref=f10e62] [cursor=pointer]:
+            - /url: "#curation/3"
+            - generic:
+              - img:
+                - generic: ✕
+            - generic [ref=f10e63]: 보물지도 핀
+            - heading "다문화 가정 부모·사서 필독서" [level=3] [ref=f10e64]
+            - paragraph [ref=f10e65]: 생활 한국어, 장서 개발 가이드, 성장기 청소년 문학까지.
+            - generic [ref=f10e66]: 6권 수록
+      - generic [ref=f10e67]:
+        - generic [ref=f10e68]:
+          - generic [ref=f10e69]: 3D Route Exhibition
+          - heading "세계 그림책 비엔날레 수상작" [level=2] [ref=f10e70]
+          - paragraph [ref=f10e71]: 정거장 버튼이나 휠 스크롤로 카메라가 항로를 따라 이동합니다. 책을 클릭하면 서지정보.
+        - generic [ref=f10e72]:
+          - generic [ref=f10e74]:
+            - button "세계 그림책 비엔날레 수상작" [ref=f10e75] [cursor=pointer]
+            - button "아시아의 축제와 등불" [ref=f10e76] [cursor=pointer]
+            - button "다문화 가정 부모·사서 필독서" [ref=f10e77] [cursor=pointer]
+          - generic [ref=f10e78]:
+            - button "arrow_back" [ref=f10e79] [cursor=pointer]
+            - generic [ref=f10e81]: 정거장 1 / 8 · 달빛 아래 연등
+            - button "arrow_forward" [ref=f10e82] [cursor=pointer]
+      - generic [ref=f10e84]:
+        - generic [ref=f10e85]:
+          - generic [ref=f10e86]:
+            - generic [ref=f10e87]: 신간 · New Arrivals
+            - heading "이번 달 입항한 신간" [level=2] [ref=f10e88]
+          - generic [ref=f10e89]:
+            - button "view_carousel 캐러밴" [ref=f10e90] [cursor=pointer]:
+              - generic [ref=f10e91]: view_carousel
+              - generic [ref=f10e92]: 캐러밴
+            - button "list_alt 서지 목록" [ref=f10e93] [cursor=pointer]:
+              - generic [ref=f10e94]: list_alt
+              - generic [ref=f10e95]: 서지 목록
+        - generic [ref=f10e96]:
+          - generic:
+            - link "달빛 아래 연등 HANOI 달빛 아래 연등 베트남 · Kim Đồng 15,000 원" [ref=f10e97] [cursor=pointer]:
+              - /url: "#detail/1"
+              - generic [ref=f10e98]:
+                - generic [ref=f10e99]: 달빛 아래 연등
+                - generic [ref=f10e100]: HANOI
+              - heading "달빛 아래 연등" [level=4] [ref=f10e101]
+              - generic [ref=f10e102]: 베트남 · Kim Đồng
+              - generic [ref=f10e103]: 15,000 원
+            - link "우리 집 두 개의 설날 NEW YORK 우리 집 두 개의 설날 미국 · Candlewick 16,800 원" [ref=f10e104] [cursor=pointer]:
+              - /url: "#detail/2"
+              - generic [ref=f10e105]:
+                - generic [ref=f10e106]: 우리 집 두 개의 설날
+                - generic [ref=f10e107]: NEW YORK
+              - heading "우리 집 두 개의 설날" [level=4] [ref=f10e108]
+              - generic [ref=f10e109]: 미국 · Candlewick
+              - generic [ref=f10e110]: 16,800 원
+            - link "할머니의 아오자이 HANOI 할머니의 아오자이 베트남 · Nhã Nam 14,500 원" [ref=f10e111] [cursor=pointer]:
+              - /url: "#detail/3"
+              - generic [ref=f10e112]:
+                - generic [ref=f10e113]: 할머니의 아오자이
+                - generic [ref=f10e114]: HANOI
+              - heading "할머니의 아오자이" [level=4] [ref=f10e115]
+              - generic [ref=f10e116]: 베트남 · Nhã Nam
+              - generic [ref=f10e117]: 14,500 원
+            - link "별을 세는 밤 BEIJING 별을 세는 밤 중국 · 接力出版社 15,500 원" [ref=f10e118] [cursor=pointer]:
+              - /url: "#detail/4"
+              - generic [ref=f10e119]:
+                - generic [ref=f10e120]: 별을 세는 밤
+                - generic [ref=f10e121]: BEIJING
+              - heading "별을 세는 밤" [level=4] [ref=f10e122]
+              - generic [ref=f10e123]: 중국 · 接力出版社
+              - generic [ref=f10e124]: 15,500 원
+            - link "필리핀 할아버지의 바다 지도 MANILA 필리핀 할아버지의 바다 지도 필리핀 · Adarna House 16,000 원" [ref=f10e125] [cursor=pointer]:
+              - /url: "#detail/6"
+              - generic [ref=f10e126]:
+                - generic [ref=f10e127]: 필리핀 할아버지의 바다 지도
+                - generic [ref=f10e128]: MANILA
+              - heading "필리핀 할아버지의 바다 지도" [level=4] [ref=f10e129]
+              - generic [ref=f10e130]: 필리핀 · Adarna House
+              - generic [ref=f10e131]: 16,000 원
+            - link "태국의 물축제 송크란 BANGKOK 태국의 물축제 송크란 태국 · Nanmeebooks 15,000 원" [ref=f10e132] [cursor=pointer]:
+              - /url: "#detail/8"
+              - generic [ref=f10e133]:
+                - generic [ref=f10e134]: 태국의 물축제 송크란
+                - generic [ref=f10e135]: BANGKOK
+              - heading "태국의 물축제 송크란" [level=4] [ref=f10e136]
+              - generic [ref=f10e137]: 태국 · Nanmeebooks
+              - generic [ref=f10e138]: 15,000 원
+            - link "우즈베키스탄의 빵, 논 TASHKENT 우즈베키스탄의 빵, 논 우즈베키스탄 · Yangi asr 14,800 원" [ref=f10e139] [cursor=pointer]:
+              - /url: "#detail/10"
+              - generic [ref=f10e140]:
+                - generic [ref=f10e141]: 우즈베키스탄의 빵, 논
+                - generic [ref=f10e142]: TASHKENT
+              - heading "우즈베키스탄의 빵, 논" [level=4] [ref=f10e143]
+              - generic [ref=f10e144]: 우즈베키스탄 · Yangi asr
+              - generic [ref=f10e145]: 14,800 원
+            - link "사서를 위한 다문화 장서 개발 가이드 SEOUL 사서를 위한 다문화 장서 개발 가이드 한국 · 도서관문화사 28,000 원" [ref=f10e146] [cursor=pointer]:
+              - /url: "#detail/11"
+              - generic [ref=f10e147]:
+                - generic [ref=f10e148]: 사서를 위한 다문화 장서 개발 가이드
+                - generic [ref=f10e149]: SEOUL
+              - heading "사서를 위한 다문화 장서 개발 가이드" [level=4] [ref=f10e150]
+              - generic [ref=f10e151]: 한국 · 도서관문화사
+              - generic [ref=f10e152]: 28,000 원
+            - link "일본 여름 축제 마츠리 TOKYO 일본 여름 축제 마츠리 일본 · 福音館 15,800 원" [ref=f10e153] [cursor=pointer]:
+              - /url: "#detail/13"
+              - generic [ref=f10e154]:
+                - generic [ref=f10e155]: 일본 여름 축제 마츠리
+                - generic [ref=f10e156]: TOKYO
+              - heading "일본 여름 축제 마츠리" [level=4] [ref=f10e157]
+              - generic [ref=f10e158]: 일본 · 福音館
+              - generic [ref=f10e159]: 15,800 원
+          - generic [ref=f10e160]: ← 드래그 또는 휠로 넘기기 →
+      - generic [ref=f10e161]:
+        - generic [ref=f10e162]:
+          - generic [ref=f10e163]: verified_user
+          - heading "원서 직수입 · 사서 검수" [level=3] [ref=f10e164]
+          - paragraph [ref=f10e165]: 12개국 현지 출판사와 직거래하고 현직 사서가 내용·제본을 검수합니다.
+        - generic [ref=f10e166]:
+          - generic [ref=f10e167]: database
+          - heading "KORMARC · 원어 서지" [level=3] [ref=f10e168]
+          - paragraph [ref=f10e169]: 원어 표제·저자 병기 서지 데이터와 장비 작업을 함께 제공합니다.
+        - generic [ref=f10e170]:
+          - generic [ref=f10e171]: workspace_premium
+          - heading "밀랍 인장 견적서" [level=3] [ref=f10e172]
+          - paragraph [ref=f10e173]: 기관 할인 반영 견적서를 PDF로 즉시 발급, 기안 첨부용 공문 서식 제공.
+  - contentinfo [ref=f10e174]:
+    - generic [ref=f10e175]:
+      - strong [ref=f10e176]: 문화 항로 도서관
+      - paragraph [ref=f10e177]: 다문화 도서관 납품 · 세계를 잇는 문화 항로
+    - generic [ref=f10e178]: © 2026 Cartographic Journey · v9 concept

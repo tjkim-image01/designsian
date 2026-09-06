@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OASIS | 오아시스 다문화 도서관 수서 몰 (3D Silk Road Library)</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cinzel:wght@500;700;900&family=JetBrains+Mono:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;700;900&family=Noto+Serif+KR:wght@400;600;700;900&family=Playfair+Display:ital,wght@0,600;0,800;1,400&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Three.js Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="desert-oasis-theme">
+
+  <!-- Interactive Water Ripple Overlay Canvas -->
+  <canvas id="rippleCanvas"></canvas>
+
+  <!-- Main Silk Road Header -->
+  <header class="oasis-header">
+    <div class="header-desert-banner"></div>
+    <div class="header-container">
+      <div class="logo-area" id="logo-button">
+        <div class="camel-logo-wrapper">
+          <i class="fa-solid fa-caravan camel-icon"></i>
+          <span class="oasis-sparkle">✨</span>
+        </div>
+        <div class="logo-text">
+          <span class="brand-title" data-i18n="brandTitle">OASIS</span>
+          <span class="brand-subtitle" data-i18n="brandSub">다문화 도서관 수서/구입 몰</span>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="main-nav">
+        <a href="#home" class="nav-tab active" data-page="home">
+          <i class="fa-solid fa-campground"></i>
+          <span data-i18n="navHome">오아시스 3D관</span>
+        </a>
+        <a href="#search" class="nav-tab" data-page="search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <span data-i18n="navSearch">사막 수서검색</span>
+        </a>
+        <a href="#curation" class="nav-tab" data-page="curation">
+          <i class="fa-solid fa-gift"></i>
+          <span data-i18n="navCuration">비단길 큐레이션</span>
+        </a>
+        <a href="#cart" class="nav-tab" data-page="cart">
+          <i class="fa-solid fa-file-invoice"></i>
+          <span data-i18n="navCart">공문 견적함</span>
+          <span class="cart-badge" id="nav-cart-badge">0</span>
+        </a>
+        <a href="#detail" class="nav-tab" data-page="detail">
+          <i class="fa-solid fa-book-open"></i>
+          <span data-i18n="navDetail">3D 서지 상세</span>
+        </a>
+      </nav>
+
+      <!-- Global Controls -->
+      <div class="header-controls">
+        <div class="sound-control">
+          <button id="sound-toggle-btn" class="oasis-btn icon-only" title="사운드 이펙트 온/오프">
+            <i class="fa-solid fa-volume-high" id="sound-icon"></i>
+          </button>
+        </div>
+
+        <div class="lang-switcher">
+          <i class="fa-solid fa-globe lang-icon"></i>
+          <select id="lang-select" class="oasis-select">
+            <option value="KO">🇰🇷 한국어 (KO)</option>
+            <option value="EN">🇺🇸 English (EN)</option>
+            <option value="VI">🇻🇳 Tiếng Việt (VI)</option>
+            <option value="ZH">🇨🇳 中文 (ZH)</option>
+            <option value="AR">🇸🇦 العربية (AR)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content App Container -->
+  <main id="app">
+
+    <!-- PAGE 1: HOME (#home) -->
+    <section id="view-home" class="page-view active">
+      <!-- 3D Oasis Driving World Hero -->
+      <div class="hero-3d-oasis">
+        <div id="oasis-canvas-container" class="three-container"></div>
+        
+        <!-- On-Screen 3D Driving HUD -->
+        <div class="hud-overlay">
+          <div class="hud-top-bar">
+            <div class="hud-badge">
+              <i class="fa-solid fa-location-dot"></i>
+              <span id="caravan-location-text" data-i18n="hudLocation">오아시스 중앙 라이브러리 (주행 탐험)</span>
+            </div>
+            <div class="hud-controls-hint">
+              <span class="key-badge">W</span><span class="key-badge">A</span><span class="key-badge">S</span><span class="key-badge">D</span>
+              <span data-i18n="hudKeys">또는 화살표 키로 3D 책 수집 카라반 조종</span>
+            </div>
+          </div>
+
+          <div class="hud-bottom-bar">
+            <div class="speedometer">
+              <i class="fa-solid fa-gauge-high"></i>
+              <span id="speed-display">0</span> <small>KM/H</small>
+            </div>
+            
+            <button id="caravan-bell-btn" class="oasis-btn bell-btn" title="카라반 종 울리기">
+              <i class="fa-solid fa-bell"></i>
+              <span data-i18n="bellBtn">카라반 벨 🔔</span>
+            </button>
+
+            <button id="reset-caravan-btn" class="oasis-btn secondary" title="위치 리셋">
+              <i class="fa-solid fa-rotate-left"></i>
+              <span data-i18n="resetCaravan">원위치</span>
+            </button>
+          </div>
+
+          <!-- Mobile Virtual D-Pad / Touch Joystick -->
+          <div class="touch-dpad-container" id="touch-dpad">
+            <button class="dpad-btn up" data-dir="up"><i class="fa-solid fa-chevron-up"></i></button>
+            <div class="dpad-row">
+              <button class="dpad-btn left" data-dir="left"><i class="fa-solid fa-chevron-left"></i></button>
+              <div class="dpad-center"><i class="fa-solid fa-caravan"></i></div>
+              <button class="dpad-btn right" data-dir="right"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+            <button class="dpad-btn down" data-dir="down"><i class="fa-solid fa-chevron-down"></i></button>
+          </div>
+        </div>
+
+        <div class="hero-text-overlay">
+          <h1 class="hero-title" data-i18n="heroTitle">비단길 사막 오아시스 다문화 수서관</h1>
+          <p class="hero-subtitle" data-i18n="heroSub">3D 책 수집 카라반을 조종하여 다국어 도서를 탐험하고 공문 견적서를 1클릭 발급받으세요.</p>
+          <div class="hero-actions">
+            <a href="#search" class="oasis-btn primary lg"><i class="fa-solid fa-magnifying-glass"></i> <span data-i18n="btnSearchStart">수서 검색 시작</span></a>
+            <a href="#curation" class="oasis-btn secondary lg"><i class="fa-solid fa-boxes-stacked"></i> <span data-i18n="btnCurationView">3D 큐레이션관</span></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3D Silk Road Bazaar Exhibition Section -->
+      <section class="home-bazaar-section container">
+        <div class="section-header center">
+          <span class="section-tag" data-i18n="bazaarTag">SILK ROAD BAZAAR 🕌</span>
+          <h2 class="section-title" data-i18n="bazaarTitle">비단길 실크로드 테마 기획전</h2>
+          <p class="section-desc" data-i18n="bazaarDesc">동서양 문화가 만나는 사막 바자르에 펼쳐진 특별 수서 기획 전시</p>
+        </div>
+
+        <div class="bazaar-grid">
+          <div class="bazaar-card 3d-tilt" data-category="folklore">
+            <div class="bazaar-carpet-bg"></div>
+            <div class="bazaar-card-content">
+              <div class="bazaar-icon"><i class="fa-solid fa-feather-pointed"></i></div>
+              <h3 data-i18n="bazaarCard1Title">아시아/중동 전래동화전</h3>
+              <p data-i18n="bazaarCard1Desc">천년 동안 전해 내려온 아시아와 중동의 지혜가 담긴 그림책 컬렉션</p>
+              <div class="bazaar-meta">
+                <span><i class="fa-solid fa-book"></i> 20종</span>
+                <span class="badge-tag">베스트 수서</span>
+              </div>
+              <button class="oasis-btn secondary sm add-package-btn" data-package="1">
+                <i class="fa-solid fa-cart-plus"></i> <span data-i18n="addPkgCart">패키지 담기</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="bazaar-card 3d-tilt" data-category="bilingual">
+            <div class="bazaar-carpet-bg"></div>
+            <div class="bazaar-card-content">
+              <div class="bazaar-icon"><i class="fa-solid fa-language"></i></div>
+              <h3 data-i18n="bazaarCard2Title">쌍방향 언어 그림책관</h3>
+              <p data-i18n="bazaarCard2Desc">한국어와 베트남어, 중국어, 아랍어가 병기된 다문화 다국어 픽처북</p>
+              <div class="bazaar-meta">
+                <span><i class="fa-solid fa-book"></i> 15종</span>
+                <span class="badge-tag">사서 강추</span>
+              </div>
+              <button class="oasis-btn secondary sm add-package-btn" data-package="2">
+                <i class="fa-solid fa-cart-plus"></i> <span data-i18n="addPkgCart">패키지 담기</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="bazaar-card 3d-tilt" data-category="starter">
+            <div class="bazaar-carpet-bg"></div>
+            <div class="bazaar-card-content">
+              <div class="bazaar-icon"><i class="fa-solid fa-building-columns"></i></div>
+              <h3 data-i18n="bazaarCard3Title">신설 도서관 희망도서 풀세트</h3>
+              <p data-i18n="bazaarCard3Desc">다문화 특화 공공/학교 도서관 개관을 위한 필수 수서 풀패키지</p>
+              <div class="bazaar-meta">
+                <span><i class="fa-solid fa-book"></i> 50종</span>
+                <span class="badge-tag">10% 할인가</span>
+              </div>
+              <button class="oasis-btn secondary sm add-package-btn" data-package="4">
+                <i class="fa-solid fa-cart-plus"></i> <span data-i18n="addPkgCart">패키지 담기</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- New Releases & Recommended Books Section -->
+      <section class="home-books-section container">
+        <div class="section-header flex-between">
+          <div>
+            <span class="section-tag" data-i18n="newBooksTag">NEW ARRIVALS 📚</span>
+            <h2 class="section-title" data-i18n="newBooksTitle">이달의 추천 수서 신간</h2>
+          </div>
+          <a href="#search" class="view-all-link" data-i18n="viewAllBooks">전체 수서도서 보기 <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+
+        <div id="home-featured-books" class="featured-books-grid">
+          <!-- Dynamically populated by app.js -->
+        </div>
+      </section>
+    </section>
+
+    <!-- PAGE 2: SEARCH (#search) -->
+    <section id="view-search" class="page-view">
+      <div class="container">
+        <div class="search-header-box">
+          <span class="section-tag" data-i18n="searchTag">MULTICULTURAL SEARCH 🔍</span>
+          <h2 class="section-title" data-i18n="searchTitle">사막 다국어 도서 통합 수서 검색관</h2>
+          <p class="section-desc" data-i18n="searchDesc">언어별, 연령별, KDC 분류기호, ISBN, 출판사별 정밀 필터링으로 필요한 수서 도서를 간편하게 검색하세요.</p>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="filter-card">
+          <div class="search-input-row">
+            <div class="search-input-wrapper">
+              <i class="fa-solid fa-magnifying-glass search-icon"></i>
+              <input type="text" id="search-input" placeholder="도서명, 저자, 출판사, ISBN-13 검색..." data-i18n-placeholder="searchPlaceholder">
+              <button id="search-clear-btn" class="icon-btn" title="검색어 지우기"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <button id="search-execute-btn" class="oasis-btn primary"><i class="fa-solid fa-magnifying-glass"></i> <span data-i18n="searchBtn">검색</span></button>
+          </div>
+
+          <div class="filter-options-grid">
+            <!-- Language Chips -->
+            <div class="filter-group">
+              <label class="filter-label"><i class="fa-solid fa-globe"></i> <span data-i18n="filterLang">다국어 언어</span></label>
+              <div class="chip-group" id="lang-chips">
+                <button class="chip active" data-lang="ALL" data-i18n="chipAll">전체</button>
+                <button class="chip" data-lang="KO">🇰🇷 한국어</button>
+                <button class="chip" data-lang="EN">🇺🇸 영어</button>
+                <button class="chip" data-lang="VI">🇻🇳 베트남어</button>
+                <button class="chip" data-lang="ZH">🇨🇳 중국어</button>
+                <button class="chip" data-lang="AR">🇸🇦 아랍어</button>
+              </div>
+            </div>
+
+            <!-- Age Filter -->
+            <div class="filter-group">
+              <label class="filter-label"><i class="fa-solid fa-child"></i> <span data-i18n="filterAge">대상 연령</span></label>
+              <select id="filter-age" class="oasis-select">
+                <option value="ALL" data-i18n="optAllAge">전체 연령</option>
+                <option value="INFANT">유아 (0~7세)</option>
+                <option value="ELEM">초등 (8~13세)</option>
+                <option value="YA">청소년 (14~19세)</option>
+                <option value="ADULT">일반 (20세 이상)</option>
+              </select>
+            </div>
+
+            <!-- KDC Category -->
+            <div class="filter-group">
+              <label class="filter-label"><i class="fa-solid fa-bookmark"></i> <span data-i18n="filterKDC">KDC 분류기호</span></label>
+              <select id="filter-kdc" class="oasis-select">
+                <option value="ALL" data-i18n="optAllKDC">전체 KDC</option>
+                <option value="000">000 총류 (General)</option>
+                <option value="100">100 철학 (Philosophy)</option>
+                <option value="300">300 사회과학 (Social Sciences)</option>
+                <option value="700">700 언어 (Language)</option>
+                <option value="800">800 문학 (Literature)</option>
+                <option value="900">900 역사 (History)</option>
+              </select>
+            </div>
+
+            <!-- Publisher Filter -->
+            <div class="filter-group">
+              <label class="filter-label"><i class="fa-solid fa-building"></i> <span data-i18n="filterPublisher">출판사</span></label>
+              <select id="filter-publisher" class="oasis-select">
+                <option value="ALL" data-i18n="optAllPub">전체 출판사</option>
+                <option value="오아시스미디어">오아시스미디어</option>
+                <option value="비단길출판사">비단길출판사</option>
+                <option value="글로벌다문화">글로벌다문화</option>
+                <option value="아시아아동문학">아시아아동문학</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="filter-bottom-bar flex-between">
+            <div class="results-count">
+              <span data-i18n="searchResultTotal">검색 결과:</span> <strong id="search-count">0</strong><span data-i18n="booksUnit">권</span>
+            </div>
+
+            <div class="search-sort-controls">
+              <select id="sort-select" class="oasis-select sm">
+                <option value="NEW" data-i18n="sortNew">최신 등록순</option>
+                <option value="POPULAR" data-i18n="sortPopular">사서 추천순</option>
+                <option value="PRICE_LOW" data-i18n="sortPriceLow">낮은 가격순</option>
+                <option value="PRICE_HIGH" data-i18n="sortPriceHigh">높은 가격순</option>
+              </select>
+              <div class="view-toggle">
+                <button id="btn-view-grid" class="icon-btn active" title="그리드 뷰"><i class="fa-solid fa-border-all"></i></button>
+                <button id="btn-view-list" class="icon-btn" title="리스트 뷰"><i class="fa-solid fa-list"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Search Results Grid -->
+        <div id="search-results-grid" class="search-grid-layout">
+          <!-- Dynamically populated by app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 3: CURATION (#curation) -->
+    <section id="view-curation" class="page-view">
+      <div class="container">
+        <div class="section-header center">
+          <span class="section-tag" data-i18n="curationTag">SPECIAL PACKAGES 🎁</span>
+          <h2 class="section-title" data-i18n="curationTitle">실크로드 3D 다문화 테마 큐레이션관</h2>
+          <p class="section-desc" data-i18n="curationDesc">사서 수서 업무의 효율을 극대화하는 전문가 맞춤형 묶음 구입 패키지</p>
+        </div>
+
+        <div class="curation-packages-container">
+
+          <!-- Package 1 -->
+          <div class="package-card 3d-tilt">
+            <div class="package-header pkg-bg-1">
+              <div class="package-badge" data-i18n="pkg1Badge">인기 수서 1위</div>
+              <h3 data-i18n="pkg1Title">🐫 비단길 전래동화 특별 컬렉션 (20종)</h3>
+              <p class="package-subtitle" data-i18n="pkg1Sub">베트남, 중국, 아랍, 중앙아시아 대표 구전 동화 완역 판본</p>
+            </div>
+            <div class="package-body">
+              <ul class="package-features">
+                <li><i class="fa-solid fa-check"></i> <span data-i18n="pkg1Feat1">한국어 & 원어 병기 이중언어 양장본</span></li>
+                <li><i class="fa-solid fa-check"></i> <span data-i18n="pkg1Feat2">KDC 800번대 아동 문학 분류 완료</span></li>
+                <li><i class="fa-solid fa-check"></i> <span data-i18n="pkg1Feat3">공공도서관 및 학교도서관 강력 추천</span></li>
+                <li><i class="fa-solid fa-check"></i> <span data-i18n="pkg1Feat4">MARC/KOLAS 서지 데이터 무료 제공</span></li>
+              </ul>
+              <div class="package-price-box">
+                <div class="price-original">₩320,000</div>
+                <div class="price-discount">
+                  <span class="discount-rate">10% OFF</span>
+                  <span class="final-price">₩288,000</span>
+                </div>
+              </div>
+              <button class="oasis-btn primary block add-package-btn" data-package="1">
+                <i class="fa-solid fa-cart-plus"></i> <span data-i18n="addPkgCart">패키지 장바구니 담기</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Package 2 -->
+          <div class="package-card 3d-tilt">
+            <div class="package-header pkg-bg-2">
+              <div class="package-badge" data-i18n="pkg2Badge">다구어 추천</div>
+              <h3 data-i18n="pkg2Title">🌴 오아시스 쌍방향 다국어 그림책 (15종)</h3>
+              <p class="package-subtitle" data-i18n="pkg2Sub">유아 및 초등 저학년을 위한 세이펜/오디오 호환 다국어 책</p>
+            </div>
+            <div class="package-body">
+              <ul class="package-features">
+                <li><i class="fa-solid fa-check"></i> <span data-i18n="pkg2Feat1">5개 언어 (KO, EN, VI, ZH, AR) 오디오 수록</span></li>
+                <li><i class="fa-solid fa-check"></i> <span data-i18n="pkg2Feat2">선명한 고급 3D 세이프 모서리 양장</span></li>
+                <li><i class="fa-solid fa-check"></i> <span data-i18n="pkg2Feat3">어린이 다문화 문화체험 독서교실용</span></li>
+                <li><i class="fa-solid fa-check"></i> <span data-i18n="pkg2Feat4">독서 활동지 PDF 템플릿 포함</span></li>
+              </ul>
+              <div class="package-price-box">
+                <div class="price-original">₩240,000</div>
+                <div class="price-discount">
+                  <span class="discount-rate">10% OFF</span>
+                  <span class="final-price">₩216,000</span>
+                </div>
+              </div>
+              <button class="oasis-btn primary block add-package-btn" data-package="2">
+                <i class="fa-solid fa-cart-plus"></i> <span data-i18n="addPkgCart">패키지 장바구니 담기</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Package 3 -->
+          <div class="package-card 3d-tilt">
+            <div class="package-header pkg-bg-3">
+              <div class="package-badge" data-i18n="pkg3Badge">학술/인문</div>
+              <h3 data-i18n="pkg3Title">🕌 아시아-중동 교양 인문학 세트 (30종)</h3>
+              <p class="package-subtitle" data-i18n="pkg3Sub">청소년 및 성인 다문화 지역 연구를 위한 전문 서적</p>
+            </div>
+            <div class="package-body">
+              <ul class="package-features">
+                <li><i class="fa-solid fa-check"></i> <span data-i18n="pkg3Feat1">실크로드 역사, 지리, 예술, 철학 총망라</span></li>
+                <li><i class="fa-solid fa-check"></i> <span data-i18n="pkg3Feat2">KDC 100, 300, 900번대 심층 서지</span></li>
+                <li><i class="fa-solid fa-check"></i> <span data-i18n="pkg3Feat3">대학 및 공공 전문자료실 수서 적합</span></li>
+                <li><i class="fa-solid fa-check"></i> <span data-i18n="pkg3Feat4">해설판 수서 라벨 스티커 동봉</span></li>
+              </ul>
+              <div class="package-price-box">
+                <div class="price-original">₩540,000</div>
+                <div class="price-discount">
+                  <span class="discount-rate">10% OFF</span>
+                  <span class="final-price">₩486,000</span>
+                </div>
+              </div>
+              <button class="oasis-btn primary block add-package-btn" data-package="3">
+                <i class="fa-solid fa-cart-plus"></i> <span data-i18n="addPkgCart">패키지 장바구니 담기</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Package 4 -->
+          <div class="package-card 3d-tilt highlight">
+            <div class="package-header pkg-bg-4">
+              <div class="package-badge master" data-i18n="pkg4Badge">개관 특화 풀세트</div>
+              <h3 data-i18n="pkg4Title">📚 신규 도서관 희망도서 풀패키지 (50종)</h3>
+              <p class="package-subtitle" data-i18n="pkg4Sub">다문화 서가 구축에 필요한 최고의 신간 및 베스트셀러 엄선</p>
+            </div>
+            <div class="package-body">
+              <ul class="package-features">
+                <li><i class="fa-solid fa-check"></i> <span data-i18n="pkg4Feat1">전 계층/전 언어 종합 수서 솔루션</span></li>
+                <li><i class="fa-solid fa-check"></i> <span data-i18n="pkg4Feat2">KOLAS III 서지/소장 바코드 데이터 즉시 납품</span></li>
+                <li><i class="fa-solid fa-check"></i> <span data-i18n="pkg4Feat3">납품 시 장정/띠지 무료 가공 지원</span></li>
+                <li><i class="fa-solid fa-check"></i> <span data-i18n="pkg4Feat4">공문 견적서 1클릭 자동 정산</span></li>
+              </ul>
+              <div class="package-price-box">
+                <div class="price-original">₩880,000</div>
+                <div class="price-discount">
+                  <span class="discount-rate master">15% OFF</span>
+                  <span class="final-price">₩748,000</span>
+                </div>
+              </div>
+              <button class="oasis-btn primary block add-package-btn" data-package="4">
+                <i class="fa-solid fa-cart-plus"></i> <span data-i18n="addPkgCart">패키지 장바구니 담기</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 4: CART (#cart) -->
+    <section id="view-cart" class="page-view">
+      <div class="container">
+        <div class="section-header flex-between">
+          <div>
+            <span class="section-tag" data-i18n="cartTag">PROCUREMENT CART 🛒</span>
+            <h2 class="section-title" data-i18n="cartTitle">사서 수서 관제소 & 공문 견적함</h2>
+          </div>
+          <button id="clear-cart-btn" class="oasis-btn secondary sm"><i class="fa-solid fa-trash-can"></i> <span data-i18n="clearCart">장바구니 비우기</span></button>
+        </div>
+
+        <div class="cart-layout">
+          <!-- Cart Items Table -->
+          <div class="cart-table-wrapper">
+            <table class="cart-table">
+              <thead>
+                <tr>
+                  <th style="width: 40px;"><input type="checkbox" id="cart-select-all" checked></th>
+                  <th data-i18n="thBookInfo">수서 도서 정보</th>
+                  <th data-i18n="thKDC">KDC/ISBN</th>
+                  <th data-i18n="thUnitPrice">정가</th>
+                  <th data-i18n="thQty">수량</th>
+                  <th data-i18n="thSubtotal">합계금액</th>
+                  <th style="width: 50px;"></th>
+                </tr>
+              </thead>
+              <tbody id="cart-table-body">
+                <!-- Dynamically populated by app.js -->
+              </tbody>
+            </table>
+            <div id="cart-empty-message" class="cart-empty-state" style="display: none;">
+              <i class="fa-solid fa-caravan"></i>
+              <p data-i18n="emptyCartText">장바구니에 담긴 수서 도서가 없습니다.</p>
+              <a href="#search" class="oasis-btn primary sm" data-i18n="btnGoSearch">도서 검색하러 가기</a>
+            </div>
+          </div>
+
+          <!-- Procurement Summary & Actions -->
+          <div class="cart-summary-card">
+            <h3 class="summary-title" data-i18n="summaryTitle">수서 구입 예산 견적 요약</h3>
+            <div class="summary-divider"></div>
+            
+            <div class="summary-row">
+              <span data-i18n="sumTotalItems">총 수서 종수:</span>
+              <strong id="sum-items-count">0종 (0권)</strong>
+            </div>
+            <div class="summary-row">
+              <span data-i18n="sumOriginalTotal">도서 정가 총액:</span>
+              <span id="sum-original-total">₩0</span>
+            </div>
+            <div class="summary-row text-green">
+              <span data-i18n="sumDiscount">사서 납품 할인 (10%):</span>
+              <span id="sum-discount-total">-₩0</span>
+            </div>
+            <div class="summary-row">
+              <span data-i18n="sumTax">부가세 (면세 도서):</span>
+              <span>₩0 (면세)</span>
+            </div>
+
+            <div class="summary-divider"></div>
+
+            <div class="summary-row grand-total">
+              <span data-i18n="sumFinalTotal">최종 납품 견적가:</span>
+              <strong id="sum-final-total">₩0</strong>
+            </div>
+
+            <div class="summary-actions">
+              <button id="generate-quote-btn" class="oasis-btn primary lg block">
+                <i class="fa-solid fa-file-pdf"></i> <span data-i18n="btnGenQuote">1클릭 공문 견적서 생성</span>
+              </button>
+              <button id="export-excel-btn" class="oasis-btn secondary block">
+                <i class="fa-solid fa-file-excel"></i> <span data-i18n="btnExportExcel">엑셀 / CSV 서지 다운로드</span>
+              </button>
+            </div>
+
+            <div class="summary-footer-note">
+              <i class="fa-solid fa-shield-halved"></i>
+              <span data-i18n="summaryNote">KOLAS III 표준 서지 호환 및 도서관 납품 정산 표준 양식 지원</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 5: DETAIL (#detail) -->
+    <section id="view-detail" class="page-view">
+      <div class="container">
+        <div class="detail-header-nav">
+          <a href="#search" class="back-link"><i class="fa-solid fa-chevron-left"></i> <span data-i18n="backToSearch">수서 검색 목록으로</span></a>
+        </div>
+
+        <div class="detail-stage">
+          <!-- 360 Degree Three.js Book Model Left Stage -->
+          <div class="detail-3d-stage">
+            <div class="canvas-3d-wrapper">
+              <div id="book-3d-canvas-container" class="three-container"></div>
+              <div class="canvas-3d-badge">
+                <i class="fa-solid fa-arrows-rotate"></i>
+                <span data-i18n="canvas3DHint">마우스로 360도 회전 및 책 펼침 가능</span>
+              </div>
+            </div>
+            <div class="canvas-3d-controls">
+              <button id="btn-rotate-3d" class="oasis-btn icon-only" title="자동 회전 토글"><i class="fa-solid fa-rotate"></i></button>
+              <button id="btn-toggle-cover" class="oasis-btn secondary sm"><i class="fa-solid fa-book-open"></i> <span data-i18n="toggleCover">표지 펼치기/접기</span></button>
+              <button id="btn-reset-3d" class="oasis-btn icon-only" title="카메라 리셋"><i class="fa-solid fa-compress"></i></button>
+            </div>
+          </div>
+
+          <!-- Book Bibliographic Information Right Stage -->
+          <div class="detail-info-stage">
+            <div class="detail-tags" id="detail-tags">
+              <!-- Dynamically populated -->
+            </div>
+            <h1 class="detail-title" id="detail-title">도서 제목 로딩 중...</h1>
+            <p class="detail-original-title" id="detail-original-title">Original Title</p>
+
+            <div class="detail-meta-grid">
+              <div class="meta-item">
+                <span class="label" data-i18n="metaAuthor">저자 / 역자</span>
+                <span class="val" id="detail-author">-</span>
+              </div>
+              <div class="meta-item">
+                <span class="label" data-i18n="metaPublisher">출판사</span>
+                <span class="val" id="detail-publisher">-</span>
+              </div>
+              <div class="meta-item">
+                <span class="label" data-i18n="metaISBN">ISBN-13</span>
+                <span class="val" id="detail-isbn">-</span>
+              </div>
+              <div class="meta-item">
+                <span class="label" data-i18n="metaKDC">KDC 분류기호</span>
+                <span class="val" id="detail-kdc">-</span>
+              </div>
+              <div class="meta-item">
+                <span class="label" data-i18n="metaAge">대상 연령</span>
+                <span class="val" id="detail-age">-</span>
+              </div>
+              <div class="meta-item">
+                <span class="label" data-i18n="metaBinding">제본 형태</span>
+                <span class="val" id="detail-binding">양장본 (Hardcover)</span>
+              </div>
+            </div>
+
+            <!-- Audio Sample Player -->
+            <div class="audio-sample-box">
+              <div class="audio-info">
+                <i class="fa-solid fa-headphones audio-icon"></i>
+                <div>
+                  <h4 data-i18n="audioSampleTitle">다국어 낭독 오디오 샘플 미리듣기</h4>
+                  <p data-i18n="audioSampleSub">원어로 녹음된 아동 낭독 사운드를 확인하세요</p>
+                </div>
+              </div>
+              <button id="play-audio-sample-btn" class="oasis-btn secondary sm">
+                <i class="fa-solid fa-play" id="audio-play-icon"></i>
+                <span id="audio-sample-label" data-i18n="btnPlayAudio">샘플 오디오 재생 🔊</span>
+              </button>
+            </div>
+
+            <div class="detail-description">
+              <h3 data-i18n="descHeading">도서 요약 및 수서 가이드</h3>
+              <p id="detail-desc-text">상세 내용 로딩 중...</p>
+            </div>
+
+            <div class="detail-price-row">
+              <div class="detail-price-box">
+                <span class="price-label" data-i18n="detailPriceLabel">납품 수서가</span>
+                <span class="price-value" id="detail-price">₩0</span>
+              </div>
+              <button id="detail-add-cart-btn" class="oasis-btn primary lg">
+                <i class="fa-solid fa-cart-plus"></i> <span data-i18n="addToCart">수서 장바구니 담기</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Official Quote Printable Modal (공문 견적서 / 수서 요청서) -->
+  <div id="quote-modal" class="modal-backdrop" style="display: none;">
+    <div class="quote-modal-content">
+      <div class="quote-modal-header no-print">
+        <h3><i class="fa-solid fa-file-invoice"></i> <span data-i18n="quoteModalTitle">공문 견적서 및 수서 요청서 생성</span></h3>
+        <button id="close-quote-modal" class="icon-btn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <!-- Printable Document Canvas -->
+      <div class="printable-document" id="printable-quote-doc">
+        <div class="quote-doc-header">
+          <div class="quote-doc-title-box">
+            <h1>도 서 수 서 견 적 서</h1>
+            <p>MULTICULTURAL LIBRARY BOOK PROCUREMENT QUOTATION</p>
+          </div>
+          <div class="quote-doc-meta">
+            <p><strong>문서번호:</strong> OASIS-20260906-001</p>
+            <p><strong>발급일자:</strong> <span id="quote-date">2026년 09월 06일</span></p>
+          </div>
+        </div>
+
+        <div class="quote-parties-grid">
+          <div class="party-box client">
+            <h4>[ 수신기관 정보 ]</h4>
+            <div class="input-field-group no-print">
+              <label>수신 도서관명:</label>
+              <input type="text" id="input-client-lib" value="국립 중앙 다문화 도서관">
+            </div>
+            <div class="input-field-group no-print">
+              <label>수서 담당 사서:</label>
+              <input type="text" id="input-client-name" value="김사서 주무관">
+            </div>
+            <div class="print-only">
+              <p><strong>기관명:</strong> <span id="print-client-lib">국립 중앙 다문화 도서관</span></p>
+              <p><strong>담당자:</strong> <span id="print-client-name">김사서 주무관</span> 귀하</p>
+            </div>
+          </div>
+
+          <div class="party-box supplier">
+            <h4>[ 공급자 정보 ]</h4>
+            <p><strong>상호:</strong> 오아시스 다문화 도서 공급 (주)</p>
+            <p><strong>대표자:</strong> 알리 바바</p>
+            <p><strong>사업자번호:</strong> 123-88-00991</p>
+            <p><strong>주소:</strong> 서울특별시 중구 비단길 100 오아시스 타워</p>
+            <div class="official-seal">
+              <span>(직인생략)</span>
+              <canvas id="sealCanvas" width="70" height="70"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <table class="quote-doc-table">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>ISBN-13</th>
+              <th>도서명 (Title)</th>
+              <th>언어</th>
+              <th>저자</th>
+              <th>출판사</th>
+              <th>수량</th>
+              <th>정가</th>
+              <th>납품가 (10%할인)</th>
+            </tr>
+          </thead>
+          <tbody id="quote-table-body">
+            <!-- Dynamically populated -->
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="6" class="text-right"><strong>총 합 계 (면세 도서)</strong></td>
+              <td id="quote-total-qty"><strong>0</strong></td>
+              <td id="quote-total-original">₩0</td>
+              <td id="quote-total-final" class="highlight-price">₩0</td>
+            </tr>
+          </tfoot>
+        </table>
+
+        <div class="quote-footer-terms">
+          <p>1. 본 견적서는 발급일로부터 30일간 유효합니다.</p>
+          <p>2. 납품 시 KOLAS III 규격 서지 데이터 (MARC) 및 바코드 라벨 작업을 포함합니다.</p>
+          <p>3. 면세 도서 공급 건으로 부가가치세가 부과되지 않습니다.</p>
+        </div>
+      </div>
+
+      <div class="quote-modal-footer no-print">
+        <button id="print-quote-btn" class="oasis-btn primary lg">
+          <i class="fa-solid fa-print"></i> <span data-i18n="btnPrintQuote">인쇄 / PDF 저장하기</span>
+        </button>
+        <button id="cancel-quote-modal" class="oasis-btn secondary">
+          <span data-i18n="btnClose">닫기</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- App Script -->
+  <script src="app.js"></script>
+</body>
+</html>
+

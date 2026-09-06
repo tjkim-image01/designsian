@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>다문화도서관 수서 몰 vc01 | Tiny Town Book Village</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Typography plan (free fonts): Display = Gowun Batang(KO) + Fraunces(Latin) · Body = Pretendard Variable · Accent = Galmuri11 (pixel) -->
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Gowun+Dodum&family=Fraunces:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/galmuri@latest/dist/galmuri.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body class="theme-tinytown">
+  <canvas id="fx-canvas" aria-hidden="true"></canvas>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="app-header">
+    <div class="header-inner">
+      <a href="#home" class="brand">
+        <span class="brand-mark"><span class="mark-pole"></span><span class="mark-roof"></span></span>
+        <span class="brand-text">
+          <span class="brand-title" data-i18n="brand">다문화도서관 수서 몰</span>
+          <span class="brand-sub">vc01 · Tiny Town Book Village</span>
+        </span>
+      </a>
+      <nav class="nav">
+        <a href="#home" class="nav-link active" data-page="home" data-i18n="navHome">메인</a>
+        <a href="#search" class="nav-link" data-page="search" data-i18n="navSearch">도서 검색</a>
+        <a href="#curation" class="nav-link" data-page="curation" data-i18n="navCuration">큐레이션</a>
+        <a href="#cart" class="nav-link" data-page="cart"><span data-i18n="navCart">공문 견적함</span><span class="nav-badge" id="nav-cart-count">0</span></a>
+      </nav>
+      <div class="header-tools">
+        <label class="switch" title="Librarian mode">
+          <input type="checkbox" id="librarian-toggle">
+          <span class="switch-track"><span class="switch-knob"></span></span>
+          <span class="switch-label" data-i18n="librarianMode">사서 모드</span>
+        </label>
+        <button class="icon-btn" id="sound-toggle" aria-label="sound"><span id="sound-on">♪</span><span id="sound-off" hidden>♪̸</span></button>
+        <div class="lang-wrap">
+          <select id="lang-select" aria-label="Language">
+            <option value="KO">🇰🇷 한국어</option>
+            <option value="EN">🇺🇸 English</option>
+            <option value="VI">🇻🇳 Tiếng Việt</option>
+            <option value="ZH">🇨🇳 中文</option>
+            <option value="RU">🇷🇺 Русский</option>
+            <option value="JA">🇯🇵 日本語</option>
+          </select>
+        </div>
+        <a href="#cart" class="btn btn-primary btn-sm fx-btn"><span data-i18n="cartBtn">견적 장바구니</span> <span class="pill" id="header-cart-count">0</span></a>
+      </div>
+    </div>
+  </header>
+
+  <main id="app">
+
+    <!-- ============ HOME ============ -->
+    <section id="page-home" class="page active">
+      <div class="hero">
+        <canvas id="hero-canvas"></canvas>
+        <div class="hero-vignette"></div>
+        <div class="hero-content">
+          <p class="eyebrow" data-i18n="heroEyebrow">MULTICULTURAL LIBRARY COLLECTION · 2026</p>
+          <h1 class="hero-title" data-i18n="heroTitle">세계의 이야기가<br>황금 회전목마에 올라탑니다</h1>
+          <p class="hero-sub" data-i18n="heroSub">다문화 도서관을 위한 원서·이중언어 그림책 큐레이션. 사서를 위한 서지정보와 공문 견적을 한 화면에서.</p>
+          <div class="hero-actions">
+            <a href="#curation" class="btn btn-primary fx-btn" data-i18n="heroCta1">3D 전시실 입장</a>
+            <a href="#search" class="btn btn-ghost fx-btn" data-i18n="heroCta2">도서 검색하기</a>
+          </div>
+          <div class="hero-stats">
+            <div><strong>1,240</strong><span data-i18n="statTitles">보유 종수</span></div>
+            <div><strong>14</strong><span data-i18n="statLangs">지원 언어</span></div>
+            <div><strong>312</strong><span data-i18n="statLibs">납품 도서관</span></div>
+          </div>
+        </div>
+        <div class="hero-hint" data-i18n="heroHint">마우스를 움직여 회전목마를 돌려보세요</div>
+      </div>
+
+      <!-- 3D Exhibition -->
+      <section class="section">
+        <div class="section-head">
+          <p class="eyebrow" data-i18n="exhibEyebrow">3D EXHIBITION HALL</p>
+          <h2 class="section-title" data-i18n="exhibTitle">황금 회전목마 기획전</h2>
+          <p class="section-sub" data-i18n="exhibSub">기획전마다 다른 진열 형태로 책을 만나보세요. 책을 클릭하면 상세로 이동합니다.</p>
+        </div>
+        <div class="exhib-tabs" id="home-exhib-tabs"></div>
+        <div class="exhib-stage">
+          <canvas id="exhib-canvas"></canvas>
+          <div class="exhib-caption" id="exhib-caption"></div>
+          <div class="exhib-tooltip" id="exhib-tooltip" hidden></div>
+        </div>
+      </section>
+
+      <!-- New Arrivals -->
+      <section class="section section-alt">
+        <div class="section-head row">
+          <div>
+            <p class="eyebrow" data-i18n="newEyebrow">NEW ARRIVALS</p>
+            <h2 class="section-title" data-i18n="newTitle">2026 하반기 신간</h2>
+          </div>
+          <div class="seg" id="new-view-seg">
+            <button class="seg-btn active fx-btn" data-view="list" data-i18n="viewList">서지 리스트</button>
+            <button class="seg-btn fx-btn" data-view="3d" data-i18n="viewParade">책 퍼레이드 3D</button>
+          </div>
+        </div>
+        <div id="new-list" class="book-table-wrap"></div>
+        <div id="new-3d" class="parade-stage" hidden>
+          <canvas id="parade-canvas"></canvas>
+          <div class="parade-caption" id="parade-caption"></div>
+        </div>
+      </section>
+
+      <!-- For Librarians -->
+      <section class="section">
+        <div class="librarian-strip">
+          <div>
+            <p class="eyebrow" data-i18n="libEyebrow">FOR LIBRARIANS</p>
+            <h3 data-i18n="libTitle">수서 담당 사서를 위한 1클릭 공문 견적</h3>
+            <p data-i18n="libSub">장바구니에 담은 도서는 납품가(정가 10% 할인)로 자동 산출되어 공문 양식 견적서(인쇄/PDF)와 엑셀 사양서로 내려받을 수 있습니다.</p>
+          </div>
+          <div class="lib-features">
+            <div class="lib-feat"><b>ISBN · KDC</b><span data-i18n="libF1">모든 카드에 상시 노출</span></div>
+            <div class="lib-feat"><b>-10%</b><span data-i18n="libF2">도서관 납품가 자동 적용</span></div>
+            <div class="lib-feat"><b>PDF · XLSX</b><span data-i18n="libF3">공문 견적서 즉시 출력</span></div>
+          </div>
+          <a href="#cart" class="btn btn-primary fx-btn" data-i18n="libCta">견적함 열기</a>
+        </div>
+      </section>
+    </section>
+
+    <!-- ============ SEARCH ============ -->
+    <section id="page-search" class="page">
+      <div class="page-head">
+        <p class="eyebrow" data-i18n="searchEyebrow">BOOK SEARCH</p>
+        <h2 class="section-title" data-i18n="searchTitle">도서 검색 & 수서</h2>
+        <p class="section-sub" data-i18n="searchSub">언어·연령·KDC·출판사·가격으로 정밀 검색. ISBN 직접 입력도 가능합니다.</p>
+      </div>
+      <div class="search-bar">
+        <input type="search" id="search-input" data-i18n-placeholder="searchPlaceholder" placeholder="도서명, 저자, 출판사, ISBN, KDC 입력…">
+        <button class="btn btn-primary fx-btn" id="search-btn" data-i18n="searchBtn">검색</button>
+      </div>
+      <div class="search-layout">
+        <aside class="filter-rail">
+          <div class="filter-group"><label data-i18n="fLang">언어</label><select id="f-lang"></select></div>
+          <div class="filter-group"><label data-i18n="fAge">대상 연령</label><select id="f-age"></select></div>
+          <div class="filter-group"><label data-i18n="fKdc">KDC 분류</label><select id="f-kdc"></select></div>
+          <div class="filter-group"><label data-i18n="fPub">출판사</label><select id="f-pub"></select></div>
+          <div class="filter-group"><label data-i18n="fPrice">최대 정가</label><input type="range" id="f-price" min="8000" max="40000" step="1000" value="40000"><output id="f-price-out">40,000원</output></div>
+          <button class="btn btn-ghost btn-sm fx-btn" id="f-reset" data-i18n="fReset">필터 초기화</button>
+        </aside>
+        <div class="search-results">
+          <div class="results-meta"><span data-i18n="resultCount">검색 결과</span> <strong id="result-count">0</strong></div>
+          <div id="search-grid" class="book-grid"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CURATION ============ -->
+    <section id="page-curation" class="page">
+      <div class="page-head">
+        <p class="eyebrow" data-i18n="curEyebrow">CURATION EXHIBITIONS</p>
+        <h2 class="section-title" data-i18n="curTitle">기획전 3D 전시실</h2>
+        <p class="section-sub" data-i18n="curSub">회전목마·열기구·계단, 세 가지 3D 전시 형태의 기획전. 사서 패키지 일괄 담기를 지원합니다.</p>
+      </div>
+      <div class="exhib-tabs" id="cur-exhib-tabs"></div>
+      <div class="exhib-stage tall">
+        <canvas id="cur-canvas"></canvas>
+        <div class="exhib-caption" id="cur-caption"></div>
+        <div class="exhib-tooltip" id="cur-tooltip" hidden></div>
+      </div>
+      <div class="cur-detail" id="cur-detail"></div>
+    </section>
+
+    <!-- ============ CART ============ -->
+    <section id="page-cart" class="page">
+      <div class="page-head">
+        <p class="eyebrow" data-i18n="cartEyebrow">QUOTE CART</p>
+        <h2 class="section-title" data-i18n="cartTitle">장바구니 · 공문 견적함</h2>
+        <p class="section-sub" data-i18n="cartSub">납품가(정가 -10%) 기준으로 자동 산출됩니다. 기관 정보를 입력하면 공문 양식으로 출력됩니다.</p>
+      </div>
+      <div class="cart-stats" id="cart-stats"></div>
+      <div class="cart-layout">
+        <div class="cart-main">
+          <div class="cart-actions">
+            <button class="btn btn-ghost btn-sm fx-btn" id="cart-clear" data-i18n="cartClear">전체 비우기</button>
+          </div>
+          <div id="cart-table" class="book-table-wrap"></div>
+        </div>
+        <aside class="cart-side">
+          <h4 data-i18n="instTitle">수서 기관 정보</h4>
+          <label><span data-i18n="instName">기관명</span><input id="inst-name" placeholder="OO시 다문화도서관"></label>
+          <label><span data-i18n="instLibrarian">담당 사서</span><input id="inst-lib" placeholder="홍길동"></label>
+          <label><span data-i18n="instContact">연락처</span><input id="inst-tel" placeholder="02-000-0000"></label>
+          <label><span data-i18n="instEmail">이메일</span><input id="inst-email" placeholder="lib@city.go.kr"></label>
+          <div class="cart-total" id="cart-total"></div>
+          <button class="btn btn-primary fx-btn" id="btn-print" data-i18n="btnPrint">공문 견적서 인쇄 / PDF</button>
+          <button class="btn btn-ghost fx-btn" id="btn-xlsx" data-i18n="btnXlsx">엑셀 사양서 다운로드</button>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ============ DETAIL ============ -->
+    <section id="page-detail" class="page">
+      <a href="#search" class="back-link fx-btn" data-i18n="back">← 목록으로</a>
+      <div class="detail-layout">
+        <div class="detail-3d">
+          <canvas id="detail-canvas"></canvas>
+          <p class="detail-hint" data-i18n="detailHint">드래그하여 책을 360° 돌려보세요</p>
+        </div>
+        <div class="detail-info" id="detail-info"></div>
+      </div>
+      <section class="section">
+        <h3 class="section-title sm" data-i18n="related">함께 보면 좋은 도서</h3>
+        <div id="related-grid" class="book-grid"></div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div>
+      <strong data-i18n="brand">다문화도서관 수서 몰</strong>
+      <p data-i18n="footerDesc">공공·학교 다문화 도서관 납품 전문 · 원서 및 이중언어 도서 · 사서 공문 견적 지원</p>
+    </div>
+    <p class="footer-copy">© 2026 Multicultural Library Mall · vc01 Tiny Town Book Village<br>Pixel tiles: <a href="https://kenney.nl/assets/tiny-town" target="_blank" rel="noopener">Kenney · Tiny Town</a> (CC0)</p>
+  </footer>
+
+  <div class="toast" id="toast"></div>
+  <div id="print-area" class="print-only"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

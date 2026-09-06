@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>다문화 도서관 Web Version Viewer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #0d1117;
+      color: #f0f6fc;
+    }
+
+    /* Header Bar */
+    header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: rgba(13, 17, 23, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 1000;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      font-size: 24px;
+    }
+
+    .brand-title {
+      font-size: 17px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #60a5fa, #a78bfa, #f472b6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.3px;
+    }
+
+    .brand-subtitle {
+      font-size: 12px;
+      color: #8b949e;
+      margin-left: 6px;
+      padding-left: 10px;
+      border-left: 1px solid #30363d;
+    }
+
+    /* Top Right Controls */
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .select-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #c9d1d9;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .version-select {
+      background: #161b22;
+      color: #f0f6fc;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      outline: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .version-select:hover {
+      border-color: #58a6ff;
+      background: #1c2128;
+    }
+
+    .version-select:focus {
+      border-color: #58a6ff;
+      box-shadow: 0 0 0 3px rgba(56, 139, 253, 0.3);
+    }
+
+    .action-btn {
+      background: rgba(56, 139, 253, 0.15);
+      color: #58a6ff;
+      border: 1px solid rgba(56, 139, 253, 0.4);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .action-btn:hover {
+      background: #238636;
+      color: #ffffff;
+      border-color: #2ea043;
+    }
+
+    .nav-btn {
+      background: #161b22;
+      color: #c9d1d9;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      width: 36px;
+      height: 36px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .nav-btn:hover:not(:disabled) {
+      border-color: #58a6ff;
+      color: #58a6ff;
+      background: #1c2128;
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    .version-count {
+      font-size: 12px;
+      color: #8b949e;
+      min-width: 52px;
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Main Iframe Viewer Container */
+    main {
+      position: absolute;
+      top: 60px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: calc(100% - 60px);
+      background: #010409;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      header {
+        padding: 0 12px;
+      }
+      .brand-subtitle {
+        display: none;
+      }
+      .version-select {
+        padding: 6px 10px;
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header Navigation -->
+  <header>
+    <div class="brand">
+      <span class="brand-logo">📚</span>
+      <span class="brand-title">다문화 도서관 Web Viewer</span>
+      <span class="brand-subtitle">Interactive Concept Portfolio</span>
+    </div>
+
+    <div class="controls">
+      <label class="select-label" for="version-select">
+        <span>버전 선택:</span>
+      </label>
+      <button id="prev-btn" class="nav-btn" title="이전 버전 (←)">‹</button>
+      <select id="version-select" class="version-select">
+        <!-- Dynamically populated options starting with v* -->
+      </select>
+      <button id="next-btn" class="nav-btn" title="다음 버전 (→)">›</button>
+      <span id="version-count" class="version-count"></span>
+
+      <a id="open-new-tab" class="action-btn" href="#" target="_blank" title="새 탭에서 열기">
+        <span>↗ 새 탭</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Viewer Frame -->
+  <main>
+    <iframe id="viewer-frame" title="Web Version Viewer" src="about:blank"></iframe>
+  </main>
+
+  <script>
+    // Subfolder Version Metadata Definition
+    const knownVersions = [
+      { id: "v1", title: "v1 - Three.js 3D 지구본 & 책 은하수" },
+      { id: "v2", title: "v2 - WebGL 3D 파티클 오로라 & 구름 섬" },
+      { id: "v3", title: "v3 - WebGL 2D 팝업북 & 종이 공예" },
+      { id: "v4", title: "v4 - 3D 아카이브 홀 (사서 수서 B2B/B2C)" },
+      { id: "v5", title: "v5 - 3D 별자리 메트릭스 (사서 수서 B2B/B2C)" },
+      { id: "v6", title: "v6 - 3D 오리가미 포털 (사서 수서 B2B/B2C)" },
+      { id: "v7", title: "v7 - 3D 등불 야경 & 등불 전시관 (사서 견적함)" },
+      { id: "v8", title: "v8 - 테라조 아틀리에 & 3D 서가 벽 (사서 수서 데스크)" },
+      { id: "v9", title: "v9 - 양피지 지도 & 3D 문화 항로 (사서 견적함)" },
+      { id: "v10", title: "v10 - 팝업북 도시 & 회전 전시대 (어린이 사서)" },
+      { id: "v11", title: "v11 - 3D 사이퍼펑크 네온 아카이브 (사서 수서 B2B/B2C)" },
+      { id: "v12", title: "v12 - 3D 식물원 보타니컬 온실 (사서 수서 B2B/B2C)" },
+      { id: "v13", title: "v13 - 3D 앤틱 스팀펑크 메커니컬 (사서 수서 B2B/B2C)" },
+      { id: "v14", title: "v14 - 3D 사막 사파리 오아시스 캐러반 (사서 드라이빙 B2B/B2C)" },
+      { id: "v15", title: "v15 - 3D 구름 비행선 비공정 스카이포트 (사서 플라잉 B2B/B2C)" },
+      { id: "v16", title: "v16 - 3D 코스믹 월면 탐사선 루나 로버 (사서 주행 B2B/B2C)" },
+      { id: "v17", title: "v17 - 그랜드 스토리북 황금 회전목마 (프리미엄·키즈 B2B/B2C)" },
+      { id: "v18", title: "v18 - 심해 아쿠아리움 라이브러리 해파리 등불 (프리미엄·키즈 B2B/B2C)" },
+      { id: "v19", title: "v19 - 마법의 숲 트리하우스 반딧불이 (프리미엄·키즈 B2B/B2C)" },
+      { id: "v20", title: "v20 - 미니 던전 라이브러리 퀘스트 · Kenney 3D 에셋 (플레이어블 B2B/B2C)" },
+      { id: "vc01", title: "vc01 - 타이니 타운 책 마을 · Kenney 픽셀 타일 2.5D (걷는 마을 B2B/B2C)" },
+      { id: "vc02", title: "vc02 - 해적 항구 책 항해 · Quaternius Pirate Kit 3D (걷는 항구 B2B/B2C)" },
+      { id: "v20", title: "v20 - 3D 시티 일루미네이션 아카이브 (스마트 도시 라이브러리)" },
+      { id: "v21", title: "v21 - 3D 로열 골드 천구의 & 갤러리 (고급스러운 수서 몰)" },
+      { id: "v22", title: "v22 - 3D 토이박스 팝업 나무집 (아이들이 좋아하는 수서 몰)" },
+      { id: "v23", title: "v23 - 3D 마법 학교 부유 마법서 & 수정구 (흥미진진한 탐험 수서 몰)" },
+      { id: "v24", title: "v24 - 8-Bit Kenney Pixel Adventure (레트로 아케이드 픽셀 수서 몰 - Antigravity 기획)" }
+    ];
+
+    const selectEl = document.getElementById('version-select');
+    const frameEl = document.getElementById('viewer-frame');
+    const newTabEl = document.getElementById('open-new-tab');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const countEl = document.getElementById('version-count');
+    const latestId = knownVersions[knownVersions.length - 1].id;
+
+    // Populate dropdown with v* folders
+    function populateDropdown() {
+      selectEl.innerHTML = '';
+      knownVersions.forEach(ver => {
+        const option = document.createElement('option');
+        option.value = ver.id;
+        option.textContent = ver.title;
+        selectEl.appendChild(option);
+      });
+    }
+
+    // Load selected version into iframe
+    function loadVersion(versionId) {
+      const targetPath = `./${versionId}/index.html`;
+      frameEl.src = targetPath;
+      newTabEl.href = targetPath;
+      window.location.hash = versionId;
+      updateNav(versionId);
+    }
+
+    function updateNav(versionId) {
+      const idx = knownVersions.findIndex(v => v.id === versionId);
+      prevBtn.disabled = idx <= 0;
+      nextBtn.disabled = idx >= knownVersions.length - 1;
+      countEl.textContent = `${idx + 1} / ${knownVersions.length}`;
+    }
+
+    function step(delta) {
+      const idx = knownVersions.findIndex(v => v.id === selectEl.value);
+      const next = knownVersions[idx + delta];
+      if (!next) return;
+      selectEl.value = next.id;
+      loadVersion(next.id);
+    }
+
+    // Handle hash on page load
+    function init() {
+      populateDropdown();
+
+      const initialHash = window.location.hash.replace('#', '');
+      const matched = knownVersions.find(v => v.id === initialHash);
+
+      if (matched) {
+        selectEl.value = matched.id;
+        loadVersion(matched.id);
+      } else {
+        selectEl.value = latestId;
+        loadVersion(latestId);
+      }
+    }
+
+    // Dropdown Change Listener
+    selectEl.addEventListener('change', (e) => {
+      loadVersion(e.target.value);
+    });
+
+    prevBtn.addEventListener('click', () => step(-1));
+    nextBtn.addEventListener('click', () => step(1));
+    window.addEventListener('keydown', (e) => {
+      if (e.target === selectEl) return;
+      if (e.key === 'ArrowLeft') step(-1);
+      if (e.key === 'ArrowRight') step(1);
+    });
+
+    // Hashchange listener
+    window.addEventListener('hashchange', () => {
+      const hash = window.location.hash.replace('#', '');
+      if (hash && selectEl.value !== hash) {
+        selectEl.value = hash;
+        loadVersion(hash);
+      }
+    });
+
+    // Initialize Viewer
+    init();
+  </script>
+</body>
+</html>

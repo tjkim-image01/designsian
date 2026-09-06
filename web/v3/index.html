@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ko" class="light">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>다문화 팝업 도서관 | Folktale Paperbound Library v3</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  
+  <!-- Google Fonts & Material Symbols -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400..700;1,7..72,400..700&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@400;600;700&family=Plus+Jakarta+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+  <!-- External Libraries for 2D/3D Papercraft & Animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="styles.css"/>
+
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#97472C",
+            "primary-container": "#D97B5C",
+            "primary-dark": "#783017",
+            "primary-light": "#FFDBD0",
+            "secondary": "#516447",
+            "secondary-container": "#D4E9C4",
+            "tertiary": "#3F627F",
+            "tertiary-container": "#7698B7",
+            "surface": "#FDF9EF",
+            "surface-dim": "#DDDAD0",
+            "surface-container": "#F1EEE4",
+            "surface-container-low": "#F7F3E9",
+            "surface-container-high": "#ECE8DE",
+            "background": "#F9F5EB",
+            "on-surface": "#1C1C16",
+            "on-surface-variant": "#55433D",
+            "outline": "#88726C",
+            "outline-variant": "#DBC1BA"
+          },
+          fontFamily: {
+            serif: ['Literata', 'Noto Serif KR', 'serif'],
+            sans: ['Plus Jakarta Sans', 'Noto Sans KR', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-background text-on-surface antialiased overflow-x-hidden min-h-screen flex flex-col">
+
+  <!-- Navigation Header -->
+  <header class="bg-surface sticky top-0 border-b-2 border-outline-variant shadow-[4px_4px_0px_rgba(0,0,0,0.05)] z-40 transition-all duration-200">
+    <div class="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center h-20">
+      
+      <!-- Brand Logo -->
+      <a href="#" class="font-serif font-bold text-2xl text-primary flex items-center gap-3 group">
+        <div class="w-10 h-10 bg-primary-container text-white rounded-lg flex items-center justify-center shadow-[2px_2px_0px_rgba(0,0,0,0.15)] group-hover:rotate-6 transition-transform">
+          <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">auto_stories</span>
+        </div>
+        <div class="flex flex-col">
+          <span class="leading-tight tracking-tight text-primary dark:text-primary" data-i18n="brand_name">다문화 팝업 도서관</span>
+          <span class="text-[11px] font-sans text-outline font-normal" data-i18n="brand_tagline">Paperbound Stories Library</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav class="hidden md:flex items-center gap-6">
+        <a href="#curation" class="font-sans font-semibold text-sm text-primary border-b-2 border-primary pb-0.5" data-i18n="nav_collections">큐레이션 도서</a>
+        <a href="#curation" class="font-sans font-semibold text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low px-3 py-1.5 rounded transition-all" data-i18n="nav_fairytales">동화로 떠나는 여행</a>
+        <a href="#curation" class="font-sans font-semibold text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low px-3 py-1.5 rounded transition-all" data-i18n="nav_folktales">세계의 옛날이야기</a>
+        <a href="#curation" class="font-sans font-semibold text-sm text-on-surface-variant hover:text-primary hover:bg-surface-container-low px-3 py-1.5 rounded transition-all" data-i18n="nav_family">우리 가족 그림책</a>
+      </nav>
+
+      <!-- Right Utility Controls -->
+      <div class="flex items-center gap-3">
+        <!-- Instant Search Button -->
+        <button id="btn-open-search" class="flex items-center gap-2 bg-surface-container-low border border-outline-variant hover:border-primary px-3 py-1.5 rounded-lg text-sm text-on-surface-variant hover:text-primary transition-all">
+          <span class="material-symbols-outlined text-lg text-primary">search</span>
+          <span class="hidden sm:inline" data-i18n="search_placeholder">도서 빠른 검색...</span>
+        </button>
+
+        <!-- Washi-tape Style Multi-Language Switcher -->
+        <div class="washi-tape px-3 py-1 text-xs font-bold gap-1 rounded-sm text-on-surface select-none">
+          <span class="lang-btn active cursor-pointer" data-lang="ko">KR</span> /
+          <span class="lang-btn cursor-pointer" data-lang="en">EN</span> /
+          <span class="lang-btn cursor-pointer" data-lang="vi">VI</span> /
+          <span class="lang-btn cursor-pointer" data-lang="zh">ZH</span>
+        </div>
+
+        <!-- Quick My Reservations Modal Trigger -->
+        <button id="btn-my-reservations" class="bg-primary text-white px-4 py-2 text-sm font-semibold rounded paper-tab hover:bg-primary-container flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-lg">bookmark</span>
+          <span class="hidden lg:inline" data-i18n="btn_my_reservations">예약 현황</span>
+          <span id="reservation-count-badge" class="bg-white text-primary text-xs px-1.5 py-0.5 rounded-full font-bold">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="flex-grow">
+
+    <!-- Hero Section: WebGL Interactive 2D/3D Papercraft Pop-Up Book -->
+    <section class="relative w-full max-w-7xl mx-auto px-6 md:px-12 py-10 md:py-16 overflow-hidden torn-edge-bottom bg-surface-bright mb-16">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        
+        <!-- Left Hero Text Column -->
+        <div class="lg:col-span-5 z-10 flex flex-col gap-5">
+          <div class="washi-tape washi-tape-tertiary px-3 py-1 rounded-sm text-xs font-bold self-start" data-i18n="hero_badge">
+            🎨 WebGL 2D Interactive Pop-Up Book
+          </div>
+          <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-on-surface leading-tight" data-i18n="hero_title">
+            한 장 한 장 펼쳐지는<br/><span class="text-primary">따뜻한 아날로그</span> 팝업 동화책
+          </h1>
+          <p class="font-sans text-base md:text-lg text-on-surface-variant leading-relaxed" data-i18n="hero_desc">
+            전 세계의 아름다운 다문화 동화와 그림책이 입체 팝업북으로 펴집니다. 시차 패럴랙스 종이 레이어와 함께 새로운 이야기를 만나보세요.
+          </p>
+
+          <div class="flex flex-wrap gap-4 mt-2">
+            <button id="btn-hero-explore" class="bg-primary text-white px-6 py-3 text-base font-semibold rounded paper-tab hover:bg-primary-container flex items-center gap-2">
+              <span class="material-symbols-outlined">auto_stories</span>
+              <span data-i18n="btn_explore">책 펼쳐보기</span>
+            </button>
+            <a href="#curation" class="bg-secondary text-white px-6 py-3 text-base font-semibold rounded paper-tab paper-tab-secondary hover:bg-secondary-dark flex items-center gap-2">
+              <span class="material-symbols-outlined">explore</span>
+              <span data-i18n="btn_view_curation">큐레이션 바로가기</span>
+            </a>
+          </div>
+
+          <!-- Feature Highlights -->
+          <div class="grid grid-cols-3 gap-3 mt-4 pt-4 border-t border-outline-variant/60 text-xs">
+            <div class="flex items-center gap-1.5 text-on-surface-variant">
+              <span class="material-symbols-outlined text-primary text-lg">layers</span>
+              <span data-i18n="feature_1">2D 입체 시차</span>
+            </div>
+            <div class="flex items-center gap-1.5 text-on-surface-variant">
+              <span class="material-symbols-outlined text-secondary text-lg">texture</span>
+              <span data-i18n="feature_2">종이 질감 쉐이더</span>
+            </div>
+            <div class="flex items-center gap-1.5 text-on-surface-variant">
+              <span class="material-symbols-outlined text-tertiary text-lg">touch_app</span>
+              <span data-i18n="feature_3">1초 대출/예약</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Hero WebGL Interactive Canvas Area -->
+        <div class="lg:col-span-7 relative w-full flex flex-col justify-center items-center">
+          <div id="hero-canvas-container" class="paper-sheet rounded-xl overflow-hidden shadow-[12px_12px_0px_rgba(0,0,0,0.06)]">
+            <!-- Three.js Canvas -->
+            <canvas id="papercraft-canvas"></canvas>
+            
+            <!-- Noise & Grain Texture Overlay -->
+            <div class="paper-grain-overlay"></div>
+
+            <!-- Parallax Hint Badge -->
+            <div class="absolute bottom-4 right-4 bg-surface/90 backdrop-blur-sm border border-outline-variant px-3 py-1.5 rounded-full text-xs font-semibold text-on-surface-variant shadow-sm flex items-center gap-1.5 z-30 pointer-events-none">
+              <span class="material-symbols-outlined text-primary text-sm animate-pulse">mouse</span>
+              <span data-i18n="hero_canvas_hint">마우스를 움직여 종이 입체감을 느껴보세요!</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Curated Collections Section -->
+    <section id="curation" class="max-w-7xl mx-auto px-6 md:px-12 mb-24">
+      
+      <!-- Section Header -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-10 border-b border-outline-variant pb-6">
+        <div>
+          <div class="washi-tape washi-tape-ochre px-3 py-0.5 rounded-sm text-xs font-bold mb-2" data-i18n="curation_badge">
+            📚 특별 큐레이션 서가
+          </div>
+          <h2 class="font-serif text-3xl font-bold text-on-surface" data-i18n="curation_title">이달의 추천 스토리북</h2>
+        </div>
+
+        <!-- Category Filter Tabs -->
+        <div class="flex flex-wrap gap-2" id="category-tabs">
+          <button data-category="all" class="cat-tab-btn bg-primary text-white px-4 py-2 text-xs font-bold rounded-full shadow-sm">전체 보기</button>
+          <button data-category="journey" class="cat-tab-btn bg-surface-container border border-outline-variant hover:border-primary px-4 py-2 text-xs font-semibold rounded-full text-on-surface-variant">동화로 떠나는 여행</button>
+          <button data-category="folktale" class="cat-tab-btn bg-surface-container border border-outline-variant hover:border-primary px-4 py-2 text-xs font-semibold rounded-full text-on-surface-variant">세계의 옛날이야기</button>
+          <button data-category="family" class="cat-tab-btn bg-surface-container border border-outline-variant hover:border-primary px-4 py-2 text-xs font-semibold rounded-full text-on-surface-variant">우리 가족 그림책</button>
+        </div>
+      </div>
+
+      <!-- Chapter 1: 동화로 떠나는 여행 -->
+      <div class="curation-category-group mb-14" data-group="journey">
+        <h3 class="font-serif text-2xl font-bold text-primary flex items-center gap-2 mb-6">
+          <span class="material-symbols-outlined text-tertiary">public</span>
+          <span data-i18n="cat_journey_title">동화로 떠나는 여행</span>
+          <span class="text-xs font-sans font-normal text-outline ml-2">세계 각국의 풍경과 문화를 만나는 그림책</span>
+        </h3>
+        <div id="books-grid-journey" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Dynamic Book Cards injected via JS -->
+        </div>
+      </div>
+
+      <!-- Chapter 2: 세계의 옛날이야기 -->
+      <div class="curation-category-group mb-14" data-group="folktale">
+        <h3 class="font-serif text-2xl font-bold text-secondary flex items-center gap-2 mb-6">
+          <span class="material-symbols-outlined text-primary-container">auto_stories</span>
+          <span data-i18n="cat_folktale_title">세계의 옛날이야기</span>
+          <span class="text-xs font-sans font-normal text-outline ml-2">지혜와 용기가 담긴 전 세계 전래 동화</span>
+        </h3>
+        <div id="books-grid-folktale" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Dynamic Book Cards injected via JS -->
+        </div>
+      </div>
+
+      <!-- Chapter 3: 우리 가족 그림책 -->
+      <div class="curation-category-group mb-14" data-group="family">
+        <h3 class="font-serif text-2xl font-bold text-tertiary flex items-center gap-2 mb-6">
+          <span class="material-symbols-outlined text-secondary">family_home</span>
+          <span data-i18n="cat_family_title">우리 가족 그림책</span>
+          <span class="text-xs font-sans font-normal text-outline ml-2">다문화 가정과 따뜻한 가족 사랑 이야기</span>
+        </h3>
+        <div id="books-grid-family" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Dynamic Book Cards injected via JS -->
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Instant Search Modal -->
+  <div id="search-modal" class="fixed inset-0 bg-black/50 backdrop-blur-xs z-50 flex justify-center items-start pt-20 px-4 opacity-0 pointer-events-none transition-opacity duration-300">
+    <div class="paper-sheet-elevated w-full max-w-2xl rounded-2xl p-6 shadow-2xl bg-surface relative translate-y-[-20px] transition-transform duration-300" id="search-modal-content">
+      
+      <!-- Search Input Header -->
+      <div class="flex items-center gap-3 border-b-2 border-primary pb-4 mb-4">
+        <span class="material-symbols-outlined text-2xl text-primary">search</span>
+        <input id="search-input" type="text" class="w-full bg-transparent text-lg font-sans outline-none text-on-surface placeholder:text-outline" placeholder="책 제목, 저자, 국가, 키워드로 검색하세요..." data-i18n-ph="search_placeholder"/>
+        <button id="btn-close-search" class="p-1 hover:bg-surface-container rounded-full text-outline hover:text-on-surface">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <!-- Instant Filter Tags -->
+      <div class="flex flex-wrap gap-2 mb-4 text-xs">
+        <span class="text-outline font-semibold">인기 키워드:</span>
+        <button class="search-tag-btn bg-surface-container-high px-2.5 py-1 rounded text-on-surface-variant hover:text-primary">한국 전래</button>
+        <button class="search-tag-btn bg-surface-container-high px-2.5 py-1 rounded text-on-surface-variant hover:text-primary">베트남 동화</button>
+        <button class="search-tag-btn bg-surface-container-high px-2.5 py-1 rounded text-on-surface-variant hover:text-primary">중국 용 전설</button>
+        <button class="search-tag-btn bg-surface-container-high px-2.5 py-1 rounded text-on-surface-variant hover:text-primary">영미권 그림책</button>
+        <button class="search-tag-btn bg-surface-container-high px-2.5 py-1 rounded text-on-surface-variant hover:text-primary">가족 사랑</button>
+      </div>
+
+      <!-- Live Results Container -->
+      <div id="search-results-list" class="max-h-96 overflow-y-auto space-y-3 pr-1">
+        <!-- Results populated dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 3D Book Flip & Pop-Up Preview Modal -->
+  <div id="book-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex justify-center items-center p-4 modal-perspective opacity-0 pointer-events-none transition-opacity duration-300">
+    
+    <div id="book-3d-card" class="book-3d-wrapper relative w-full max-w-4xl bg-surface paper-sheet-elevated rounded-2xl overflow-hidden shadow-2xl border-2 border-outline-variant flex flex-col md:flex-row min-h-[500px]">
+      
+      <!-- Close Button -->
+      <button id="btn-close-book" class="absolute top-4 right-4 z-50 w-9 h-9 bg-surface-container border border-outline-variant rounded-full flex items-center justify-center text-on-surface hover:bg-primary hover:text-white transition-colors">
+        <span class="material-symbols-outlined text-xl">close</span>
+      </button>
+
+      <!-- Left Page: 3D Papercraft Pop-Up Scene -->
+      <div class="md:w-1/2 bg-surface-container-low p-8 flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-outline-variant relative overflow-hidden">
+        
+        <div class="washi-tape washi-tape-ochre absolute top-6 left-6 px-3 py-1 text-xs font-bold" id="modal-book-country">
+          🇰🇷 대한민국
+        </div>
+
+        <!-- Pop-up Cutout Illustration Wrapper -->
+        <div class="relative w-full h-64 flex justify-center items-center my-4">
+          
+          <!-- Background Folded Page -->
+          <div class="absolute inset-0 bg-surface border border-outline-variant rounded-lg shadow-inner transform rotate-1"></div>
+          
+          <!-- Pop-up Paper Cutouts Container -->
+          <div class="relative z-10 text-center flex flex-col items-center justify-center p-4">
+            <!-- Dynamic SVG / Pop-Up Graphics -->
+            <div id="modal-popup-illustration" class="popup-element text-primary mb-3">
+              <!-- Rendered via JS -->
+            </div>
+            
+            <div id="modal-book-title-sub" class="font-serif font-bold text-xl text-primary">
+              호랑이와 곶감
+            </div>
+            <div id="modal-book-author" class="text-xs text-on-surface-variant mt-1">
+              한국 전래 동화
+            </div>
+          </div>
+        </div>
+
+        <div class="text-xs text-outline flex items-center gap-1 mt-2">
+          <span class="material-symbols-outlined text-sm">auto_awesome</span>
+          <span>종이 공예 팝업 미니 입체 뷰어</span>
+        </div>
+      </div>
+
+      <!-- Right Page: Book Details & 1-Click Reservation Stamp -->
+      <div class="md:w-1/2 p-8 flex flex-col justify-between relative bg-surface">
+        
+        <div>
+          <div class="flex items-center gap-2 mb-2">
+            <span id="modal-book-category-badge" class="bg-secondary-container text-on-secondary-container px-2.5 py-0.5 rounded text-xs font-bold">
+              세계의 옛날이야기
+            </span>
+            <span id="modal-book-age" class="bg-tertiary-container text-white px-2.5 py-0.5 rounded text-xs font-semibold">
+              4~8세 권장
+            </span>
+          </div>
+
+          <h2 id="modal-book-title" class="font-serif text-3xl font-bold text-on-surface mb-2">
+            호랑이와 곶감
+          </h2>
+          
+          <div class="flex items-center gap-2 text-xs text-outline mb-4">
+            <span class="material-symbols-outlined text-sm">translate</span>
+            <span id="modal-book-languages">지원 언어: 한국어, 영어, 베트남어</span>
+          </div>
+
+          <p id="modal-book-summary" class="font-sans text-sm text-on-surface-variant leading-relaxed mb-6">
+            무서운 호랑이가 우는 아이를 달래는 '곶감'이란 말에 곶감이 자신보다 더 무서운 존재인 줄 알고 도망치는 유쾌한 한국 전래 동화입니다.
+          </p>
+
+          <div class="bg-surface-container-low p-3 rounded-lg border border-outline-variant/60 text-xs space-y-1 mb-4">
+            <div class="flex justify-between">
+              <span class="text-outline">도서 상태:</span>
+              <span id="modal-book-status" class="font-bold text-secondary">대출 가능</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-outline">소장 위치:</span>
+              <span class="font-semibold text-on-surface">다문화 팝업 서가 A-04</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 1-Click Reservation Stamp Action Area -->
+        <div class="pt-4 border-t border-outline-variant flex justify-between items-center relative">
+          
+          <!-- Stamp Element -->
+          <div id="reservation-stamp" class="reservation-stamp">
+            예약완료
+          </div>
+
+          <button id="btn-modal-reserve" class="w-full bg-primary text-white py-3.5 px-6 font-semibold text-base rounded-lg paper-tab hover:bg-primary-dark flex items-center justify-center gap-2 shadow-md">
+            <span class="material-symbols-outlined">touch_app</span>
+            <span id="modal-reserve-btn-text">1초 즉시 대출/예약하기</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Reservations Drawer Modal -->
+  <div id="reservations-drawer" class="fixed inset-0 bg-black/50 z-50 flex justify-end opacity-0 pointer-events-none transition-opacity duration-300">
+    <div class="w-full max-w-md bg-surface h-full shadow-2xl p-6 flex flex-col justify-between border-l-2 border-outline-variant translate-x-full transition-transform duration-300" id="reservations-drawer-content">
+      <div>
+        <div class="flex justify-between items-center border-b border-outline-variant pb-4 mb-4">
+          <h3 class="font-serif font-bold text-xl text-primary flex items-center gap-2">
+            <span class="material-symbols-outlined">bookmark</span>
+            <span data-i18n="my_reservations_title">나의 도서 예약 현황</span>
+          </h3>
+          <button id="btn-close-reservations" class="p-1 hover:bg-surface-container rounded-full text-outline">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+
+        <div id="reservations-list" class="space-y-3 max-h-[70vh] overflow-y-auto">
+          <!-- Reservation items rendered dynamically -->
+        </div>
+      </div>
+
+      <div class="pt-4 border-t border-outline-variant">
+        <button id="btn-clear-reservations" class="w-full bg-surface-container border border-outline text-on-surface-variant hover:bg-outline-variant/30 py-2 rounded text-xs font-semibold">
+          전체 예약 내역 초기화
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Toast Notifications Container -->
+  <div id="toast-container"></div>
+
+  <!-- Footer Component -->
+  <footer class="bg-surface-container-highest border-t-4 border-double border-outline-variant shadow-[0px_-4px_0px_rgba(0,0,0,0.05)] mt-auto">
+    <div class="max-w-7xl mx-auto px-6 md:px-12 py-12 flex flex-col items-center gap-4 text-center">
+      <div class="font-serif font-bold text-xl text-primary flex items-center gap-2">
+        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">auto_stories</span>
+        <span data-i18n="brand_name">다문화 팝업 도서관</span>
+      </div>
+      
+      <p class="font-sans text-xs md:text-sm text-on-surface-variant max-w-xl leading-relaxed" data-i18n="footer_desc">
+        다문화 팝업 도서관은 전 세계 아이들과 가족이 함께 읽는 따뜻한 아날로그 종이 공예 동화책 세상을 만듭니다.
+      </p>
+
+      <div class="flex flex-wrap justify-center gap-6 text-xs text-on-surface-variant font-semibold my-2">
+        <a href="#" class="hover:text-primary underline decoration-tertiary">개인정보 처리방침</a>
+        <a href="#" class="hover:text-primary underline decoration-tertiary">다국어 도서 기부 안내</a>
+        <a href="#" class="hover:text-primary underline decoration-tertiary">도서관 이용 규칙</a>
+        <a href="#" class="hover:text-primary underline decoration-tertiary">문의하기</a>
+      </div>
+
+      <p class="font-sans text-xs text-outline">© 2026 The Global Multicultural Pop-Up Library. Crafted with warmth.</p>
+    </div>
+  </footer>
+
+  <!-- Main Javascript Application logic -->
+  <script src="app.js"></script>
+</body>
+</html>

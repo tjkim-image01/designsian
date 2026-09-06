@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AETHERIA | 3D 하늘 섬 다문화 도서관 수서 플랫폼</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Cinzel+Decorative:wght@700&family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Sans+SC:wght@400;700&family=Noto+Sans+TC:wght@400;700&family=Noto+Sans:wght@400;600;700&family=Outfit:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,600;0,800;1,400&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Three.js Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="sky-theme">
+
+  <!-- Cloud Wind Visual Canvas Overlay -->
+  <canvas id="windCanvas"></canvas>
+
+  <!-- Main Header Navigation -->
+  <header class="sky-header">
+    <div class="header-brass-line"></div>
+    <div class="header-container">
+      <!-- Brand Logo -->
+      <div class="logo-area" id="brand-logo" role="button" tabindex="0">
+        <div class="logo-airship-icon">
+          <i class="fa-solid fa-plane-up airship-propeller"></i>
+          <i class="fa-solid fa-cloud cloud-bg"></i>
+        </div>
+        <div class="logo-text">
+          <span class="brand-name">AETHERIA</span>
+          <span class="brand-tagline" data-i18n="brandSub">다문화 도서관 수서·구입 전문 포털</span>
+        </div>
+      </div>
+
+      <!-- 5-Page SPA Navigation Tabs -->
+      <nav class="sky-nav">
+        <a href="#home" class="nav-btn active" data-page="home">
+          <i class="fa-solid fa-compass"></i>
+          <span data-i18n="navHome">3D 비행 탐험관</span>
+        </a>
+        <a href="#search" class="nav-btn" data-page="search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <span data-i18n="navSearch">수서 검색관</span>
+        </a>
+        <a href="#curation" class="nav-btn" data-page="curation">
+          <i class="fa-solid fa-box-archive"></i>
+          <span data-i18n="navCuration">하늘 섬 큐레이션</span>
+        </a>
+        <a href="#cart" class="nav-btn" data-page="cart">
+          <i class="fa-solid fa-file-invoice-dollar"></i>
+          <span data-i18n="navCart">공문 견적함</span>
+          <span class="cart-badge" id="cart-count">0</span>
+        </a>
+        <a href="#detail" class="nav-btn" data-page="detail">
+          <i class="fa-solid fa-book-open"></i>
+          <span data-i18n="navDetail">360° 서지관</span>
+        </a>
+      </nav>
+
+      <!-- Control Panel (Sound & 5-Lang Switcher) -->
+      <div class="header-controls">
+        <button id="audio-toggle-btn" class="control-icon-btn" title="프로펠러 & 바람 사운드" aria-label="Audio Sound Toggle">
+          <i class="fa-solid fa-volume-xmark" id="audio-icon"></i>
+          <span class="sound-wave-bars">
+            <span></span><span></span><span></span>
+          </span>
+        </button>
+
+        <div class="lang-selector-wrapper">
+          <i class="fa-solid fa-globe lang-globe-icon"></i>
+          <select id="lang-select" class="sky-select" aria-label="Language Selector">
+            <option value="KO">🇰🇷 한국어 (KO)</option>
+            <option value="EN">🇺🇸 English (EN)</option>
+            <option value="VI">🇻🇳 Tiếng Việt (VI)</option>
+            <option value="ZH">🇨🇳 中文 (ZH)</option>
+            <option value="FR">🇫🇷 Français (FR)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Application Content Container -->
+  <main id="app-viewport">
+
+    <!-- ==================== PAGE 1: HOME (#home) ==================== -->
+    <section id="view-home" class="page-view active">
+      <!-- Three.js 3D Cloud Map & Steampunk Airship Flight Arena -->
+      <div class="hero-3d-arena">
+        <div id="three-sky-container" class="three-canvas-holder"></div>
+        
+        <!-- Flight HUD Overlay Controls & Instructions -->
+        <div class="flight-hud">
+          <div class="flight-status-card">
+            <div class="airship-badge"><i class="fa-solid fa-paper-plane"></i> <span data-i18n="airshipStatus">스팀펑크 수서 탐사선 01호</span></div>
+            <div class="speedometer"><span data-i18n="speedLabel">비행 속도:</span> <strong id="hud-speed">0</strong> knot</div>
+            <div class="location-tag"><i class="fa-solid fa-location-dot"></i> <span id="hud-location" data-i18n="locCentral">중앙 관제 스카이포트 상공</span></div>
+          </div>
+
+          <!-- WASD Flight Control Help Card -->
+          <div class="flight-key-guide">
+            <div class="key-title" data-i18n="flightControlTitle"><i class="fa-solid fa-gamepad"></i> 비행선 조종법 (Bruno Simon Style)</div>
+            <div class="key-grid">
+              <div class="key-item"><kbd>W</kbd> / <kbd>↑</kbd> <span data-i18n="keyFwd">가속 전진</span></div>
+              <div class="key-item"><kbd>S</kbd> / <kbd>↓</kbd> <span data-i18n="keyBwd">감속 후진</span></div>
+              <div class="key-item"><kbd>A</kbd> / <kbd>←</kbd> <span data-i18n="keyLeft">좌회전</span></div>
+              <div class="key-item"><kbd>D</kbd> / <kbd>→</kbd> <span data-i18n="keyRight">우회전</span></div>
+            </div>
+            <div class="flight-hint" data-i18n="flightHint">💡 하늘 섬 근처에 접근하여 3D 기획전을 탐험해보세요!</div>
+          </div>
+
+          <!-- On-Screen Touch Joystick for Mobile / Touch Screen -->
+          <div class="touch-dpad">
+            <button class="dpad-btn dpad-up" id="btn-touch-up"><i class="fa-solid fa-chevron-up"></i></button>
+            <div class="dpad-mid">
+              <button class="dpad-btn dpad-left" id="btn-touch-left"><i class="fa-solid fa-chevron-left"></i></button>
+              <div class="dpad-center"><i class="fa-solid fa-wind"></i></div>
+              <button class="dpad-btn dpad-right" id="btn-touch-right"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+            <button class="dpad-btn dpad-down" id="btn-touch-down"><i class="fa-solid fa-chevron-down"></i></button>
+          </div>
+        </div>
+
+        <!-- Floating Island Hotspot Land Notification Trigger -->
+        <div id="island-landing-toast" class="landing-toast hidden">
+          <div class="toast-icon"><i class="fa-solid fa-landmark-flag"></i></div>
+          <div class="toast-body">
+            <h4 id="toast-island-name">아시아 구름 섬 (Asian Cloud Island)</h4>
+            <p id="toast-island-desc" data-i18n="islandToastDesc">동양 전래동화 및 전통 다문화 도서 기획전 구역입니다.</p>
+          </div>
+          <button id="toast-land-btn" class="sky-btn primary-btn"><i class="fa-solid fa-plane-arrival"></i> <span data-i18n="btnLandExhibition">기획전 입장하기</span></button>
+        </div>
+      </div>
+
+      <!-- Cloud Islands Exhibition Cards Section -->
+      <div class="section-container cloud-islands-section">
+        <div class="section-header">
+          <div class="section-badge"><i class="fa-solid fa-cloud-sun"></i> 3D SKY EXHIBITIONS</div>
+          <h2 class="section-title" data-i18n="islandsTitle">하늘 섬 문화관 3D 기획전</h2>
+          <p class="section-sub" data-i18n="islandsSub">스팀펑크 비행선이 항해하는 테마별 세계 문화 구름 섬을 둘러보세요.</p>
+        </div>
+
+        <div class="islands-grid">
+          <!-- Asian Cloud Island -->
+          <div class="island-card asian-theme" data-island="asian">
+            <div class="card-sky-banner">
+              <span class="lang-tag">KO / VI / ZH</span>
+              <div class="card-icon"><i class="fa-solid fa-torii-gate"></i></div>
+            </div>
+            <div class="card-body">
+              <h3 data-i18n="asianIslandTitle">아시아 전래동화 & 전통 문화관</h3>
+              <p data-i18n="asianIslandDesc">한국, 베트남, 중국의 전래 동화, 등불 축제 이야기, 다문화 아동 양장 도서 컬렉션.</p>
+              <div class="card-metrics">
+                <span><i class="fa-solid fa-book"></i> 120+ Titles</span>
+                <span><i class="fa-solid fa-star"></i> KDC 800</span>
+              </div>
+              <button class="sky-btn outline-btn explore-island-btn" data-island="asian">
+                <span data-i18n="btnExploreIsland">섬 탐험 & 수서</span> <i class="fa-solid fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- European Cloud Island -->
+          <div class="island-card european-theme" data-island="european">
+            <div class="card-sky-banner">
+              <span class="lang-tag">EN / FR</span>
+              <div class="card-icon"><i class="fa-solid fa-castle"></i></div>
+            </div>
+            <div class="card-body">
+              <h3 data-i18n="euroIslandTitle">유럽 고전 성 & 명작 도서관</h3>
+              <p data-i18n="euroIslandDesc">영국, 프랑스, 독일 명작 문학 및 림스 에디션, 이중언어 원서 서적 묶음.</p>
+              <div class="card-metrics">
+                <span><i class="fa-solid fa-book"></i> 95+ Titles</span>
+                <span><i class="fa-solid fa-star"></i> KDC 840/850</span>
+              </div>
+              <button class="sky-btn outline-btn explore-island-btn" data-island="european">
+                <span data-i18n="btnExploreIsland">섬 탐험 & 수서</span> <i class="fa-solid fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Skyport Librarian Base -->
+          <div class="island-card skyport-theme" data-island="skyport">
+            <div class="card-sky-banner">
+              <span class="lang-tag">B2B SPECIAL</span>
+              <div class="card-icon"><i class="fa-solid fa-tower-observation"></i></div>
+            </div>
+            <div class="card-body">
+              <h3 data-i18n="skyportTitle">사서 관제 스카이포트 종합관</h3>
+              <p data-i18n="skyportDesc">전 세계 5개 국어 신간 통합 수서, MARC 데이터 무료제공, 공문 견적 원클릭 서비스.</p>
+              <div class="card-metrics">
+                <span><i class="fa-solid fa-tags"></i> 10% B2B Discount</span>
+                <span><i class="fa-solid fa-truck-fast"></i> Quick Shipping</span>
+              </div>
+              <button class="sky-btn outline-btn explore-island-btn" data-island="skyport">
+                <span data-i18n="btnExploreIsland">스카이포트 입장</span> <i class="fa-solid fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- New Releases Section (Mix of Classic List & Active 3D Cards) -->
+      <div class="section-container new-releases-section">
+        <div class="section-header flex-header">
+          <div>
+            <div class="section-badge"><i class="fa-solid fa-sparkles"></i> NEW ARRIVALS</div>
+            <h2 class="section-title" data-i18n="newReleasesTitle">이달의 추천 신간 수서 도서</h2>
+          </div>
+          
+          <!-- View Toggle (3D Floating Cards vs Librarian Grid List) -->
+          <div class="view-switcher-group">
+            <button id="btn-view-cards" class="switch-btn active" title="3D 부유 카드로 보기">
+              <i class="fa-solid fa-grip"></i> <span data-i18n="view3DCards">3D 부유 카드</span>
+            </button>
+            <button id="btn-view-table" class="switch-btn" title="사서 상세 리스트로 보기">
+              <i class="fa-solid fa-list-check"></i> <span data-i18n="viewList">사서 수서 리스트</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Dynamic Container for New Releases -->
+        <div id="home-new-releases-container" class="releases-grid-view">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== PAGE 2: SEARCH (#search) ==================== -->
+    <section id="view-search" class="page-view">
+      <div class="section-container">
+        <div class="search-hero-box">
+          <div class="section-badge"><i class="fa-solid fa-filter"></i> SKY LIBRARIAN SEARCH</div>
+          <h2 data-i18n="searchTitle">스카이 다문화 수서 통합 검색</h2>
+          <p data-i18n="searchSub">언어, 연령대, KDC 분류, ISBN, 출판사별 맞춤형 수서 도서를 빠르게 검색하세요.</p>
+
+          <!-- Search Bar & Filters Form -->
+          <div class="search-filter-panel">
+            <div class="main-search-input-group">
+              <i class="fa-solid fa-magnifying-glass search-icon"></i>
+              <input type="text" id="search-keyword" placeholder="도서명, 저자, ISBN, 출판사, 키워드를 입력하세요..." data-i18n-ph="searchPlaceholder">
+              <button id="search-submit-btn" class="sky-btn primary-btn"><i class="fa-solid fa-arrow-right"></i> <span data-i18n="btnSearch">검색</span></button>
+            </div>
+
+            <!-- Detailed Multi-Filter Controls -->
+            <div class="filter-controls-grid">
+              <!-- Language Filter -->
+              <div class="filter-group">
+                <label data-i18n="filterLangLabel"><i class="fa-solid fa-language"></i> 수서 언어 선택</label>
+                <select id="filter-lang" class="sky-select">
+                  <option value="ALL" data-i18n="optAllLangs">전체 언어 (ALL)</option>
+                  <option value="KO">🇰🇷 한국어 (KO)</option>
+                  <option value="EN">🇺🇸 English (EN)</option>
+                  <option value="VI">🇻🇳 Tiếng Việt (VI)</option>
+                  <option value="ZH">🇨🇳 中文 (ZH)</option>
+                  <option value="FR">🇫🇷 Français (FR)</option>
+                </select>
+              </div>
+
+              <!-- Age Group Filter -->
+              <div class="filter-group">
+                <label data-i18n="filterAgeLabel"><i class="fa-solid fa-child-reaching"></i> 대상 연령</label>
+                <select id="filter-age" class="sky-select">
+                  <option value="ALL" data-i18n="optAllAges">전체 연령</option>
+                  <option value="INFANT" data-i18n="optInfant">영유아 (0-5세)</option>
+                  <option value="CHILDREN" data-i18n="optChildren">아동/어린이 (6-12세)</option>
+                  <option value="YOUTH" data-i18n="optYouth">청소년 (13-18세)</option>
+                  <option value="ADULT" data-i18n="optAdult">일반/성인</option>
+                </select>
+              </div>
+
+              <!-- KDC Classification Filter -->
+              <div class="filter-group">
+                <label data-i18n="filterKDCLabel"><i class="fa-solid fa-bookmark"></i> KDC 한국십진분류</label>
+                <select id="filter-kdc" class="sky-select">
+                  <option value="ALL" data-i18n="optAllKDC">전체 분류</option>
+                  <option value="800">800 문학 (전래동화/소설)</option>
+                  <option value="300">300 사회과학 (다문화/풍습)</option>
+                  <option value="900">900 역사/지리</option>
+                  <option value="100">100 철학/인성</option>
+                  <option value="000">000 총류/백과사전</option>
+                </select>
+              </div>
+
+              <!-- Publisher Filter -->
+              <div class="filter-group">
+                <label data-i18n="filterPubLabel"><i class="fa-solid fa-building-columns"></i> 출판사/기관</label>
+                <select id="filter-pub" class="sky-select">
+                  <option value="ALL" data-i18n="optAllPubs">전체 출판사</option>
+                  <option value="무지개아시아">무지개아시아 출판</option>
+                  <option value="Aetheria Press">Aetheria Press</option>
+                  <option value="글로벌다문화북스">글로벌다문화북스</option>
+                  <option value="한베문화재단">한베문화재단</option>
+                  <option value="하늘 구름 도서">하늘 구름 도서</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Search Results Count & Action Bar -->
+        <div class="results-action-bar">
+          <div class="results-count">
+            <span data-i18n="searchResultTotal">검색 결과: 총</span> <strong id="search-total-count">0</strong><span data-i18n="countUnit">권</span>
+          </div>
+
+          <div class="bulk-action-btns">
+            <button id="btn-select-all" class="sky-btn outline-btn sm-btn"><i class="fa-solid fa-square-check"></i> <span data-i18n="btnSelectAll">전체 선택</span></button>
+            <button id="btn-add-selected-cart" class="sky-btn primary-btn sm-btn"><i class="fa-solid fa-cart-plus"></i> <span data-i18n="btnAddSelectedCart">선택 도서 장바구니 담기</span></button>
+          </div>
+        </div>
+
+        <!-- Search Results Grid / Table -->
+        <div id="search-results-container" class="search-results-grid">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== PAGE 3: CURATION (#curation) ==================== -->
+    <section id="view-curation" class="page-view">
+      <div class="section-container">
+        <div class="section-header text-center">
+          <div class="section-badge"><i class="fa-solid fa-boxes-packing"></i> SPECIAL SKY PACKAGES</div>
+          <h2 class="section-title" data-i18n="curationTitle">3D 하늘 섬 사서 추천 큐레이션 세트</h2>
+          <p class="section-sub" data-i18n="curationSub">전국 공공·학교 도서관 다문화 수서 담당자를 위해 완벽 구성된 테마별 패키지입니다.</p>
+        </div>
+
+        <div id="curation-packages-grid" class="curation-grid">
+          <!-- Populated by JS with 3D stacked book visuals -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== PAGE 4: CART & QUOTE (#cart) ==================== -->
+    <section id="view-cart" class="page-view">
+      <div class="section-container">
+        <div class="cart-header-box">
+          <div class="section-badge"><i class="fa-solid fa-file-invoice"></i> LIBRARIAN BULK ORDER</div>
+          <h2 data-i18n="cartTitle">스카이포트 사서 공문 견적함</h2>
+          <p data-i18n="cartSub">수서 예정 도서를 점검하고 기관 할인(10%) 및 MARC 카탈로깅 옵션을 적용하여 1클릭 공식 견적서를 생성하세요.</p>
+        </div>
+
+        <div class="cart-layout-grid">
+          <!-- Cart Items Table -->
+          <div class="cart-items-panel">
+            <div class="panel-header">
+              <h3><i class="fa-solid fa-list-ol"></i> <span data-i18n="cartListTitle">선택 수서 도서 목록</span> (<span id="cart-item-count-badge">0</span>)</h3>
+              <button id="btn-clear-cart" class="sky-btn danger-text-btn"><i class="fa-solid fa-trash-can"></i> <span data-i18n="btnClearCart">전체 비우기</span></button>
+            </div>
+
+            <div class="cart-table-wrapper">
+              <table class="sky-table" id="cart-table">
+                <thead>
+                  <tr>
+                    <th data-i18n="thCover">표지</th>
+                    <th data-i18n="thInfo">도서 서지 정보</th>
+                    <th data-i18n="thPrice">정가 / 할인대가</th>
+                    <th data-i18n="thQty">수량</th>
+                    <th data-i18n="thSubtotal">소계</th>
+                    <th data-i18n="thAction">삭제</th>
+                  </tr>
+                </thead>
+                <tbody id="cart-table-body">
+                  <!-- Dynamic Cart Rows -->
+                </tbody>
+              </table>
+              <div id="cart-empty-msg" class="empty-state">
+                <i class="fa-solid fa-box-open empty-icon"></i>
+                <h4 data-i18n="cartEmptyTitle">장바구니가 비어 있습니다.</h4>
+                <p data-i18n="cartEmptyDesc">수서 검색관이나 3D 하늘 섬 기획전에서 필요한 도서를 담아보세요.</p>
+                <a href="#search" class="sky-btn primary-btn"><i class="fa-solid fa-magnifying-glass"></i> <span data-i18n="btnGoSearch">도서 검색하러 가기</span></a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Price & Official Quote Request Sidebar -->
+          <div class="cart-summary-panel">
+            <div class="summary-card">
+              <h3 class="summary-title"><i class="fa-solid fa-calculator"></i> <span data-i18n="summaryTitle">수서 견적 요약</span></h3>
+              
+              <div class="summary-row">
+                <span data-i18n="sumTotalListPrice">총 정가합계:</span>
+                <strong id="sum-list-price">0 원</strong>
+              </div>
+
+              <div class="summary-row discount-row">
+                <span><i class="fa-solid fa-building-columns"></i> <span data-i18n="sumB2BDiscount">사서 기관 할인 (10%):</span></span>
+                <strong id="sum-discount-amount">-0 원</strong>
+              </div>
+
+              <!-- Cataloging Option -->
+              <div class="cataloging-option-box">
+                <label class="checkbox-container">
+                  <input type="checkbox" id="chk-marc-cataloging" checked>
+                  <span class="checkmark"></span>
+                  <div class="chk-text">
+                    <strong data-i18n="optMARCLabel">MARC 카탈로깅 & 바코드 작업</strong>
+                    <p data-i18n="optMARCSub">권당 +500원 (KDC/DDC 태그 및 칩 착부 완료 납품)</p>
+                  </div>
+                </label>
+              </div>
+
+              <div class="summary-row cataloging-row">
+                <span data-i18n="sumMARCPrice">카탈로깅 수수료:</span>
+                <strong id="sum-marc-price">0 원</strong>
+              </div>
+
+              <div class="divider-line"></div>
+
+              <div class="summary-row final-price-row">
+                <span data-i18n="sumFinalAmount">최종 구입 납품가:</span>
+                <strong id="sum-final-price">0 원</strong>
+              </div>
+
+              <!-- Form for Institutional Information -->
+              <div class="institution-form">
+                <h4 data-i18n="formInstTitle"><i class="fa-solid fa-landmark"></i> 납품 기관 정보 입력</h4>
+                <div class="form-group">
+                  <input type="text" id="inst-name" placeholder="기관/도서관명 (예: 서울특별시립다문화도서관)" value="서울특별시립 다문화 중앙도서관" class="sky-input">
+                </div>
+                <div class="form-group">
+                  <input type="text" id="inst-manager" placeholder="담당 사서 성함" value="김사서 주무관" class="sky-input">
+                </div>
+                <div class="form-group">
+                  <input type="text" id="inst-tax-id" placeholder="사업자/고유번호 (000-00-00000)" value="120-82-01928" class="sky-input">
+                </div>
+              </div>
+
+              <!-- Official Quote Actions -->
+              <div class="quote-actions-group">
+                <button id="btn-generate-quote-modal" class="sky-btn gold-gradient-btn full-btn">
+                  <i class="fa-solid fa-file-pdf"></i> <span data-i18n="btnGenQuotePDF">1클릭 공문 견적서 생성 (PDF/인쇄)</span>
+                </button>
+                <button id="btn-export-csv" class="sky-btn outline-btn full-btn margin-top-sm">
+                  <i class="fa-solid fa-file-excel"></i> <span data-i18n="btnExportCSV">엑셀(CSV) 서지목록 다운로드</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== PAGE 5: DETAIL (#detail) ==================== -->
+    <section id="view-detail" class="page-view">
+      <div class="section-container">
+        <div class="detail-layout">
+          <!-- Left: Interactive 360 Degree 3D Book Renderer -->
+          <div class="detail-3d-wrapper">
+            <div class="canvas-3d-card">
+              <div class="canvas-3d-header">
+                <span class="badge-3d"><i class="fa-solid fa-cube"></i> Three.js 3D Interactive Book</span>
+                <span class="badge-hint" data-i18n="hint3DRotate"><i class="fa-solid fa-arrows-spin"></i> 마우스 드래그로 360° 회전</span>
+              </div>
+              <div id="three-book-container" class="book-3d-canvas-holder"></div>
+              
+              <div class="book-3d-controls">
+                <button id="btn-rotate-left" class="sky-btn icon-only-btn" title="좌로 회전"><i class="fa-solid fa-rotate-left"></i></button>
+                <button id="btn-rotate-right" class="sky-btn icon-only-btn" title="우로 회전"><i class="fa-solid fa-rotate-right"></i></button>
+                <button id="btn-flip-book" class="sky-btn primary-btn sm-btn"><i class="fa-solid fa-book-open"></i> <span data-i18n="btnFlipPage">책 펼치기/덮기</span></button>
+                <button id="btn-reset-3d" class="sky-btn outline-btn sm-btn"><i class="fa-solid fa-arrow-rotate-left"></i> <span data-i18n="btnReset3D">시점 초기화</span></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Book MARC Metadata & Audio Preview -->
+          <div class="detail-meta-wrapper">
+            <div class="book-meta-card">
+              <div class="detail-header-tags">
+                <span class="detail-lang-badge" id="detail-lang">KO</span>
+                <span class="detail-kdc-badge" id="detail-kdc">KDC 800</span>
+                <span class="detail-stock-badge" id="detail-stock">수서가능 (재고충분)</span>
+              </div>
+
+              <h1 id="detail-title">무지개 다리를 건넌 사자 (The Rainbow Lion)</h1>
+              <h3 id="detail-subtitle">다문화 이중언어 그림책 시리즈 01</h3>
+
+              <!-- Audio Narration Player -->
+              <div class="audio-narration-box">
+                <div class="audio-info">
+                  <i class="fa-solid fa-headphones-simple audio-icon"></i>
+                  <div>
+                    <strong data-i18n="audioNarrationTitle">다국어 오디오 낭독 샘플</strong>
+                    <p id="detail-audio-lang-txt">원어민 다국어 성우 음성 낭독 (Web Speech API)</p>
+                  </div>
+                </div>
+                <button id="btn-play-narration" class="sky-btn accent-btn sm-btn">
+                  <i class="fa-solid fa-play" id="narration-play-icon"></i> <span id="narration-btn-text" data-i18n="btnPlayAudio">음성 청취하기</span>
+                </button>
+              </div>
+
+              <!-- Price Box -->
+              <div class="detail-price-box">
+                <div class="price-col">
+                  <span class="label" data-i18n="lblListPrice">정가</span>
+                  <span class="val list-price" id="detail-list-price">18,000 원</span>
+                </div>
+                <div class="price-col">
+                  <span class="label" data-i18n="lblSupplyPrice">사서 B2B 수서가 (10% off)</span>
+                  <span class="val supply-price" id="detail-supply-price">16,200 원</span>
+                </div>
+              </div>
+
+              <!-- Detail MARC Data Table -->
+              <table class="meta-marc-table">
+                <tr>
+                  <th data-i18n="lblAuthor">저자/글</th>
+                  <td id="detail-author">김다은 지음 / 쩐티마이 번역</td>
+                </tr>
+                <tr>
+                  <th data-i18n="lblPublisher">출판사</th>
+                  <td id="detail-publisher">무지개아시아 출판</td>
+                </tr>
+                <tr>
+                  <th data-i18n="lblISBN">ISBN-13</th>
+                  <td id="detail-isbn">979-11-89012-34-5</td>
+                </tr>
+                <tr>
+                  <th data-i18n="lblAge">대상 연령</th>
+                  <td id="detail-age">아동 (6~10세)</td>
+                </tr>
+                <tr>
+                  <th data-i18n="lblBinding">제본/제원</th>
+                  <td id="detail-binding">양장본 (Hardcover), 48쪽, 210x297mm</td>
+                </tr>
+                <tr>
+                  <th data-i18n="lblCIP">CIP 제어번호</th>
+                  <td id="detail-cip">CIP20260019283</td>
+                </tr>
+              </table>
+
+              <!-- Synopsis -->
+              <div class="synopsis-box">
+                <h4 data-i18n="lblSynopsisTitle"><i class="fa-solid fa-quote-left"></i> 도서 줄거리 & 사서 추천평</h4>
+                <p id="detail-summary">서로 다른 언어를 사용하는 숲속 동물들이 무지개 다리에서 만나 함께 우정을 쌓아가는 감동적인 이야기. 한국어와 베트남어가 병기되어 있어 도서관 다문화 코너 수서에 최적화된 도서입니다.</p>
+              </div>
+
+              <!-- Actions -->
+              <div class="detail-actions">
+                <button id="detail-add-cart-btn" class="sky-btn primary-btn lg-btn">
+                  <i class="fa-solid fa-cart-plus"></i> <span data-i18n="btnAddCart">공문 견적함에 담기</span>
+                </button>
+                <a href="#search" class="sky-btn outline-btn lg-btn">
+                  <i class="fa-solid fa-arrow-left"></i> <span data-i18n="btnBackList">목록으로 돌아가기</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL 1: Official Printable Quote Document Modal (공문 견적서) -->
+  <div id="modal-quote" class="modal-overlay hidden">
+    <div class="modal-window quote-paper-window">
+      <div class="modal-header-bar">
+        <span><i class="fa-solid fa-file-invoice-dollar"></i> <span data-i18n="modalQuoteHeader">공식 수서 납품 견적서 (인쇄/PDF용)</span></span>
+        <button class="modal-close-btn" id="close-quote-modal"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="quote-paper-content" id="printable-quote-area">
+        <!-- Official Document Layout for Korean Libraries -->
+        <div class="official-quote-header">
+          <div class="quote-title-stamp">
+            <h2>도 서 수 서 납 품 견 적 서</h2>
+            <p class="doc-no">문서번호: AETH-20260906-089</p>
+          </div>
+          <div class="seal-mark"><i class="fa-solid fa-stamp"></i> [직인생략]</div>
+        </div>
+
+        <div class="quote-meta-grid">
+          <div class="quote-party-box client-box">
+            <h4>[ 수신 기관 (수서요청처) ]</h4>
+            <p><strong>기관명:</strong> <span id="q-inst-name">서울특별시립 다문화 중앙도서관</span></p>
+            <p><strong>수신자:</strong> <span id="q-inst-mgr">김사서 주무관 귀하</span></p>
+            <p><strong>고유번호:</strong> <span id="q-inst-tax">120-82-01928</span></p>
+            <p><strong>발행일자:</strong> <span id="q-date">2026년 09월 06일</span></p>
+          </div>
+
+          <div class="quote-party-box supplier-box">
+            <h4>[ 공급자 (발행처) ]</h4>
+            <p><strong>상호명:</strong> AETHERIA 다문화도서관 수서포털</p>
+            <p><strong>대표자:</strong> Bruno Airship</p>
+            <p><strong>사업자번호:</strong> 214-88-99120</p>
+            <p><strong>소재지:</strong> 서울특별시 중구 세종대로 110 스카이포트 타워</p>
+          </div>
+        </div>
+
+        <div class="quote-total-words-box">
+          <span>합계금액 (공급가액 + VAT 포함): </span>
+          <strong id="q-total-words">일백이십삼만사천원정 (₩1,234,000)</strong>
+        </div>
+
+        <table class="quote-items-table">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>도서명 (Title)</th>
+              <th>ISBN</th>
+              <th>언어</th>
+              <th>정가</th>
+              <th>수서가(10%off)</th>
+              <th>수량</th>
+              <th>금액소계</th>
+            </tr>
+          </thead>
+          <tbody id="q-items-tbody">
+            <!-- Dynamic Quote Items -->
+          </tbody>
+        </table>
+
+        <div class="quote-summary-foot">
+          <div class="foot-notes">
+            <p>* 본 견적서는 도서관법 및 지방계약법 수의계약 규정에 준하여 발행되었습니다.</p>
+            <p>* MARC 카탈로깅 서비스 수수료 포함 (선택 시 권당 500원 적용).</p>
+            <p>* 납품기일: 발주 확정 후 3일 이내 지정 도서관 서가 직접 납품.</p>
+          </div>
+          <div class="foot-totals">
+            <p>총 정가 합계: <span id="q-sum-list">0 원</span></p>
+            <p>기관 할인액 (10%): <span id="q-sum-disc">-0 원</span></p>
+            <p>카탈로깅 비용: <span id="q-sum-marc">0 원</span></p>
+            <h3 class="final-q-total">최종 견적 총액: <span id="q-sum-final">0 원</span></h3>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer-btns">
+        <button id="btn-print-quote" class="sky-btn primary-btn"><i class="fa-solid fa-print"></i> <span data-i18n="btnPrintQuote">견적서 인쇄 / PDF 저장</span></button>
+        <button class="sky-btn outline-btn" id="close-quote-modal-2"><span data-i18n="btnClose">닫기</span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: Island Exhibition Landing Modal -->
+  <div id="modal-island-exhibition" class="modal-overlay hidden">
+    <div class="modal-window island-modal-window">
+      <div class="modal-header-bar">
+        <span id="exhibition-modal-title"><i class="fa-solid fa-cloud"></i> 아시아 구름 섬 3D 기획전</span>
+        <button class="modal-close-btn" id="close-exhibition-modal"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="exhibition-content-body">
+        <div class="exhibition-banner" id="exhibition-banner-box">
+          <div class="exhibition-badge" id="exhibition-badge-tag">ASIA CLOUD EXHIBITION</div>
+          <h2 id="exhibition-head-title">동양 전래동화 & 전통 다문화 도서 특별전</h2>
+          <p id="exhibition-head-desc">한국, 베트남, 중국의 아름다운 전래 이야기와 전통 등불 그림책을 한눈에 수서해보세요.</p>
+        </div>
+
+        <div class="exhibition-books-list" id="exhibition-books-grid">
+          <!-- Dynamic Books for this Island -->
+        </div>
+      </div>
+      <div class="modal-footer-btns">
+        <button id="btn-add-all-exhibition" class="sky-btn primary-btn"><i class="fa-solid fa-cart-plus"></i> <span data-i18n="btnAddAllExhibition">기획전 도서 전체 장바구니 담기</span></button>
+        <button class="sky-btn outline-btn" id="close-exhibition-modal-2"><span data-i18n="btnClose">닫기</span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="sky-footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <h4>AETHERIA (에테리아) 3D 수서 포털</h4>
+        <p>Bruno Simon Interactive 3D Flying Style B2B/B2C Multicultural Library Portal</p>
+      </div>
+      <div class="footer-copy">
+        <p>© 2026 AETHERIA Multicultural Library Procurement Platform. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Main Application JavaScript -->
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>다문화도서관 수서 몰 v23 | 3D Interactive Magic Academy & Spellbook Portal</title>
+  
+  <!-- Google Fonts: Cinzel, Cinzel Decorative, Noto Sans KR, Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@500;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Main CSS StyleSheet -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- External Libraries via CDN -->
+  <!-- Three.js r128 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- jsPDF for PDF Quote Generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <!-- SheetJS XLSX for Excel Spec Export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body class="magic-academy-theme">
+
+  <!-- Canvas Overlay for Magic Rune Sparkle Particles -->
+  <canvas id="rune-sparkle-canvas"></canvas>
+
+  <!-- Top Navigation Header -->
+  <header class="app-header">
+    <div class="header-container">
+      <!-- Logo & Brand -->
+      <a href="#home" class="brand-logo" id="brand-logo">
+        <div class="logo-orb">
+          <div class="orb-core">🔮</div>
+          <div class="orb-aura"></div>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title" data-i18n="brandTitle">다문화도서관 수서 몰</span>
+          <span class="brand-badge">v23 ARCANE</span>
+        </div>
+      </a>
+
+      <!-- SPA Nav Tabs -->
+      <nav class="nav-menu">
+        <a href="#home" class="nav-link active" data-page="home">
+          <i data-lucide="sparkles"></i>
+          <span data-i18n="navHome">아카데미 메인</span>
+        </a>
+        <a href="#search" class="nav-link" data-page="search">
+          <i data-lucide="search"></i>
+          <span data-i18n="navSearch">마법 도서 검색</span>
+        </a>
+        <a href="#curation" class="nav-link" data-page="curation">
+          <i data-lucide="compass"></i>
+          <span data-i18n="navCuration">서고 큐레이션</span>
+        </a>
+        <a href="#cart" class="nav-link" data-page="cart">
+          <i data-lucide="scroll"></i>
+          <span data-i18n="navCart">공문 견적함</span>
+          <span class="cart-badge-count" id="nav-cart-badge">0</span>
+        </a>
+      </nav>
+
+      <!-- Right Utility Bar -->
+      <div class="header-actions">
+        <!-- Web Audio Chime Sound Toggle -->
+        <button id="sound-toggle-btn" class="icon-btn" title="마법 소리 이펙트 토글" aria-label="Toggle Sound Effects">
+          <i data-lucide="volume-2" id="sound-icon-on"></i>
+          <i data-lucide="volume-x" id="sound-icon-off" class="hidden"></i>
+        </button>
+
+        <!-- 5-Language Switcher (KO, EN, VI, ZH, DE) -->
+        <div class="lang-selector-wrapper">
+          <i data-lucide="globe" class="globe-icon"></i>
+          <select id="language-switcher" aria-label="Select Language">
+            <option value="KO">🇰🇷 한국어</option>
+            <option value="EN">🇺🇸 English</option>
+            <option value="VI">🇻🇳 Tiếng Việt</option>
+            <option value="ZH">🇨🇳 中文</option>
+            <option value="DE">🇩🇪 Deutsch</option>
+          </select>
+        </div>
+
+        <!-- Quick Cart Trigger -->
+        <a href="#cart" class="cart-btn" id="header-cart-btn">
+          <i data-lucide="shopping-bag"></i>
+          <span data-i18n="cartButton">수서 장바구니</span>
+          <span class="badge" id="header-cart-count">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main View Router Container -->
+  <main id="app-viewport">
+
+    <!-- ===================================================================
+         PAGE 1: HOME (#home)
+         =================================================================== -->
+    <section id="view-home" class="page-view active">
+      
+      <!-- Three.js Hero Section: Levitating Spellbook & Crystal Orb -->
+      <div class="hero-section">
+        <div class="hero-three-wrapper">
+          <div id="hero-three-canvas" class="three-canvas-container"></div>
+          <div class="hero-canvas-hud">
+            <span class="hud-tag"><i data-lucide="wand-2"></i> THREE.JS 3D MAGIC ENGINE</span>
+            <span class="hud-instruction" data-i18n="heroHudHint">✦ 마우스를 움직여 3D 마법서와 회전 수정구의 마나 파티클을 관찰하세요</span>
+          </div>
+        </div>
+
+        <div class="hero-content">
+          <div class="hero-badge">
+            <span class="rune-symbol">✨</span>
+            <span data-i18n="heroBadge">INTERACTIVE MAGIC ACADEMY PORTAL</span>
+          </div>
+          <h1 class="hero-title" data-i18n="heroTitle">
+            마법 학교 비밀 서고의<br>
+            <span class="gradient-text">공중 부유 3D 마법서 수서 몰</span>
+          </h1>
+          <p class="hero-subtitle" data-i18n="heroSubtitle">
+            세계 각국의 판타지, 전래동화, 신화 및 탐험 서적 컬렉션을 신비로운 마법 서고에서 탐색하고 사서 전용 1-Click PDF/엑셀 견적을 발급받으세요.
+          </p>
+          <div class="hero-actions">
+            <a href="#search" class="btn btn-primary btn-lg btn-magic-gold">
+              <i data-lucide="book-open"></i>
+              <span data-i18n="btnBrowseSearch">마법 서고 검색하기</span>
+            </a>
+            <a href="#curation" class="btn btn-secondary btn-lg btn-magic-purple">
+              <i data-lucide="package-open"></i>
+              <span data-i18n="btnBrowseCuration">3D 큐레이션 패키지</span>
+            </a>
+          </div>
+
+          <div class="hero-stats-row">
+            <div class="stat-card">
+              <span class="stat-value">5개국</span>
+              <span class="stat-label" data-i18n="statLangs">다국어 도서 지원 (KO/EN/VI/ZH/DE)</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-value">10%</span>
+              <span class="stat-label" data-i18n="statDiscount">공공/학교 도서관 납품 할인</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-value">1-Click</span>
+              <span class="stat-label" data-i18n="statPdf">마법 인장 PDF 공문 자동 생성</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3D Wizarding Library Vault Exhibition Section -->
+      <div class="vault-section container" id="vault-section">
+        <div class="section-header text-center">
+          <div class="section-badge">
+            <i data-lucide="vault"></i>
+            <span data-i18n="vaultBadge">3D WIZARDING LIBRARY VAULT</span>
+          </div>
+          <h2 class="section-title" data-i18n="vaultTitle">3D 마법 비밀 서고 전시관</h2>
+          <p class="section-subtitle" data-i18n="vaultSubtitle">빛나는 마법 룬 문자로 잠긴 비밀 서고 책장에서 원하는 다문화 마법서를 3D로 선택하여 탐색하세요.</p>
+        </div>
+
+        <div class="vault-canvas-card magic-glass">
+          <div id="vault-three-canvas" class="vault-canvas-container"></div>
+          <div class="vault-info-overlay" id="vault-info-overlay">
+            <div class="vault-info-content">
+              <span class="vault-book-lang" id="vault-book-lang">🇰🇷 한국어</span>
+              <h3 class="vault-book-title" id="vault-book-title">마법 책장의 도서를 선택하세요</h3>
+              <p class="vault-book-desc" id="vault-book-desc">3D 비밀 서고 서가의 빛나는 마법서를 클릭하면 상세 정보가 표시됩니다.</p>
+              <div class="vault-book-actions">
+                <button class="btn btn-sm btn-magic-gold" id="vault-btn-detail">
+                  <i data-lucide="eye"></i>
+                  <span data-i18n="btnViewDetail">3D 상세 보기</span>
+                </button>
+                <button class="btn btn-sm btn-magic-purple" id="vault-btn-cart">
+                  <i data-lucide="plus"></i>
+                  <span data-i18n="btnAddCart">장바구니 담기</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- New Releases Section (Mix of Classic List & Active 3D Magic Cards) -->
+      <div class="new-releases-section container">
+        <div class="section-header flex-header">
+          <div>
+            <div class="section-badge">
+              <i data-lucide="flame"></i>
+              <span data-i18n="newBadge">NEW RELEASES</span>
+            </div>
+            <h2 class="section-title" data-i18n="newTitle">2026 하반기 신간 다문화 마법서 목록</h2>
+          </div>
+          <div class="view-mode-tabs">
+            <button class="view-tab-btn active" id="view-mode-grid-btn" title="3D 봉인 카드 뷰">
+              <i data-lucide="layout-grid"></i>
+              <span data-i18n="tabModeGrid">3D 마법 카드</span>
+            </button>
+            <button class="view-tab-btn" id="view-mode-list-btn" title="클래식 서지 리스트 뷰">
+              <i data-lucide="list"></i>
+              <span data-i18n="tabModeList">클래식 서지목록</span>
+            </button>
+          </div>
+        </div>
+
+        <div id="home-new-releases-container" class="grid-layout">
+          <!-- Dynamic render by app.js -->
+        </div>
+
+        <div class="text-center margin-top-xl">
+          <a href="#search" class="btn btn-secondary btn-lg btn-magic-gold">
+            <i data-lucide="search"></i>
+            <span data-i18n="btnViewAllSearch">전체 마법서 검색 및 수서하기</span>
+          </a>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ===================================================================
+         PAGE 2: SEARCH (#search)
+         =================================================================== -->
+    <section id="view-search" class="page-view hidden">
+      <div class="container">
+        <div class="section-header text-center">
+          <div class="section-badge">
+            <i data-lucide="wand-2"></i>
+            <span data-i18n="searchBadge">ARCANE SEARCH ENGINE</span>
+          </div>
+          <h1 class="section-title" data-i18n="searchTitle">마법 도서 검색 & 사서 수서 관제</h1>
+          <p class="section-subtitle" data-i18n="searchSubtitle">
+            다국어 언어(KO, EN, VI, ZH, DE), 마법 판타지 태그, ISBN, KDC 한국십진분류표 정밀 필터링
+          </p>
+        </div>
+
+        <!-- Filter Panel -->
+        <div class="filter-panel magic-glass">
+          <!-- Search Input Bar -->
+          <div class="search-bar-row">
+            <div class="search-input-wrapper">
+              <i data-lucide="search" class="search-icon"></i>
+              <input type="text" id="search-input" placeholder="도서명, 저자, 출판사, ISBN, KDC 코드로 검색..." aria-label="Search Query">
+              <button id="search-clear-btn" class="search-clear-btn hidden" title="검색어 지우기">
+                <i data-lucide="x"></i>
+              </button>
+            </div>
+            <button id="reset-filters-btn" class="btn btn-secondary">
+              <i data-lucide="rotate-ccw"></i>
+              <span data-i18n="btnResetFilters">필터 초기화</span>
+            </button>
+          </div>
+
+          <!-- Fantasy Theme Tag Filter Pills -->
+          <div class="theme-tags-filter-row">
+            <span class="filter-label" data-i18n="labelFantasyTags"><i data-lucide="tag"></i> 마법 테마:</span>
+            <div class="theme-tags-container" id="theme-tags-container">
+              <button class="tag-pill active" data-tag="ALL">전체 (ALL)</button>
+              <button class="tag-pill" data-tag="전래동화">#전래동화</button>
+              <button class="tag-pill" data-tag="판타지세계">#판타지세계</button>
+              <button class="tag-pill" data-tag="마법학교">#마법학교</button>
+              <button class="tag-pill" data-tag="신화탐험">#신화탐험</button>
+              <button class="tag-pill" data-tag="생태마법">#생태마법</button>
+              <button class="tag-pill" data-tag="탐험과모험">#탐험과모험</button>
+            </div>
+          </div>
+
+          <!-- Select Dropdowns Filter Grid -->
+          <div class="filter-grid">
+            <div class="filter-group">
+              <label for="filter-lang" data-i18n="filterLang">🌐 지원 언어</label>
+              <select id="filter-lang">
+                <option value="ALL" data-i18n="optAllLangs">전체 언어 (ALL)</option>
+                <option value="KO">🇰🇷 한국어 (Korean)</option>
+                <option value="EN">🇺🇸 영어 (English)</option>
+                <option value="VI">🇻🇳 베트남어 (Vietnamese)</option>
+                <option value="ZH">🇨🇳 중국어 (Chinese)</option>
+                <option value="DE">🇩🇪 독일어 (German)</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label for="filter-kdc" data-i18n="filterKDC">📚 KDC 분류표</label>
+              <select id="filter-kdc">
+                <option value="ALL" data-i18n="optAllKDC">전체 분류 (ALL)</option>
+                <option value="800">800 문학 (Literature)</option>
+                <option value="300">300 사회과학/민담 (Social Science)</option>
+                <option value="400">400 자연과학/연금술 (Natural Science)</option>
+                <option value="900">900 역사/신화 (History/Mythology)</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label for="filter-age" data-i18n="filterAge">👶 Target Age</label>
+              <select id="filter-age">
+                <option value="ALL" data-i18n="optAllAges">전체 연령 (ALL)</option>
+                <option value="Children" data-i18n="optChildren">유아/아동 (Children)</option>
+                <option value="Youth" data-i18n="optYouth">청소년 (Youth)</option>
+                <option value="Adult" data-i18n="optAdult">성인/일반 (Adult)</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label for="filter-publisher" data-i18n="filterPublisher">🏰 출판사</label>
+              <select id="filter-publisher">
+                <option value="ALL" data-i18n="optAllPublishers">전체 출판사 (ALL)</option>
+                <option value="아카데미 출판사">아카데미 출판사</option>
+                <option value="아시아 문학사">아시아 문학사</option>
+                <option value="그림 라이브러리">그림 라이브러리</option>
+                <option value="코스믹 월드">코스믹 월드</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Result Count Bar -->
+          <div class="results-counter-bar">
+            <span>
+              <span data-i18n="resultCountLabel">검색된 도서:</span>
+              <strong id="search-results-count" class="highlight-gold">0</strong>
+              <span data-i18n="resultCountUnit">건</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- Search Results Grid Container -->
+        <div id="search-results-grid" class="grid-layout margin-top-lg">
+          <!-- Dynamic render by app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         PAGE 3: CURATION (#curation)
+         =================================================================== -->
+    <section id="view-curation" class="page-view hidden">
+      <div class="container">
+        <div class="section-header text-center">
+          <div class="section-badge">
+            <i data-lucide="sparkles"></i>
+            <span data-i18n="curationBadge">SPECIAL 3D MAGIC VAULT PACKAGES</span>
+          </div>
+          <h1 class="section-title" data-i18n="curationTitle">3D 마법 비밀 서고 큐레이션 기획전</h1>
+          <p class="section-subtitle" data-i18n="curationSubtitle">
+            다문화 도서관 사서 수서 담당자를 위한 테마별 맞춤 마법 도서 패키지
+          </p>
+        </div>
+
+        <!-- 4 Curation Packages -->
+        <div class="curation-packages-list" id="curation-packages-list">
+          <!-- Dynamic render by app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         PAGE 4: CART (#cart)
+         =================================================================== -->
+    <section id="view-cart" class="page-view hidden">
+      <div class="container">
+        <div class="section-header text-center">
+          <div class="section-badge">
+            <i data-lucide="scroll"></i>
+            <span data-i18n="cartBadge">LIBRARIAN CONSOLE</span>
+          </div>
+          <h1 class="section-title" data-i18n="cartTitle">아카데미 콘솔 사서 공문 견적함</h1>
+          <p class="section-subtitle" data-i18n="cartSubtitle">
+            선택한 다문화 마법 도서의 수서 납품 견적 자동 산출 및 1클릭 공식 PDF/엑셀 사양서 즉시 다운로드
+          </p>
+        </div>
+
+        <!-- Cart Summary Stats Bar -->
+        <div class="cart-stats-grid magic-glass">
+          <div class="cart-stat-box">
+            <span class="stat-icon">📚</span>
+            <div>
+              <span class="cart-stat-label" data-i18n="statTotalTitles">총 선택 종수</span>
+              <span class="cart-stat-num" id="cart-total-titles">0 종</span>
+            </div>
+          </div>
+          <div class="cart-stat-box">
+            <span class="stat-icon">📖</span>
+            <div>
+              <span class="cart-stat-label" data-i18n="statTotalCopies">총 수서 권수</span>
+              <span class="cart-stat-num" id="cart-total-copies">0 권</span>
+            </div>
+          </div>
+          <div class="cart-stat-box">
+            <span class="stat-icon">💰</span>
+            <div>
+              <span class="cart-stat-label" data-i18n="statRegularPrice">정가 합계</span>
+              <span class="cart-stat-num" id="cart-total-regular">0 원</span>
+            </div>
+          </div>
+          <div class="cart-stat-box highlight-gold-box">
+            <span class="stat-icon">🔮</span>
+            <div>
+              <span class="cart-stat-label" data-i18n="statProcurementPrice">사서 납품가 (10% 할인)</span>
+              <span class="cart-stat-num gold-text" id="cart-total-supply">0 원</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Official Institution Information Input Form -->
+        <div class="institution-form-card magic-glass margin-top-lg">
+          <div class="card-header">
+            <i data-lucide="building"></i>
+            <h3 data-i18n="instFormTitle">수서 기관 및 담당자 공문 정보 입력</h3>
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="inst-name" data-i18n="lblInstName">기관명 (도서관명):</label>
+              <input type="text" id="inst-name" value="중앙 다문화 마법 도서관" placeholder="예: OO시립 다문화도서관">
+            </div>
+            <div class="form-group">
+              <label for="inst-librarian" data-i18n="lblLibrarianName">수서 담당 사서명:</label>
+              <input type="text" id="inst-librarian" value="김사서 주무관" placeholder="예: 홍길동 사서">
+            </div>
+            <div class="form-group">
+              <label for="inst-contact" data-i18n="lblContact">연락처 / 직통전화:</label>
+              <input type="text" id="inst-contact" value="02-1234-5678" placeholder="02-XXX-XXXX">
+            </div>
+            <div class="form-group">
+              <label for="inst-email" data-i18n="lblEmail">이메일 주소:</label>
+              <input type="email" id="inst-email" value="librarian@multicultural-lib.go.kr" placeholder="librarian@library.go.kr">
+            </div>
+          </div>
+        </div>
+
+        <!-- Table Toolbar -->
+        <div class="cart-toolbar margin-top-lg">
+          <div class="toolbar-left">
+            <button class="btn btn-sm btn-secondary" id="cart-select-all-btn">
+              <i data-lucide="check-square"></i>
+              <span data-i18n="btnSelectAll">전체 선택</span>
+            </button>
+            <button class="btn btn-sm btn-secondary" id="cart-deselect-all-btn">
+              <i data-lucide="square"></i>
+              <span data-i18n="btnDeselectAll">선택 해제</span>
+            </button>
+            <button class="btn btn-sm btn-danger" id="cart-delete-selected-btn">
+              <i data-lucide="trash-2"></i>
+              <span data-i18n="btnDeleteSelected">선택 삭제</span>
+            </button>
+          </div>
+          <div class="toolbar-right">
+            <button class="btn btn-sm btn-outline-danger" id="cart-clear-btn">
+              <i data-lucide="alert-triangle"></i>
+              <span data-i18n="btnClearCart">장바구니 전체 비우기</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Cart Items Table Container -->
+        <div class="cart-table-wrapper magic-glass margin-top-md">
+          <table class="cart-table" id="cart-table">
+            <thead>
+              <tr>
+                <th width="40" class="text-center">
+                  <input type="checkbox" id="cart-check-header" checked aria-label="Select All Items">
+                </th>
+                <th width="80" data-i18n="thCover">표지</th>
+                <th data-i18n="thBookInfo">서지 정보</th>
+                <th width="110" class="text-right" data-i18n="thRegularPrice">정가</th>
+                <th width="120" class="text-right" data-i18n="thSupplyPrice">사서 납품가</th>
+                <th width="140" class="text-center" data-i18n="thQty">수량</th>
+                <th width="130" class="text-right" data-i18n="thSubtotal">합계금액</th>
+                <th width="60" class="text-center" data-i18n="thRemove">삭제</th>
+              </tr>
+            </thead>
+            <tbody id="cart-table-body">
+              <!-- Dynamic render by app.js -->
+            </tbody>
+          </table>
+
+          <!-- Empty Cart State -->
+          <div id="cart-empty-state" class="empty-state hidden">
+            <div class="empty-icon">🔮</div>
+            <h3 data-i18n="emptyCartTitle">견적 장바구니가 비어 있습니다.</h3>
+            <p data-i18n="emptyCartDesc">마법 도서 검색이나 큐레이션 기획전에서 수서할 도서를 추가해 주세요.</p>
+            <a href="#search" class="btn btn-primary btn-magic-gold margin-top-md">
+              <i data-lucide="search"></i>
+              <span data-i18n="btnGoSearch">마법 도서 탐색하러 가기</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Procurement PDF / Excel Export Action Card -->
+        <div class="export-action-card magic-glass margin-top-lg">
+          <div class="export-notice">
+            <div class="notice-icon">📜</div>
+            <div>
+              <h4 data-i18n="quoteNoticeTitle">📌 사서 전용 1-Click 마법 인장 공문 견적서 발급 시스템</h4>
+              <p data-i18n="quoteNoticeDesc">
+                본 포털은 행정 제출용 마법 아카데미 Official Seal이 포함된 PDF 공문 견적서 및 엑셀 수서 사양서를 1클릭으로 즉시 자동 생성합니다.
+              </p>
+            </div>
+          </div>
+          <div class="export-buttons">
+            <button class="btn btn-secondary btn-lg" id="export-excel-btn">
+              <i data-lucide="file-spreadsheet"></i>
+              <span data-i18n="btnExportExcel">📊 엑셀 사양서 다운로드 (.xlsx)</span>
+            </button>
+            <button class="btn btn-primary btn-lg btn-magic-gold" id="export-pdf-btn">
+              <i data-lucide="file-text"></i>
+              <span data-i18n="btnGeneratePDF">📄 1-Click PDF 공문 견적서 발급</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         PAGE 5: DETAIL (#detail)
+         =================================================================== -->
+    <section id="view-detail" class="page-view hidden">
+      <div class="container">
+        <!-- Top Back Navigation -->
+        <div class="detail-back-bar">
+          <a href="#search" class="btn btn-sm btn-secondary" id="detail-back-btn">
+            <i data-lucide="arrow-left"></i>
+            <span data-i18n="btnBackList">이전 목록으로 돌아가기</span>
+          </a>
+        </div>
+
+        <!-- Detail Layout Grid -->
+        <div class="detail-grid margin-top-md">
+          
+          <!-- Left Column: 360° Three.js Spellbook Canvas -->
+          <div class="detail-three-card magic-glass">
+            <div class="three-canvas-container" id="detail-three-canvas"></div>
+            <div class="detail-three-controls">
+              <span class="canvas-hint" data-i18n="canvas3dHint">✦ 마우스 드래그로 3D 마법서를 360도 입체 회전하세요</span>
+              <div class="control-btn-group">
+                <button class="btn btn-xs btn-secondary" id="detail-auto-rotate-btn">
+                  <i data-lucide="rotate-cw"></i>
+                  <span data-i18n="btnAutoRotate">자동 회전 토글</span>
+                </button>
+                <button class="btn btn-xs btn-magic-purple" id="detail-laser-scan-btn">
+                  <i data-lucide="sparkles"></i>
+                  <span data-i18n="btnLaserScan">⚡ 마법 스캔 시전</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Bibliographic Details & Actions -->
+          <div class="detail-info-card magic-glass">
+            <div class="detail-header-tags">
+              <span class="lang-badge" id="detail-lang-badge">🇰🇷 한국어</span>
+              <span class="kdc-badge" id="detail-kdc-badge">KDC 800</span>
+              <span class="age-badge" id="detail-age-badge">청소년</span>
+            </div>
+
+            <h1 class="detail-title" id="detail-title">마법 책 제목</h1>
+            <h3 class="detail-subtitle" id="detail-subtitle">Spellbook Subtitle</h3>
+            
+            <div class="detail-author-row">
+              <span class="author-label" data-i18n="lblAuthor">저자:</span>
+              <strong id="detail-author">저자명</strong>
+              <span class="divider">|</span>
+              <span class="publisher-label" data-i18n="lblPublisher">출판사:</span>
+              <strong id="detail-publisher">출판사명</strong>
+            </div>
+
+            <!-- Web Audio Magic Chant Player -->
+            <div class="magic-chant-player magic-glass">
+              <button class="chant-play-btn" id="chant-play-btn">
+                <i data-lucide="play" id="chant-icon-play"></i>
+                <i data-lucide="square" id="chant-icon-stop" class="hidden"></i>
+              </button>
+              <div class="chant-info">
+                <span class="chant-label" data-i18n="lblChantTitle">🔮 마법 주문 & 다국어 오디오 발췌 샘플</span>
+                <span class="chant-status" id="chant-status-text" data-i18n="lblChantReady">재생 버튼을 누르면 마법서 오디오 낭독이 재생됩니다.</span>
+              </div>
+            </div>
+
+            <!-- Pricing Box -->
+            <div class="price-box">
+              <div class="price-row">
+                <span class="price-label" data-i18n="lblRegularPrice">정가:</span>
+                <span class="price-regular-value" id="detail-regular-price">0원</span>
+              </div>
+              <div class="price-row highlight">
+                <span class="price-label" data-i18n="lblSupplyPrice">사서 납품가 (10% 할인):</span>
+                <span class="price-supply-value gold-text" id="detail-supply-price">0원</span>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="detail-actions">
+              <button class="btn btn-primary btn-lg btn-magic-gold" id="detail-add-cart-btn">
+                <i data-lucide="plus"></i>
+                <span data-i18n="btnAddCartDetail">수서 장바구니에 담기</span>
+              </button>
+              <a href="#cart" class="btn btn-secondary btn-lg btn-magic-purple">
+                <i data-lucide="shopping-bag"></i>
+                <span data-i18n="btnGoCart">견적함 이동</span>
+              </a>
+            </div>
+
+            <!-- Detailed Bibliographic Specs Table -->
+            <div class="specs-table-wrapper margin-top-lg">
+              <h4 class="specs-table-title" data-i18n="lblMetaTitle">📚 사서 수서용 표준 서지 상세 스펙</h4>
+              <table class="specs-table">
+                <tbody>
+                  <tr>
+                    <th data-i18n="thIsbn">ISBN 번호</th>
+                    <td id="detail-isbn">978-89-0000-000-0</td>
+                    <th data-i18n="thKdcCode">KDC 분류코드</th>
+                    <td id="detail-kdc-code">800.1</td>
+                  </tr>
+                  <tr>
+                    <th data-i18n="thPubDate">발행년월</th>
+                    <td id="detail-pub-date">2026년 08월</td>
+                    <th data-i18n="thPageCount">페이지 수</th>
+                    <td id="detail-pages">320 페이지</td>
+                  </tr>
+                  <tr>
+                    <th data-i18n="thOrigLang">원서 언어</th>
+                    <td id="detail-orig-lang">English (영어)</td>
+                    <th data-i18n="thTags">마법 테마</th>
+                    <td id="detail-theme-tags">#마법학교 #전래동화</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Synopsis & Book Review -->
+            <div class="synopsis-wrapper margin-top-md">
+              <h4 class="synopsis-title" data-i18n="lblExcerptTitle">다국어 서평 & 본문 발췌</h4>
+              <div class="synopsis-content" id="detail-synopsis">
+                <!-- Dynamic render by app.js -->
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="app-footer">
+    <div class="container footer-container">
+      <div class="footer-brand">
+        <div class="brand-logo">
+          <span class="logo-orb-sm">🔮</span>
+          <span class="brand-title">다문화도서관 수서 몰 v23</span>
+        </div>
+        <p class="footer-desc" data-i18n="footerDesc">
+          공공도서관 및 학교 미디어 센터 사서를 위한 다문화 마법서 수서 & 1-Click 공문 견적 생성 플랫폼
+        </p>
+      </div>
+
+      <div class="footer-links">
+        <h4 data-i18n="footerQuickNav">빠른 이동</h4>
+        <ul>
+          <li><a href="#home" data-i18n="navHome">아카데미 메인</a></li>
+          <li><a href="#search" data-i18n="navSearch">마법 도서 검색</a></li>
+          <li><a href="#curation" data-i18n="navCuration">서고 큐레이션</a></li>
+          <li><a href="#cart" data-i18n="navCart">공문 견적함</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-info">
+        <h4 data-i18n="footerContact">사서 수서 지원 센터</h4>
+        <p>TEL: 02-1234-5678 (평일 09:00 ~ 18:00)</p>
+        <p>EMAIL: procurement@multicultural-lib.go.kr</p>
+        <p class="copyright">© 2026 Multicultural Library Supply Portal v23. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Main JavaScript App -->
+  <script src="app.js"></script>
+</body>
+</html>

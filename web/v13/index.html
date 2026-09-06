@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CHRONOS | 시계태엽 다문화 도서관 수서몰 (Steampunk Library)</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Cinzel+Decorative:wght@700&family=IM+Fell+English:ital@0;1&family=Noto+Sans+JP:wght@400;700&family=Noto+Sans+KR:wght@300;400;600;700;900&family=Noto+Sans+SC:wght@400;700&family=Noto+Serif+KR:wght@400;600;700;900&family=Playfair+Display:ital,wght@0,600;0,800;1,400&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Three.js Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="steampunk-theme">
+
+  <!-- Interactive Steam Canvas Overlay -->
+  <canvas id="steamCanvas"></canvas>
+
+  <!-- Steampunk Main Header -->
+  <header class="steampunk-header">
+    <div class="header-brass-bar"></div>
+    <div class="header-container">
+      <div class="logo-area" id="logo-button">
+        <div class="gear-logo-wrapper">
+          <i class="fa-solid fa-gear gear-outer"></i>
+          <i class="fa-solid fa-cog gear-inner"></i>
+        </div>
+        <div class="logo-text">
+          <span class="brand-title" data-i18n="brandTitle">CHRONOS</span>
+          <span class="brand-subtitle" data-i18n="brandSub">다문화 도서관 수서/구입 몰</span>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="main-nav">
+        <a href="#home" class="nav-tab active" data-page="home">
+          <i class="fa-solid fa-compass"></i>
+          <span data-i18n="navHome">태엽 메인관</span>
+        </a>
+        <a href="#search" class="nav-tab" data-page="search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <span data-i18n="navSearch">수서 검색관</span>
+        </a>
+        <a href="#curation" class="nav-tab" data-page="curation">
+          <i class="fa-solid fa-boxes-stacked"></i>
+          <span data-i18n="navCuration">황동 큐레이션</span>
+        </a>
+        <a href="#cart" class="nav-tab" data-page="cart">
+          <i class="fa-solid fa-scroll"></i>
+          <span data-i18n="navCart">공문 견적함</span>
+          <span class="cart-badge" id="nav-cart-badge">0</span>
+        </a>
+        <a href="#detail" class="nav-tab" data-page="detail">
+          <i class="fa-solid fa-book-bookmark"></i>
+          <span data-i18n="navDetail">3D 서지 상세</span>
+        </a>
+      </nav>
+
+      <!-- Global Controls (Language & Sound) -->
+      <div class="header-controls">
+        <div class="sound-control">
+          <button id="sound-toggle-btn" class="brass-btn icon-only" title="태엽/사운드 이펙트">
+            <i class="fa-solid fa-volume-high" id="sound-icon"></i>
+          </button>
+        </div>
+
+        <div class="lang-switcher">
+          <i class="fa-solid fa-globe lang-icon"></i>
+          <select id="lang-select" class="brass-select">
+            <option value="KO">🇰🇷 한국어 (KO)</option>
+            <option value="EN">🇺🇸 English (EN)</option>
+            <option value="VI">🇻🇳 Tiếng Việt (VI)</option>
+            <option value="ZH">🇨🇳 中文 (ZH)</option>
+            <option value="DE">🇩🇪 Deutsch (DE)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main id="app">
+
+    <!-- PAGE 1: HOME (#home) -->
+    <section id="view-home" class="page-view active">
+      <!-- Three.js Hero 3D Clockwork & Kinetic Arm -->
+      <div class="hero-steampunk">
+        <div id="hero-canvas-container" class="three-container"></div>
+        
+        <div class="hero-overlay-content">
+          <div class="hero-badge">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span data-i18n="heroBadge">사서 수서 담당자 전용 B2B/B2C 수서 지원</span>
+          </div>
+          <h1 class="hero-title" data-i18n="heroTitle">황동 시계태엽 메커니즘과<br>고전 양장본 다문화 도서 아카이브</h1>
+          <p class="hero-description" data-i18n="heroDesc">
+            전 세계 5개 국어(한국어, 영어, 베트남어, 중국어, 독일어) 고전 문학 및 다문화 전문 서지를 
+            황동 톱니바퀴의 정교한 3D 메커니즘으로 탐색하고, 1-Click 공식 직인 견적서를 생성하세요.
+          </p>
+          <div class="hero-actions">
+            <a href="#search" class="brass-btn primary lg">
+              <i class="fa-solid fa-book-open"></i>
+              <span data-i18n="heroBtnSearch">수서 검색 시작하기</span>
+            </a>
+            <a href="#curation" class="brass-btn secondary lg">
+              <i class="fa-solid fa-gem"></i>
+              <span data-i18n="heroBtnCuration">3D 큐레이션 기획전</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="hero-scroll-indicator">
+          <span data-i18n="scrollNotice">3D Orrery 전시관 탐색</span>
+          <i class="fa-solid fa-chevron-down bounce"></i>
+        </div>
+      </div>
+
+      <!-- 3D Mechanical Orrery Exhibition -->
+      <div class="section-container orrery-section">
+        <div class="section-header">
+          <div class="section-title-wrap">
+            <i class="fa-solid fa-solar-panel title-icon"></i>
+            <div>
+              <h2 data-i18n="orreryTitle">3D 메커니컬 오러리(Orrery) 도서 전시관</h2>
+              <p class="section-sub" data-i18n="orrerySub">시계 태엽 궤도를 따라 회전하는 다문화 핵심 도서를 3D로 선택하여 감상하세요.</p>
+            </div>
+          </div>
+          <div class="orrery-controls">
+            <button id="orrery-rotate-btn" class="brass-btn sm">
+              <i class="fa-solid fa-rotate"></i> <span data-i18n="orreryPause">회전 일시정지/재생</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="orrery-wrapper">
+          <div id="orrery-canvas-container" class="three-container"></div>
+          <div id="orrery-info-card" class="orrery-info-floating hidden">
+            <span class="info-lang-tag" id="orrery-card-lang">KO</span>
+            <h3 id="orrery-card-title">도서 제목</h3>
+            <p id="orrery-card-author" class="info-author">저자명</p>
+            <p id="orrery-card-meta" class="info-meta">KDC: 800 | ISBN: 978-89-...</p>
+            <div class="info-actions">
+              <button id="orrery-detail-btn" class="brass-btn sm primary">
+                <i class="fa-solid fa-eye"></i> <span data-i18n="btnDetail">3D 상세 보기</span>
+              </button>
+              <button id="orrery-add-cart-btn" class="brass-btn sm secondary">
+                <i class="fa-solid fa-cart-plus"></i> <span data-i18n="btnAddCart">견적함 담기</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- New Releases & Hybrid Card/List View -->
+      <div class="section-container new-releases-section">
+        <div class="section-header">
+          <div class="section-title-wrap">
+            <i class="fa-solid fa-newspaper title-icon"></i>
+            <div>
+              <h2 data-i18n="newReleaseTitle">2026 다문화 수서 신간 & 황동 아카이브</h2>
+              <p class="section-sub" data-i18n="newReleaseSub">클래식 대장본 텍스트 뷰와 황동 3D 카드 믹스로 제공되는 최신 다문화 수서 도서 목록</p>
+            </div>
+          </div>
+          <div class="view-type-toggle">
+            <button id="home-view-grid" class="brass-btn sm icon-only active" title="3D 황동 카드 뷰">
+              <i class="fa-solid fa-border-all"></i>
+            </button>
+            <button id="home-view-list" class="brass-btn sm icon-only" title="클래식 양장 목록 뷰">
+              <i class="fa-solid fa-list-ul"></i>
+            </button>
+          </div>
+        </div>
+
+        <div id="home-books-container" class="home-books-grid">
+          <!-- Dynamic rendering from app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 2: SEARCH (#search) -->
+    <section id="view-search" class="page-view">
+      <div class="section-container search-container">
+        <div class="search-header-panel">
+          <h2 class="page-title"><i class="fa-solid fa-compass-drafting"></i> <span data-i18n="searchPageTitle">앤틱 수서 통합 검색 및 KDC 분류 시스템</span></h2>
+          <p class="page-desc" data-i18n="searchPageDesc">도서관 사서를 위한 다국어, KDC 분류기호, ISBN, 연령대별 세부 검색 필터</p>
+          
+          <!-- Search Bar -->
+          <div class="search-bar-steampunk">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" id="search-input" placeholder="도서명, 저자, 출판사, ISBN, KDC 분류기호 검색..." data-i18n-ph="searchPh">
+            <button id="search-submit-btn" class="brass-btn primary">
+              <i class="fa-solid fa-sliders"></i> <span data-i18n="btnSearch">검색</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="search-layout">
+          <!-- Filter Sidebar -->
+          <aside class="search-sidebar-steampunk">
+            <div class="sidebar-header">
+              <h3><i class="fa-solid fa-filter"></i> <span data-i18n="filterTitle">정교 수서 필터</span></h3>
+              <button id="filter-reset-btn" class="text-link-btn" data-i18n="filterReset">초기화</button>
+            </div>
+
+            <!-- Language Filter -->
+            <div class="filter-group">
+              <label class="filter-label"><i class="fa-solid fa-language"></i> <span data-i18n="filterLang">언어 (Language)</span></label>
+              <div class="filter-options-grid" id="filter-lang-options">
+                <button class="filter-chip active" data-value="ALL" data-i18n="all">전체</button>
+                <button class="filter-chip" data-value="KO">🇰🇷 한국어</button>
+                <button class="filter-chip" data-value="EN">🇺🇸 English</button>
+                <button class="filter-chip" data-value="VI">🇻🇳 Tiếng Việt</button>
+                <button class="filter-chip" data-value="ZH">🇨🇳 中文</button>
+                <button class="filter-chip" data-value="DE">🇩🇪 Deutsch</button>
+              </div>
+            </div>
+
+            <!-- Target Age Filter -->
+            <div class="filter-group">
+              <label class="filter-label"><i class="fa-solid fa-users"></i> <span data-i18n="filterAge">대상 연령 (Age Group)</span></label>
+              <select id="filter-age-select" class="brass-select full-width">
+                <option value="ALL" data-i18n="all">전체 연령</option>
+                <option value="CHILD" data-i18n="ageChild">유아/아동 (Children)</option>
+                <option value="YOUTH" data-i18n="ageYouth">청소년 (Youth)</option>
+                <option value="ADULT" data-i18n="ageAdult">성인/일반 (Adult)</option>
+                <option value="SENIOR" data-i18n="ageSenior">어르신/시니어 (Senior)</option>
+              </select>
+            </div>
+
+            <!-- KDC Classification Filter -->
+            <div class="filter-group">
+              <label class="filter-label"><i class="fa-solid fa-bookmark"></i> <span data-i18n="filterKdc">KDC 한국십진분류표</span></label>
+              <select id="filter-kdc-select" class="brass-select full-width">
+                <option value="ALL" data-i18n="all">전체 분류 (000~900)</option>
+                <option value="000">000 총류 (General)</option>
+                <option value="100">100 철학 (Philosophy)</option>
+                <option value="200">200 종교 (Religion)</option>
+                <option value="300">300 사회과학 (Social Sciences)</option>
+                <option value="400">400 순수과학 (Natural Sciences)</option>
+                <option value="500">500 기술과학 (Technology)</option>
+                <option value="600">600 예술 (Arts)</option>
+                <option value="700">700 언어 (Language)</option>
+                <option value="800">800 문학 (Literature)</option>
+                <option value="900">900 역사 (History)</option>
+              </select>
+            </div>
+
+            <!-- Publisher Filter -->
+            <div class="filter-group">
+              <label class="filter-label"><i class="fa-solid fa-building-columns"></i> <span data-i18n="filterPublisher">출판사 (Publisher)</span></label>
+              <input type="text" id="filter-publisher-input" class="brass-input" placeholder="출판사명 입력..." data-i18n-ph="filterPubPh">
+            </div>
+
+            <!-- ISBN Filter -->
+            <div class="filter-group">
+              <label class="filter-label"><i class="fa-solid fa-barcode"></i> <span data-i18n="filterIsbn">ISBN 번호</span></label>
+              <input type="text" id="filter-isbn-input" class="brass-input" placeholder="ISBN-13 (예: 978-...)">
+            </div>
+          </aside>
+
+          <!-- Search Results Area -->
+          <div class="search-main-content">
+            <div class="results-toolbar">
+              <div class="results-count" id="search-results-count">
+                <span data-i18n="searchFound">검색 결과</span>: <strong id="count-num">0</strong><span data-i18n="itemsUnit">건</span>
+              </div>
+              <div class="toolbar-actions">
+                <button id="bulk-add-cart-btn" class="brass-btn sm secondary">
+                  <i class="fa-solid fa-square-check"></i> <span data-i18n="btnBulkCart">선택 항목 일괄 담기</span>
+                </button>
+                <div class="mode-toggles">
+                  <button id="search-mode-grid" class="brass-btn sm icon-only active" title="3D 카드 뷰"><i class="fa-solid fa-border-all"></i></button>
+                  <button id="search-mode-table" class="brass-btn sm icon-only" title="B2B 사서 목록 뷰"><i class="fa-solid fa-table-cells"></i></button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Results Grid or Table -->
+            <div id="search-results-wrapper">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 3: CURATION (#curation) -->
+    <section id="view-curation" class="page-view">
+      <div class="section-container curation-container">
+        <div class="curation-header">
+          <div class="curation-badge"><i class="fa-solid fa-gears"></i> STEAMPUNK CURATION PACKAGES</div>
+          <h2 class="page-title" data-i18n="curationTitle">황동 3D 스팀펑크 큐레이션 기획전</h2>
+          <p class="page-desc" data-i18n="curationDesc">
+            다문화 도서관 특화 주제별 맞춤 수서 패키지! 사서 담당자가 원클릭으로 검증된 구성 도서를 한 번에 구입할 수 있습니다.
+          </p>
+        </div>
+
+        <div id="curation-packages-grid" class="curation-grid">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 4: CART & QUOTE (#cart) -->
+    <section id="view-cart" class="page-view">
+      <div class="section-container cart-container">
+        <div class="cart-header">
+          <h2 class="page-title"><i class="fa-solid fa-scroll"></i> <span data-i18n="cartTitle">도서관 수서 전용 공식 견적함</span></h2>
+          <p class="page-desc" data-i18n="cartDesc">선택한 수서 도서의 견적을 산출하고 공식 직인 공문 PDF/인쇄 및 엑셀(CSV) 자료로 발송하세요.</p>
+        </div>
+
+        <div class="cart-layout">
+          <!-- Cart Table -->
+          <div class="cart-main">
+            <div class="table-responsive">
+              <table class="brass-table cart-table">
+                <thead>
+                  <tr>
+                    <th style="width: 40px;"><input type="checkbox" id="cart-select-all" checked></th>
+                    <th data-i18n="thBookInfo">도서 정보</th>
+                    <th data-i18n="thLang">언어/KDC</th>
+                    <th data-i18n="thPrice">정가</th>
+                    <th style="width: 100px;" data-i18n="thQty">수량</th>
+                    <th data-i18n="thSubtotal">합계</th>
+                    <th style="width: 50px;" data-i18n="thAction">삭제</th>
+                  </tr>
+                </thead>
+                <tbody id="cart-table-body">
+                  <!-- Rendered via JS -->
+                </tbody>
+              </table>
+            </div>
+
+            <div class="cart-actions-bar">
+              <button id="cart-clear-btn" class="brass-btn sm danger">
+                <i class="fa-solid fa-trash-can"></i> <span data-i18n="btnClearCart">전체 비우기</span>
+              </button>
+              <a href="#search" class="brass-btn sm secondary">
+                <i class="fa-solid fa-plus"></i> <span data-i18n="btnAddMore">도서 추가 검색</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Summary & Quote Generator Panel -->
+          <aside class="cart-summary-panel">
+            <div class="summary-card">
+              <div class="summary-header">
+                <h3><i class="fa-solid fa-calculator"></i> <span data-i18n="summaryTitle">수서 산출 내역</span></h3>
+              </div>
+
+              <div class="summary-row">
+                <span data-i18n="sumItems">총 수서종수</span>
+                <span id="sum-items-count">0 종</span>
+              </div>
+              <div class="summary-row">
+                <span data-i18n="sumQty">총 수서권수</span>
+                <span id="sum-total-qty">0 권</span>
+              </div>
+              <div class="summary-row">
+                <span data-i18n="sumOriginal">총 정가 합계</span>
+                <span id="sum-original-price">0 원</span>
+              </div>
+              <div class="summary-row discount">
+                <span data-i18n="sumDiscount">사서 납품 할인 (10%)</span>
+                <span id="sum-discount-amount">-0 원</span>
+              </div>
+              <div class="summary-row">
+                <span data-i18n="sumTax">부가세 (VAT 면세)</span>
+                <span>0 원</span>
+              </div>
+
+              <div class="summary-divider"></div>
+
+              <div class="summary-total">
+                <span data-i18n="sumFinal">최종 납품 견적액</span>
+                <strong id="sum-final-price">0 원</strong>
+              </div>
+
+              <!-- Quote Buttons -->
+              <div class="summary-actions">
+                <button id="btn-generate-pdf-quote" class="brass-btn primary block lg">
+                  <i class="fa-solid fa-stamp"></i>
+                  <span data-i18n="btnPdfQuote">황동 직인 공문 견적서 생성</span>
+                </button>
+                <button id="btn-export-excel" class="brass-btn secondary block">
+                  <i class="fa-solid fa-file-excel"></i>
+                  <span data-i18n="btnExcelExport">수서 엑셀(CSV) 다운로드</span>
+                </button>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 5: DETAIL (#detail) -->
+    <section id="view-detail" class="page-view">
+      <div class="section-container detail-container">
+        <div class="detail-header-nav">
+          <a href="#search" class="back-link"><i class="fa-solid fa-arrow-left"></i> <span data-i18n="backToSearch">수서 목록으로 돌아가기</span></a>
+          <span class="detail-kdc-badge" id="detail-kdc-badge">KDC 800</span>
+        </div>
+
+        <div class="detail-layout">
+          <!-- 360 THREE.JS BOOK PREVIEW -->
+          <div class="detail-3d-pane">
+            <div class="preview-3d-wrapper">
+              <div id="book3d-canvas-container" class="three-container"></div>
+              <div class="instruction-3d-tag">
+                <i class="fa-solid fa-hand-pointer"></i> <span data-i18n="instruction3D">마우스 드래그: 360도 입체 회전 | 클릭: 가죽 표지 열기/닫기</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- BOOK METADATA & EXCERPT PANE -->
+          <div class="detail-info-pane">
+            <div class="detail-lang-pill" id="detail-lang-pill">ENGLISH</div>
+            <h1 class="detail-title" id="detail-book-title">The Great Gatsby (Leatherbound Brass Spec)</h1>
+            <h2 class="detail-subtitle" id="detail-book-author">F. Scott Fitzgerald (저) | 시계태엽 고전 출판사</h2>
+
+            <div class="detail-spec-grid">
+              <div class="spec-item">
+                <span class="spec-label" data-i18n="specIsbn">ISBN-13</span>
+                <span class="spec-val" id="detail-isbn">978-89-1234-567-8</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label" data-i18n="specKdc">KDC 분류기호</span>
+                <span class="spec-val" id="detail-kdc">843 문학 (소설)</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label" data-i18n="specPubDate">발행일</span>
+                <span class="spec-val" id="detail-pubdate">2026년 01월 15일</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label" data-i18n="specBinding">제본 형태</span>
+                <span class="spec-val" id="detail-binding">양장본 (Hardcover Brass Bracket)</span>
+              </div>
+            </div>
+
+            <div class="detail-price-box">
+              <div class="price-row">
+                <span class="label" data-i18n="listPrice">정가</span>
+                <span class="val original" id="detail-price-orig">35,000 원</span>
+              </div>
+              <div class="price-row">
+                <span class="label" data-i18n="b2bPrice">사서 납품가 (10% 할인)</span>
+                <strong class="val final" id="detail-price-discount">31,500 원</strong>
+              </div>
+            </div>
+
+            <!-- Typewriter sound book excerpt viewer -->
+            <div class="excerpt-box-steampunk">
+              <div class="excerpt-header">
+                <h3><i class="fa-solid fa-feather-pointed"></i> <span data-i18n="excerptTitle">사서 수서 추천사 및 본문 앤틱 발췌문</span></h3>
+                <button id="btn-read-excerpt" class="brass-btn sm text-only">
+                  <i class="fa-solid fa-keyboard"></i> <span data-i18n="btnTypewriter">타자기 낭독 효과 재생</span>
+                </button>
+              </div>
+              <p id="excerpt-content-text" class="excerpt-text">
+                "그는 거대한 저택의 황동 발코니에 서서 초록색 불빛을 바라보았다..."
+              </p>
+            </div>
+
+            <!-- Actions -->
+            <div class="detail-actions">
+              <button id="detail-add-cart-btn" class="brass-btn primary lg">
+                <i class="fa-solid fa-cart-plus"></i> <span data-i18n="btnAddCart">수서 견적함에 담기</span>
+              </button>
+              <button id="detail-share-spec-btn" class="brass-btn secondary lg">
+                <i class="fa-solid fa-share-nodes"></i> <span data-i18n="btnShareSpec">서지정보 공유</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- OFFICIAL BRASS SEALED QUOTE MODAL -->
+  <div id="quote-modal" class="modal-backdrop hidden">
+    <div class="quote-paper-container">
+      <div class="quote-modal-header">
+        <button id="quote-modal-close" class="quote-close-btn">&times;</button>
+      </div>
+
+      <!-- Printable Official Document Content -->
+      <div id="printable-quote-content" class="quote-paper">
+        <div class="quote-header-stamp">
+          <div class="brass-seal-watermark">CHRONOS ACQUISITION SEAL</div>
+          <div class="header-top">
+            <h1 data-i18n="docTitle">도서관 수서/구입 공식 공문 견적서</h1>
+            <p class="doc-sub">OFFICIAL MULTICULTURAL LIBRARY ACQUISITION QUOTATION</p>
+          </div>
+
+          <div class="quote-meta-row">
+            <div class="meta-col">
+              <p><strong>발행 번호:</strong> <span id="quote-serial-no">LIB-2026-88912</span></p>
+              <p><strong>발행 일자:</strong> <span id="quote-date">2026-09-06</span></p>
+              <p><strong>수신 도서관:</strong> <span id="quote-target-lib">다문화 공공도서관 수서팀 담당자 귀하</span></p>
+            </div>
+            <div class="meta-col supplier-info">
+              <p><strong>공급자:</strong> CHRONOS 시계태엽 수서 아카이브</p>
+              <p><strong>사업자등록번호:</strong> 107-88-99120</p>
+              <p><strong>대표자:</strong> 황동엽 (직인 생략)</p>
+              <p><strong>연락처:</strong> 02-555-7788 | lib-order@chronos-library.or.kr</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="quote-table-wrap">
+          <table class="quote-doc-table">
+            <thead>
+              <tr>
+                <th>NO</th>
+                <th>도서명 (Title)</th>
+                <th>저자/출판사</th>
+                <th>ISBN</th>
+                <th>KDC</th>
+                <th>정가</th>
+                <th>수량</th>
+                <th>할인가(10%)</th>
+                <th>공급가액</th>
+              </tr>
+            </thead>
+            <tbody id="quote-doc-tbody">
+              <!-- Dynamically inserted -->
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-total-box">
+          <div class="total-words">
+            <span>합계 금액: </span>
+            <strong id="quote-total-korean">금 일백삼십오만 원정 (₩1,350,000)</strong>
+          </div>
+          <div class="seal-box">
+            <canvas id="brass-seal-canvas" width="90" height="90"></canvas>
+            <span class="seal-text">공식 검증 직인</span>
+          </div>
+        </div>
+
+        <div class="quote-footer-notice">
+          <p>※ 본 견적서는 도서관 수서 규정에 의거하여 정가 10% 납품 할인이 적용되었으며 부가세 면세 품목입니다.</p>
+          <p>※ 납품 기한: 주문서 수령 후 5일 이내 전산 MARC 데이터 및 바코드 장정 완료 납품.</p>
+        </div>
+      </div>
+
+      <div class="quote-modal-footer">
+        <button id="btn-print-quote" class="brass-btn primary lg">
+          <i class="fa-solid fa-print"></i> <span data-i18n="btnPrint">즉시 인쇄 / PDF 저장</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Steampunk Footer -->
+  <footer class="steampunk-footer">
+    <div class="footer-top-brass"></div>
+    <div class="footer-content">
+      <div class="footer-brand">
+        <div class="logo-area">
+          <i class="fa-solid fa-gear gear-spin-slow"></i>
+          <span>CHRONOS MULTICULTURAL LIBRARY</span>
+        </div>
+        <p data-i18n="footerDesc">시계태엽 황동 메커니즘 기반 5개국 다문화 사서 수서/구입 전문 포털 (v13)</p>
+      </div>
+      <div class="footer-links">
+        <h4 data-i18n="footerSupport">사서 지원 센터</h4>
+        <p>전화: 02-555-7788 | 팩스: 02-555-7789</p>
+        <p>이메일: acquisition@chronos-library.or.kr</p>
+      </div>
+      <div class="footer-copy">
+        <p>&copy; 2026 CHRONOS Steampunk Library Archive. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Application Script -->
+  <script src="app.js"></script>
+</body>
+</html>

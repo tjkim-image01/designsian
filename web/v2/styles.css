@@ -1,0 +1,282 @@
+/* ==========================================================================
+   Aetheria Multicultural Library - Custom Stylesheet (Glassmorphism & 3D Cards)
+   ========================================================================== */
+
+/* Global Reset & Base */
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+body {
+  background-color: #0f131f;
+  color: #dfe2f3;
+  font-family: 'Manrope', 'Noto Sans KR', sans-serif;
+  min-height: 100vh;
+}
+
+/* Ambient Background Orbs */
+.ambient-orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(130px);
+  z-index: -1;
+  opacity: 0.45;
+  pointer-events: none;
+  transition: opacity 1s ease;
+}
+
+.orb-lavender {
+  background: radial-gradient(circle, rgba(212, 187, 255, 0.8) 0%, rgba(183, 148, 244, 0.2) 70%);
+  width: 650px;
+  height: 650px;
+  top: -150px;
+  right: -200px;
+  animation: orbFloat1 20s ease-in-out infinite alternate;
+}
+
+.orb-mint {
+  background: radial-gradient(circle, rgba(133, 211, 216, 0.7) 0%, rgba(0, 105, 110, 0.2) 70%);
+  width: 550px;
+  height: 550px;
+  bottom: -150px;
+  left: -180px;
+  animation: orbFloat2 24s ease-in-out infinite alternate;
+}
+
+.orb-peach {
+  background: radial-gradient(circle, rgba(232, 193, 125, 0.6) 0%, rgba(196, 160, 95, 0.15) 70%);
+  width: 450px;
+  height: 450px;
+  top: 45%;
+  left: 55%;
+  transform: translate(-50%, -50%);
+  animation: orbFloat3 18s ease-in-out infinite alternate;
+}
+
+@keyframes orbFloat1 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-80px, 60px) scale(1.1); }
+  100% { transform: translate(40px, -40px) scale(0.95); }
+}
+
+@keyframes orbFloat2 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(60px, -70px) scale(1.15); }
+  100% { transform: translate(-50px, 30px) scale(0.9); }
+}
+
+@keyframes orbFloat3 {
+  0% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-40%, -60%) scale(1.2); }
+  100% { transform: translate(-60%, -40%) scale(0.85); }
+}
+
+/* Glassmorphism Classes */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 0.5px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.glass-nav {
+  background: rgba(15, 19, 31, 0.75);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 0.5px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.glass-card {
+  background: rgba(27, 31, 44, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-pill {
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 0.5px solid rgba(255, 255, 255, 0.15);
+}
+
+.glass-pill.active {
+  background: rgba(212, 187, 255, 0.2);
+  border-color: rgba(212, 187, 255, 0.5);
+  color: #d4bbff;
+  box-shadow: 0 0 15px rgba(212, 187, 255, 0.2);
+}
+
+.glass-input {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 0.5px solid rgba(255, 255, 255, 0.18);
+}
+
+.glass-modal {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.75), 0 0 40px rgba(212, 187, 255, 0.15);
+}
+
+/* Nav Link Underline Hover */
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #d4bbff, #85d3d8);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: 100%;
+}
+
+/* 3D Flip Card System */
+.card-3d-wrapper {
+  perspective: 1200px;
+  height: 440px;
+}
+
+.card-3d-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1);
+  will-change: transform;
+}
+
+.card-3d-inner.flipped {
+  transform: rotateY(180deg) !important;
+}
+
+.card-front,
+.card-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  display: flex;
+  flex-col: column;
+}
+
+.card-back {
+  transform: rotateY(180deg);
+  background: rgba(27, 31, 44, 0.95);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(212, 187, 255, 0.3);
+  box-shadow: inset 0 0 30px rgba(212, 187, 255, 0.1);
+}
+
+/* Card Specular Light Reflection Overlay */
+.card-shine {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(255, 255, 255, 0) 60%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 1.5rem;
+  z-index: 5;
+}
+
+.card-3d-wrapper:hover .card-shine {
+  opacity: 1;
+}
+
+/* Card Glow Effect on Hover */
+.glass-card-hover {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card-hover:hover {
+  border-color: rgba(212, 187, 255, 0.4);
+  box-shadow: 0 12px 40px -10px rgba(212, 187, 255, 0.25), 0 0 20px rgba(133, 211, 216, 0.15);
+}
+
+/* Toast Animations */
+.toast-enter {
+  animation: toastSlideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.toast-exit {
+  animation: toastSlideOut 0.3s ease-in forwards;
+}
+
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes toastSlideOut {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f131f;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(212, 187, 255, 0.25);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 187, 255, 0.45);
+}
+
+/* Native Dialog Reset */
+dialog::backdrop {
+  background: rgba(10, 14, 26, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Speech / Audio Playing Wave Pulse */
+.audio-playing-pulse {
+  animation: audioPulse 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes audioPulse {
+  0% { box-shadow: 0 0 0 0 rgba(212, 187, 255, 0.4); }
+  100% { box-shadow: 0 0 0 12px rgba(212, 187, 255, 0); }
+}
+

@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>다문화도서관 3D 디지털 수서 & 큐레이션 포털 v5</title>
+  <meta name="description" content="세계 문학의 별자리를 이어주는 B2B/B2C 다문화 도서관 납품 및 3D 나선형 큐레이션 플랫폼">
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Three.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Particle Background Canvas -->
+  <div id="particle-canvas-container">
+    <canvas id="bg-particles"></canvas>
+  </div>
+
+  <!-- Micro-interaction Click Burst Canvas -->
+  <canvas id="click-particle-canvas"></canvas>
+
+  <!-- Application Shell -->
+  <div id="app">
+
+    <!-- Top Navigation Bar -->
+    <header class="navbar">
+      <a href="#home" class="brand">
+        <div class="brand-logo-icon">🌌</div>
+        <div class="brand-text">
+          <span class="brand-title">MULTICULTURE LIBRARY</span>
+          <span class="brand-subtitle">3D Constellation & Acquisition v5</span>
+        </div>
+      </a>
+
+      <!-- SPA Hash Navigation Links -->
+      <nav class="nav-links">
+        <a href="#home" class="nav-item active" data-nav="home">
+          <i data-lucide="home" style="width:16px;height:16px;"></i>
+          <span data-i18n="navHome">메인 관</span>
+        </a>
+        <a href="#search" class="nav-item" data-nav="search">
+          <i data-lucide="search" style="width:16px;height:16px;"></i>
+          <span data-i18n="navSearch">도서 검색 & 수서</span>
+        </a>
+        <a href="#curation" class="nav-item" data-nav="curation">
+          <i data-lucide="sparkles" style="width:16px;height:16px;"></i>
+          <span data-i18n="navCuration">3D 큐레이션</span>
+        </a>
+        <a href="#cart" class="nav-item" data-nav="cart">
+          <i data-lucide="shopping-bag" style="width:16px;height:16px;"></i>
+          <span data-i18n="navCart">견적함 & 장바구니</span>
+          <span class="nav-badge" id="cart-count-badge">0</span>
+        </a>
+        <a href="#detail" class="nav-item" data-nav="detail" id="nav-detail-link" style="display: none;">
+          <i data-lucide="book-open" style="width:16px;height:16px;"></i>
+          <span data-i18n="navDetail">3D 상세 관</span>
+        </a>
+      </nav>
+
+      <!-- Right Control Actions -->
+      <div class="header-controls">
+        <div class="b2b-tag">
+          <i data-lucide="shield-check" style="width:14px;height:14px;"></i>
+          <span data-i18n="b2bTag">도서관 수서 담당자 전용</span>
+        </div>
+
+        <!-- Multi-language Switcher -->
+        <select id="lang-switcher" class="lang-switcher-select">
+          <option value="KO" selected>🇰🇷 한국어</option>
+          <option value="EN">🇺🇸 English</option>
+          <option value="VI">🇻🇳 Tiếng Việt</option>
+          <option value="ZH">🇨🇳 中文</option>
+          <option value="TH">🇹🇭 ไทย</option>
+        </select>
+      </div>
+    </header>
+
+    <!-- Main Content Area (5 SPA Hash Pages) -->
+    <main class="main-content">
+
+      <!-- ===================================================================
+           PAGE 1: HOME (#home)
+           =================================================================== -->
+      <section id="page-home" class="page-section active">
+        
+        <!-- Hero Section with Three.js 3D Constellation & Kinetic Wave -->
+        <div class="hero-section">
+          <canvas id="hero-3d-canvas"></canvas>
+          <div class="hero-content">
+            <div class="hero-badge">
+              <i data-lucide="orbit" style="width:14px;height:14px;"></i>
+              <span data-i18n="heroBadge">3D Constellation Matrix & Kinetic Wave</span>
+            </div>
+            <h1 class="hero-title" data-i18n="heroTitle">세계 문학의 별자리를 이어주는 디지털 수서 & 3D 나선형 큐레이션</h1>
+            <p class="hero-description" data-i18n="heroDesc">
+              전 세계 24개국 원서 다문화 서적 수서, KDC 자동 분류, B2B 견적서 1초 발급까지 도서관 수서 담당 사서님을 위한 가장 스마트한 솔루션입니다.
+            </p>
+            
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+              <a href="#search" class="btn-neon">
+                <i data-lucide="compass"></i>
+                <span data-i18n="heroCtaSearch">도서 검색 & 수서 시작하기</span>
+              </a>
+              <a href="#curation" class="btn-cyan">
+                <i data-lucide="layers"></i>
+                <span data-i18n="heroCtaCuration">3D 큐레이션 기획전 관람</span>
+              </a>
+            </div>
+
+            <div class="hero-stats">
+              <div class="stat-item">
+                <span class="stat-number">150,000+</span>
+                <span class="stat-label" data-i18n="stat1">전 세계 다문화 원서 보유</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number">850+</span>
+                <span class="stat-label" data-i18n="stat2">전국 공공·학교 도서관 납품</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number">100%</span>
+                <span class="stat-label" data-i18n="stat3">KDC/MARC 자동 데이터 연동</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3D Spiral Carousel Showcase Section -->
+        <div class="spiral-showcase-container">
+          <div class="spiral-header">
+            <div>
+              <h2 class="section-title">
+                <i data-lucide="disc" style="color:var(--accent-cyan);"></i>
+                <span data-i18n="spiralTitle">3D 나선형 도서 캐러셀 (Spiral Showcase)</span>
+              </h2>
+              <p class="section-subtitle" data-i18n="spiralSubtitle">나선형 3D 컬렉션을 마우스로 드래그하여 다문화 추천 도서를 360도로 탐색하세요.</p>
+            </div>
+            <a href="#curation" class="btn-outline btn-sm">
+              <span data-i18n="viewAll">전체보기</span>
+              <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
+            </a>
+          </div>
+
+          <!-- Interactive 3D Canvas for Spiral Carousel -->
+          <canvas id="spiral-3d-canvas"></canvas>
+
+          <div class="spiral-controls-hint">
+            <i data-lucide="move-horizontal"></i>
+            <span data-i18n="spiralHint">마우스 드래그로 3D 회전 | 도서 클릭 시 3D 상세 보기</span>
+          </div>
+        </div>
+
+        <!-- New Releases Section (Classic List / 3D Card Mix) -->
+        <div class="new-releases-section">
+          <div class="section-header">
+            <div>
+              <h2 class="section-title">
+                <i data-lucide="sparkle" style="color:var(--primary-indigo);"></i>
+                <span data-i18n="newReleasesTitle">이달의 다문화 신간 & 사서 추천 도서</span>
+              </h2>
+              <p class="section-subtitle" data-i18n="newReleasesSubtitle">베트남, 태국, 중국, 몽골, 영어권 최신 수서 인기 목록</p>
+            </div>
+
+            <div class="tabs-controls">
+              <button class="tab-btn active" id="view-mode-grid" data-i18n="gridMode">3D 카드 그리드</button>
+              <button class="tab-btn" id="view-mode-list" data-i18n="listMode">사서 전용 리스트</button>
+            </div>
+          </div>
+
+          <!-- Dynamic Book Cards Grid -->
+          <div id="home-books-container" class="books-grid">
+            <!-- Rendered by JavaScript -->
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ===================================================================
+           PAGE 2: SEARCH (#search)
+           =================================================================== -->
+      <section id="page-search" class="page-section">
+        
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">
+              <i data-lucide="search" style="color:var(--accent-cyan);"></i>
+              <span data-i18n="searchPageTitle">도서 검색 & 통합 수서 관</span>
+            </h2>
+            <p class="section-subtitle" data-i18n="searchPageSubtitle">언어별, 연령별, KDC 분류기호, ISBN으로 원하시는 다문화 도서를 실시간 검색하세요.</p>
+          </div>
+        </div>
+
+        <div class="search-layout">
+          
+          <!-- Filter Sidebar -->
+          <aside class="filter-sidebar">
+            <h3 style="font-size: 1.1rem; margin-bottom: 1.25rem; display: flex; align-items: center; justify-content: space-between;">
+              <span data-i18n="filterHeader">수서 필터</span>
+              <button id="btn-reset-filters" class="btn-outline btn-sm" style="font-size:0.75rem;" data-i18n="resetFilters">초기화</button>
+            </h3>
+
+            <!-- Language Filter -->
+            <div class="filter-group">
+              <div class="filter-title">
+                <i data-lucide="languages" style="width:14px;height:14px;"></i>
+                <span data-i18n="filterLang">언어 (Language)</span>
+              </div>
+              <div class="filter-options" id="filter-lang-options">
+                <label class="filter-checkbox-label"><input type="checkbox" value="VI"> 🇻🇳 베트남어 (Vietnamese)</label>
+                <label class="filter-checkbox-label"><input type="checkbox" value="TH"> 🇹🇭 태국어 (Thai)</label>
+                <label class="filter-checkbox-label"><input type="checkbox" value="ZH"> 🇨🇳 중국어 (Chinese)</label>
+                <label class="filter-checkbox-label"><input type="checkbox" value="EN"> 🇺🇸 영어 (English)</label>
+                <label class="filter-checkbox-label"><input type="checkbox" value="MN"> 🇲🇳 몽골어 (Mongolian)</label>
+                <label class="filter-checkbox-label"><input type="checkbox" value="KO"> 🇰🇷 한국어/이중언어</label>
+              </div>
+            </div>
+
+            <!-- Target Age Filter -->
+            <div class="filter-group">
+              <div class="filter-title">
+                <i data-lucide="user-check" style="width:14px;height:14px;"></i>
+                <span data-i18n="filterAge">대상 연령 (Target Age)</span>
+              </div>
+              <div class="filter-options" id="filter-age-options">
+                <label class="filter-checkbox-label"><input type="checkbox" value="유아"> 유아 (Toddler)</label>
+                <label class="filter-checkbox-label"><input type="checkbox" value="아동"> 아동 (Children)</label>
+                <label class="filter-checkbox-label"><input type="checkbox" value="청소년"> 청소년 (Young Adult)</label>
+                <label class="filter-checkbox-label"><input type="checkbox" value="성인"> 성인 (Adult)</label>
+              </div>
+            </div>
+
+            <!-- KDC Category Filter -->
+            <div class="filter-group">
+              <div class="filter-title">
+                <i data-lucide="bookmark" style="width:14px;height:14px;"></i>
+                <span data-i18n="filterKdc">KDC 분류기호</span>
+              </div>
+              <div class="filter-options" id="filter-kdc-options">
+                <label class="filter-checkbox-label"><input type="checkbox" value="800"> 800번대 (문학)</label>
+                <label class="filter-checkbox-label"><input type="checkbox" value="300"> 300번대 (사회과학)</label>
+                <label class="filter-checkbox-label"><input type="checkbox" value="900"> 900번대 (역사)</label>
+                <label class="filter-checkbox-label"><input type="checkbox" value="100"> 100번대 (철학/종교)</label>
+              </div>
+            </div>
+          </aside>
+
+          <!-- Search Main Panel -->
+          <div class="search-main-panel">
+            
+            <!-- Search Bar Input Box -->
+            <div class="search-input-box">
+              <i data-lucide="search" style="margin-left: 0.75rem; align-self: center; color: var(--text-muted);"></i>
+              <input type="text" id="search-keyword-input" class="search-input-field" placeholder="도서명, 저자, ISBN, KDC 번호로 검색..." data-i18n-placeholder="searchPlaceholder">
+              
+              <select id="search-sort-select" class="lang-switcher-select" style="border:none;">
+                <option value="popular" data-i18n="sortPopular">도서관 대출 인기순</option>
+                <option value="newest" data-i18n="sortNewest">최신 출간순</option>
+                <option value="price-asc" data-i18n="sortPriceAsc">납품가 낮은순</option>
+              </select>
+            </div>
+
+            <!-- Search Status & Selected Count Bar -->
+            <div style="display: flex; justify-content: space-between; align-items: center; color: var(--text-muted); font-size: 0.9rem;">
+              <div><span data-i18n="totalResults">검색 결과</span>: <strong id="search-results-count" style="color: var(--accent-cyan); font-family: var(--font-mono);">0</strong> <span data-i18n="items">건</span></div>
+              
+              <button id="btn-add-selected-cart" class="btn-emerald btn-sm">
+                <i data-lucide="shopping-cart" style="width:14px;height:14px;"></i>
+                <span data-i18n="addSelectedToCart">선택 항목 견적함에 담기</span>
+              </button>
+            </div>
+
+            <!-- Results Grid Container -->
+            <div id="search-results-container" class="books-grid">
+              <!-- Rendered by JavaScript -->
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ===================================================================
+           PAGE 3: CURATION (#curation)
+           =================================================================== -->
+      <section id="page-curation" class="page-section">
+        
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">
+              <i data-lucide="sparkles" style="color:var(--accent-amber);"></i>
+              <span data-i18n="curationTitle">3D 나선형 큐레이션 기획전 관</span>
+            </h2>
+            <p class="section-subtitle" data-i18n="curationSubtitle">2026년 도서관 수서 담당 사서님을 위한 맞춤형 다문화 기획 패키지 컬렉션</p>
+          </div>
+        </div>
+
+        <!-- Curation Packages Grid -->
+        <div id="curation-packages-container" class="curation-packages-grid">
+          <!-- Rendered by JavaScript -->
+        </div>
+
+      </section>
+
+      <!-- ===================================================================
+           PAGE 4: CART & QUOTE (#cart)
+           =================================================================== -->
+      <section id="page-cart" class="page-section">
+        
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">
+              <i data-lucide="file-text" style="color:var(--data-emerald);"></i>
+              <span data-i18n="cartTitle">장바구니 & 도서관 수서 견적함</span>
+            </h2>
+            <p class="section-subtitle" data-i18n="cartSubtitle">선택하신 수서목록을 확인하고, 1초 만에 PDF 공식 견적서 및 Excel 납품 데이터로 다운로드하세요.</p>
+          </div>
+          
+          <button id="btn-clear-cart" class="btn-outline btn-sm" style="color: var(--accent-rose); border-color: rgba(244,63,94,0.3);">
+            <i data-lucide="trash-2" style="width:14px;height:14px;"></i>
+            <span data-i18n="clearCart">견적함 비우기</span>
+          </button>
+        </div>
+
+        <div class="cart-layout">
+          
+          <!-- Cart Items Table -->
+          <div class="cart-table-container">
+            <table class="cart-table">
+              <thead>
+                <tr>
+                  <th style="width: 40px;"><input type="checkbox" id="cart-check-all" checked></th>
+                  <th data-i18n="tableBookInfo">도서 서지정보</th>
+                  <th data-i18n="tableIsbn">ISBN / KDC</th>
+                  <th data-i18n="tablePrice">정가</th>
+                  <th data-i18n="tableB2bPrice">도서관 납품가 (10% Off)</th>
+                  <th data-i18n="tableQty">수량</th>
+                  <th data-i18n="tableSubtotal">소계</th>
+                  <th style="width: 50px;"></th>
+                </tr>
+              </thead>
+              <tbody id="cart-table-body">
+                <!-- Rendered by JavaScript -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Quote & Order Summary Side Panel -->
+          <div class="quote-summary-panel">
+            <h3 style="font-size: 1.2rem; font-weight: 800; margin-bottom: 1.25rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.75rem;" data-i18n="quoteSummaryTitle">
+              수서 견적서 작성 & 발급
+            </h3>
+
+            <!-- Institution Form -->
+            <div class="form-field">
+              <label class="form-label" data-i18n="formInstitution">도서관 / 기관명</label>
+              <input type="text" id="quote-inst-name" class="form-input" placeholder="예: 시립 중앙도서관" value="국립다문화중앙도서관">
+            </div>
+            
+            <div class="form-field">
+              <label class="form-label" data-i18n="formLibrarian">수서 담당 사서성함</label>
+              <input type="text" id="quote-librarian-name" class="form-input" placeholder="예: 김사서 팀장" value="홍길동 사서">
+            </div>
+
+            <div class="form-field">
+              <label class="form-label" data-i18n="formContact">연락처 / 이메일</label>
+              <input type="text" id="quote-contact" class="form-input" placeholder="010-0000-0000" value="02-1234-5678 / librarian@library.go.kr">
+            </div>
+
+            <div class="form-field">
+              <label class="form-label" data-i18n="formDeliveryDate">납품 희망일</label>
+              <input type="date" id="quote-delivery-date" class="form-input">
+            </div>
+
+            <!-- Total Price Calculation -->
+            <div style="background: rgba(15, 23, 42, 0.9); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--glass-border); margin: 1.5rem 0;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.85rem; color: var(--text-muted);">
+                <span data-i18n="subtotalRegular">총 정가 합계:</span>
+                <span id="summary-regular-price" class="font-mono">0원</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.85rem; color: var(--data-emerald);">
+                <span data-i18n="b2bDiscount">도서관 B2B 특별 할인 (10%):</span>
+                <span id="summary-discount-price" class="font-mono">-0원</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem; font-size: 0.85rem; color: var(--text-muted);">
+                <span data-i18n="shippingFee">배송료 (10만원 이상 무료):</span>
+                <span id="summary-shipping-fee" class="font-mono">0원</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding-top: 0.75rem; border-top: 1px solid rgba(255,255,255,0.1); font-weight: 800; font-size: 1.2rem; color: #ffffff;">
+                <span data-i18n="netTotal">최종 납품 견적금액:</span>
+                <span id="summary-final-price" class="font-mono" style="color: var(--accent-cyan);">0원</span>
+              </div>
+            </div>
+
+            <!-- Export Buttons -->
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+              <button id="btn-export-pdf" class="btn-neon" style="width:100%;">
+                <i data-lucide="file-check"></i>
+                <span data-i18n="btnExportPdf">PDF 공식 견적서 발급 (인쇄/저장)</span>
+              </button>
+              <button id="btn-export-excel" class="btn-emerald" style="width:100%;">
+                <i data-lucide="file-spreadsheet"></i>
+                <span data-i18n="btnExportExcel">Excel / MARC 데이터 다운로드</span>
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ===================================================================
+           PAGE 5: DETAIL (#detail)
+           =================================================================== -->
+      <section id="page-detail" class="page-section">
+        
+        <div class="detail-layout">
+          
+          <!-- Left: 360-Degree 3D Book Inspector Container -->
+          <div class="detail-3d-container">
+            <canvas id="detail-3d-canvas"></canvas>
+            
+            <div class="detail-3d-hint">
+              <i data-lucide="rotate-3d"></i>
+              <span data-i18n="detail3dHint">360° 마우스 드래그로 3D 책 회전 & 입체 확인</span>
+            </div>
+          </div>
+
+          <!-- Right: Book Metadata & Action Controls -->
+          <div class="detail-info" id="detail-info-container">
+            <!-- Rendered dynamically by JavaScript -->
+          </div>
+
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- Modal Window for PDF Printable Official Quotation -->
+    <div id="quote-modal" class="modal-overlay">
+      <div class="modal-content">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 2px solid #0f172a; padding-bottom: 1rem;">
+          <div>
+            <h2 style="font-size: 1.75rem; font-weight: 800; color: #0f172a;">도 서 납 품 견 적 서 (B2B Official Quote)</h2>
+            <p style="font-size: 0.85rem; color: #64748b;">발급번호: MULTI-2026-0906-001 | 발급일자: 2026년 09월 06일</p>
+          </div>
+          <button id="btn-close-modal" style="background:none; border:none; font-size: 1.5rem; cursor:pointer;">✕</button>
+        </div>
+
+        <div id="pdf-printable-content">
+          <!-- Rendered dynamically for PDF printing -->
+        </div>
+
+        <div style="margin-top: 2rem; display: flex; justify-content: flex-end; gap: 1rem;">
+          <button id="btn-print-now" class="btn-neon">
+            <i data-lucide="printer"></i>
+            <span>견적서 바로 인쇄 / PDF 저장</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container"></div>
+
+    <!-- Footer -->
+    <footer>
+      <p>© 2026 다문화 도서관 납품 & 3D 디지털 수서 포털 v5. All rights reserved.</p>
+      <p style="margin-top: 0.4rem; color: var(--text-dim);">
+        KDC / DDC Automated Metadata Cataloging Engine | Powering 850+ Public Libraries Nationwide
+      </p>
+    </footer>
+
+  </div>
+
+  <!-- Main JavaScript Application Logic -->
+  <script src="app.js"></script>
+
+</body>
+</html>
+

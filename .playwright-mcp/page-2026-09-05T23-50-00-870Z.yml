@@ -1,0 +1,93 @@
+- generic [active] [ref=f13e1]:
+  - banner [ref=f13e2]:
+    - generic [ref=f13e3]:
+      - link "다문화도서관 수서 몰 v19 · Enchanted Forest Treehouse" [ref=f13e4] [cursor=pointer]:
+        - /url: "#home"
+        - generic [ref=f13e8]:
+          - generic [ref=f13e9]: 다문화도서관 수서 몰
+          - generic [ref=f13e10]: v19 · Enchanted Forest Treehouse
+      - navigation [ref=f13e11]:
+        - link "메인" [ref=f13e12] [cursor=pointer]:
+          - /url: "#home"
+        - link "도서 검색" [ref=f13e13] [cursor=pointer]:
+          - /url: "#search"
+        - link "큐레이션" [ref=f13e14] [cursor=pointer]:
+          - /url: "#curation"
+        - link "공문 견적함0" [ref=f13e15] [cursor=pointer]:
+          - /url: "#cart"
+      - generic [ref=f13e16]:
+        - generic "Librarian mode" [ref=f13e17] [cursor=pointer]: 사서 모드
+        - button "sound" [ref=f13e21] [cursor=pointer]:
+          - generic [ref=f13e22]: ♪
+        - combobox "Language" [ref=f13e24] [cursor=pointer]:
+          - option "🇰🇷 한국어" [selected]
+          - option "🇺🇸 English"
+          - option "🇻🇳 Tiếng Việt"
+          - option "🇨🇳 中文"
+          - option "🇷🇺 Русский"
+          - option "🇯🇵 日本語"
+        - link "견적 장바구니 0" [ref=f13e25] [cursor=pointer]:
+          - /url: "#cart"
+          - generic [ref=f13e26]: 견적 장바구니
+          - generic [ref=f13e27]: "0"
+  - main [ref=f13e28]:
+    - generic [ref=f13e29]:
+      - generic [ref=f13e30]:
+        - paragraph [ref=f13e31]: QUOTE CART
+        - heading "장바구니 · 공문 견적함" [level=2] [ref=f13e32]
+        - paragraph [ref=f13e33]: 납품가(정가 -10%) 기준으로 자동 산출됩니다. 기관 정보를 입력하면 공문 양식으로 출력됩니다.
+      - generic [ref=f13e34]:
+        - generic [ref=f13e35]:
+          - text: 선택 종수
+          - strong [ref=f13e36]: "0"
+        - generic [ref=f13e37]:
+          - text: 총 권수
+          - strong [ref=f13e38]: "0"
+        - generic [ref=f13e39]:
+          - text: 정가 합계
+          - strong [ref=f13e40]: 0원
+        - generic [ref=f13e41]:
+          - text: 납품가 합계
+          - strong [ref=f13e42]: 0원
+      - generic [ref=f13e43]:
+        - generic [ref=f13e44]:
+          - button "전체 비우기" [ref=f13e46] [cursor=pointer]
+          - generic [ref=f13e48]:
+            - text: 견적함이 비어 있습니다. 기획전이나 검색에서 도서를 담아보세요.
+            - link "도서 검색으로" [ref=f13e49] [cursor=pointer]:
+              - /url: "#search"
+        - complementary [ref=f13e50]:
+          - heading "수서 기관 정보" [level=4] [ref=f13e51]
+          - generic [ref=f13e52]:
+            - generic [ref=f13e53]: 기관명
+            - textbox "기관명" [ref=f13e54]:
+              - /placeholder: OO시 다문화도서관
+          - generic [ref=f13e55]:
+            - generic [ref=f13e56]: 담당 사서
+            - textbox "담당 사서" [ref=f13e57]:
+              - /placeholder: 홍길동
+          - generic [ref=f13e58]:
+            - generic [ref=f13e59]: 연락처
+            - textbox "연락처" [ref=f13e60]:
+              - /placeholder: 02-000-0000
+          - generic [ref=f13e61]:
+            - generic [ref=f13e62]: 이메일
+            - textbox "이메일" [ref=f13e63]:
+              - /placeholder: lib@city.go.kr
+          - generic [ref=f13e64]:
+            - generic [ref=f13e65]:
+              - generic [ref=f13e66]: 소계
+              - generic [ref=f13e67]: 0원
+            - generic [ref=f13e68]:
+              - generic [ref=f13e69]: 도서관 할인(10%)
+              - generic [ref=f13e70]: − 0원
+            - generic [ref=f13e71]:
+              - generic [ref=f13e72]: 총 납품가
+              - generic [ref=f13e73]: 0원
+          - button "공문 견적서 인쇄 / PDF" [ref=f13e74] [cursor=pointer]
+          - button "엑셀 사양서 다운로드" [ref=f13e75] [cursor=pointer]
+  - contentinfo [ref=f13e76]:
+    - generic [ref=f13e77]:
+      - strong [ref=f13e78]: 다문화도서관 수서 몰
+      - paragraph [ref=f13e79]: 공공·학교 다문화 도서관 납품 전문 · 원서 및 이중언어 도서 · 사서 공문 견적 지원
+    - paragraph [ref=f13e80]: © 2026 Multicultural Library Mall · v19 Enchanted Forest Treehouse

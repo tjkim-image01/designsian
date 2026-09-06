@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>다문화 픽셀 도서관 수서 몰 v24 | Kenney Pixel Adventure 8-Bit Library Portal</title>
+
+  <!-- Google Fonts: Press Start 2P, Silkscreen, VT323, Noto Sans KR, Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Press+Start+2P&family=Silkscreen:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+
+  <!-- Main CSS StyleSheet -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- External Libraries via CDN -->
+  <!-- Three.js r128 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- OrbitControls for Three.js -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- jsPDF for Official PDF Quote Generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <!-- SheetJS XLSX for Excel Spec Export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body class="pixel-arcade-theme">
+
+  <!-- Canvas Overlay for 8-Bit Retro Pixel Starburst Effect -->
+  <canvas id="pixel-starburst-canvas"></canvas>
+
+  <!-- Top Navigation Header -->
+  <header class="app-header pixel-panel">
+    <div class="header-container">
+      <!-- Logo & Brand -->
+      <a href="#home" class="brand-logo" id="brand-logo">
+        <div class="logo-box">
+          <span class="logo-icon">👾</span>
+          <div class="logo-sparkle"></div>
+        </div>
+        <div class="brand-text">
+          <div class="brand-title-row">
+            <span class="brand-title" data-i18n="brandTitle">다문화 픽셀 도서관 수서 몰</span>
+            <span class="brand-badge pixel-badge badge-gold">v24 RETRO</span>
+          </div>
+          <span class="brand-subtitle" data-i18n="brandSubtitle">Kenney Pixel Adventure 8-Bit Library Portal</span>
+        </div>
+      </a>
+
+      <!-- 5-Page Main Nav Tabs -->
+      <nav class="main-nav">
+        <a href="#home" class="nav-link active" data-nav="home">
+          <i data-lucide="gamepad-2"></i>
+          <span data-i18n="navHome">아케이드 메인</span>
+        </a>
+        <a href="#search" class="nav-link" data-nav="search">
+          <i data-lucide="search"></i>
+          <span data-i18n="navSearch">픽셀 수서 검색</span>
+        </a>
+        <a href="#curation" class="nav-link" data-nav="curation">
+          <i data-lucide="shield-alert"></i>
+          <span data-i18n="navCuration">던전 큐레이션</span>
+        </a>
+        <a href="#cart" class="nav-link" data-nav="cart">
+          <i data-lucide="shopping-bag"></i>
+          <span data-i18n="navCart">공문 견적함</span>
+          <span id="cart-nav-badge" class="nav-badge pixel-badge badge-red">0</span>
+        </a>
+      </nav>
+
+      <!-- Right Header Tools (Multi-Language Switcher & Sound FX Toggle) -->
+      <div class="header-tools">
+        <!-- 5-Language Switcher -->
+        <div class="lang-switcher pixel-panel-sm">
+          <span class="lang-icon">🌐</span>
+          <button class="lang-btn active" data-lang="KO">KO</button>
+          <button class="lang-btn" data-lang="EN">EN</button>
+          <button class="lang-btn" data-lang="VI">VI</button>
+          <button class="lang-btn" data-lang="ZH">ZH</button>
+          <button class="lang-btn" data-lang="JA">JA</button>
+        </div>
+
+        <!-- 8-Bit Chiptune SFX Sound Toggle -->
+        <button id="btn-sound-toggle" class="pixel-btn pixel-btn-cyan sound-btn" title="8-Bit SFX Sound Toggle">
+          <i data-lucide="volume-2" id="sound-icon"></i>
+          <span id="sound-text">SFX ON</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main View Container for SPA Navigation -->
+  <main id="app-main" class="main-content">
+
+    <!-- PAGE 1: #home (Arcade Main Hero & 3D Pixel Dungeon Gallery) -->
+    <section id="page-home" class="page-section active">
+      <!-- Hero Banner Section -->
+      <div class="hero-container pixel-panel">
+        <div class="hero-grid">
+          <!-- Left Hero Text Info -->
+          <div class="hero-info">
+            <div class="hero-badge-row">
+              <span class="pixel-badge badge-cyan" data-i18n="heroBadge">👾 8-BIT RETRO MULTICULTURAL LIBRARY PORTAL</span>
+              <span class="pixel-badge badge-purple">LV.99 LIBRARIAN</span>
+            </div>
+            <h1 class="hero-title" data-i18n="heroTitle">3D Voxel Pixel Floating Island Multicultural Library</h1>
+            <p class="hero-subtitle" data-i18n="heroSubtitle">
+              Explore global children & youth books, fairy tales, and multicultural classics in a 3D pixel floating island world. Designed for librarians with 1-click official PDF quotes and Excel specs.
+            </p>
+            
+            <div class="hero-actions">
+              <a href="#search" class="pixel-btn pixel-btn-gold hero-btn">
+                <i data-lucide="compass"></i>
+                <span data-i18n="btnBrowseSearch">픽셀 도서 수서 탐색</span>
+              </a>
+              <a href="#curation" class="pixel-btn pixel-btn-purple hero-btn">
+                <i data-lucide="castle"></i>
+                <span data-i18n="btnBrowseCuration">3D 던전 큐레이션</span>
+              </a>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="hero-stats">
+              <div class="stat-card pixel-panel-sm">
+                <div class="stat-icon">📚</div>
+                <div class="stat-content">
+                  <div class="stat-value">15,000+</div>
+                  <div class="stat-label" data-i18n="statBooks">다문화 픽셀 도서</div>
+                </div>
+              </div>
+              <div class="stat-card pixel-panel-sm">
+                <div class="stat-icon">🌐</div>
+                <div class="stat-content">
+                  <div class="stat-value">5 LANGS</div>
+                  <div class="stat-label" data-i18n="statLangs">KO / EN / VI / ZH / JA</div>
+                </div>
+              </div>
+              <div class="stat-card pixel-panel-sm">
+                <div class="stat-icon">📄</div>
+                <div class="stat-content">
+                  <div class="stat-value">100% 1-CLICK</div>
+                  <div class="stat-label" data-i18n="statPdf">픽셀 비트 직인 PDF 견적</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right 3D Voxel Floating Island Canvas -->
+          <div class="hero-3d-box pixel-panel-inner">
+            <canvas id="hero-3d-canvas"></canvas>
+            <div class="hero-3d-hud">
+              <span class="hud-chip" data-i18n="heroHudHint">🕹️ Drag mouse to rotate 3D Voxel Island & orbiting coin particles</span>
+              <button id="btn-hero-3d-reset" class="pixel-btn-xs" title="Reset Camera"><i data-lucide="rotate-ccw"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3D Pixel Arcade Dungeon Gallery Exhibition Section -->
+      <div class="section-container">
+        <div class="section-header">
+          <div class="header-left">
+            <span class="pixel-badge badge-green">3D EXHIBITION</span>
+            <h2 class="section-title" data-i18n="galleryTitle">3D Pixel Arcade Dungeon Gallery Exhibition</h2>
+            <p class="section-desc" data-i18n="gallerySubtitle">Step into retro arcade pedestals & treasure chests showcasing curated multicultural pixel books.</p>
+          </div>
+        </div>
+
+        <div class="arcade-gallery-grid" id="arcade-gallery-grid">
+          <!-- Gallery Cards rendered dynamically -->
+        </div>
+      </div>
+
+      <!-- New Releases Section (Grid / List View) -->
+      <div class="section-container">
+        <div class="section-header">
+          <div class="header-left">
+            <span class="pixel-badge badge-gold">NEW RELEASES</span>
+            <h2 class="section-title" data-i18n="newTitle">2026 Fall New Multicultural Pixel Books</h2>
+            <p class="section-desc" data-i18n="newSubtitle">Latest multicultural acquisitions with 10% B2B library procurement discount.</p>
+          </div>
+          <div class="header-right">
+            <div class="view-toggle pixel-panel-sm">
+              <button class="toggle-btn active" data-view="grid" id="btn-view-grid" title="3D Pixel Cards View">
+                <i data-lucide="grid"></i> <span data-i18n="tabModeGrid">3D 카드</span>
+              </button>
+              <button class="toggle-btn" data-view="list" id="btn-view-list" title="Classic List View">
+                <i data-lucide="list"></i> <span data-i18n="tabModeList">클래식 목록</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dynamic Container for New Releases -->
+        <div id="new-releases-container" class="cards-grid">
+          <!-- Book cards rendered dynamically by JS -->
+        </div>
+
+        <div class="center-cta">
+          <a href="#search" class="pixel-btn pixel-btn-gold btn-lg">
+            <i data-lucide="arrow-right"></i>
+            <span data-i18n="btnViewAllSearch">전체 픽셀 도서 검색 & 수서하기</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 2: #search (Retro 8-Bit Arcade Search Console) -->
+    <section id="page-search" class="page-section">
+      <div class="section-container pixel-panel">
+        <div class="search-header">
+          <span class="pixel-badge badge-cyan" data-i18n="searchBadge">ARCANE SEARCH CONSOLE</span>
+          <h2 class="page-title" data-i18n="searchTitle">Retro 8-Bit Arcade Search & Librarian Console</h2>
+          <p class="page-desc" data-i18n="searchSubtitle">Filter books by Language (KO, EN, VI, ZH, JA), Target Age, KDC Classification, ISBN, and Arcade Quest Tags.</p>
+        </div>
+
+        <!-- Search Inputs & Filters Form -->
+        <div class="search-console-box pixel-panel-inner">
+          <!-- Text Search Bar -->
+          <div class="search-bar-row">
+            <div class="search-input-wrap">
+              <i data-lucide="search" class="search-icon"></i>
+              <input type="text" id="search-keyword" class="pixel-input" placeholder="Search by title, author, publisher, ISBN..." data-i18n-ph="phSearchInput">
+              <button id="btn-search-clear" class="btn-clear-input" title="Clear Search">✕</button>
+            </div>
+            <button id="btn-search-submit" class="pixel-btn pixel-btn-gold">
+              <i data-lucide="sparkles"></i>
+              <span data-i18n="btnSearch">검색</span>
+            </button>
+          </div>
+
+          <!-- Multi-Filter Controls Grid -->
+          <div class="filters-grid">
+            <!-- Language Filter -->
+            <div class="filter-group">
+              <label data-i18n="filterLang">🌐 지원 언어</label>
+              <select id="filter-lang" class="pixel-select">
+                <option value="ALL" data-i18n="optAllLangs">전체 언어 (ALL)</option>
+                <option value="KO">한국어 (Korean)</option>
+                <option value="EN">English (영어)</option>
+                <option value="VI">Tiếng Việt (베트남어)</option>
+                <option value="ZH">中文 (중국어)</option>
+                <option value="JA">日本語 (일본어)</option>
+              </select>
+            </div>
+
+            <!-- Target Age Filter -->
+            <div class="filter-group">
+              <label data-i18n="filterAge">👶 Target Age</label>
+              <select id="filter-age" class="pixel-select">
+                <option value="ALL" data-i18n="optAllAges">전체 연령 (ALL)</option>
+                <option value="Children" data-i18n="optChildren">유아/아동 (Children)</option>
+                <option value="Youth" data-i18n="optYouth">청소년 (Youth)</option>
+                <option value="Adult" data-i18n="optAdult">성인/일반 (Adult)</option>
+              </select>
+            </div>
+
+            <!-- KDC Classification Filter -->
+            <div class="filter-group">
+              <label data-i18n="filterKDC">📚 KDC 분류표</label>
+              <select id="filter-kdc" class="pixel-select">
+                <option value="ALL" data-i18n="optAllKDC">전체 분류 (ALL)</option>
+                <option value="100">100 철학/심리학</option>
+                <option value="300">300 사회과학/다문화</option>
+                <option value="700">700 언어/이중언어</option>
+                <option value="800">800 문학/동화/소설</option>
+                <option value="900">900 역사/지리/문화</option>
+              </select>
+            </div>
+
+            <!-- Publisher Filter -->
+            <div class="filter-group">
+              <label data-i18n="filterPublisher">🏰 출판사</label>
+              <select id="filter-publisher" class="pixel-select">
+                <option value="ALL" data-i18n="optAllPublishers">전체 출판사 (ALL)</option>
+                <option value="픽셀어드벤처북스">픽셀어드벤처북스</option>
+                <option value="글로벌다문화출판">글로벌다문화출판</option>
+                <option value="8비트미디어">8비트미디어</option>
+                <option value="아시아동화서원">아시아동화서원</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Arcade Quest Tags Row -->
+          <div class="quest-tags-row">
+            <span class="quest-label" data-i18n="labelQuestTags">🏷️ 아케이드 퀘스트 태그:</span>
+            <div class="tags-container" id="quest-tags-container">
+              <button class="quest-tag-btn active" data-tag="ALL">#전체 (ALL)</button>
+              <button class="quest-tag-btn" data-tag="픽셀모험">#픽셀모험</button>
+              <button class="quest-tag-btn" data-tag="세계전래">#세계전래</button>
+              <button class="quest-tag-btn" data-tag="레트로명작">#레트로명작</button>
+              <button class="quest-tag-btn" data-tag="다문화이해">#다문화이해</button>
+              <button class="quest-tag-btn" data-tag="이중언어">#이중언어</button>
+              <button class="quest-tag-btn" data-tag="AI미래">#AI미래</button>
+            </div>
+            <button id="btn-reset-filters" class="pixel-btn pixel-btn-red btn-sm">
+              <i data-lucide="rotate-ccw"></i>
+              <span data-i18n="btnResetFilters">필터 초기화</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Search Results Control & Counter -->
+        <div class="results-header">
+          <div class="results-count">
+            <span data-i18n="resultCountLabel">🎮 검색된 픽셀 도서:</span>
+            <strong id="search-results-count" class="text-gold">0</strong>
+            <span data-i18n="resultCountUnit">건</span>
+          </div>
+
+          <div class="results-actions">
+            <button id="btn-bulk-add-cart" class="pixel-btn pixel-btn-green">
+              <i data-lucide="plus-circle"></i>
+              <span data-i18n="btnBulkAddCart">선택 도서 수서 장바구니 담기</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Search Results Grid -->
+        <div id="search-results-grid" class="cards-grid">
+          <!-- Results rendered dynamically -->
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 3: #curation (Special 3D Pixel Dungeon Curation Packages) -->
+    <section id="page-curation" class="page-section">
+      <div class="section-container pixel-panel">
+        <div class="curation-header">
+          <span class="pixel-badge badge-purple" data-i18n="curationBadge">SPECIAL 3D PIXEL DUNGEON PACKAGES</span>
+          <h2 class="page-title" data-i18n="curationTitle">3D Pixel Dungeon Curation Packages</h2>
+          <p class="page-desc" data-i18n="curationSubtitle">Special themed multicultural book bundles designed for public and school library acquisition.</p>
+        </div>
+
+        <div id="curation-packages-container" class="curation-grid">
+          <!-- Packages rendered dynamically -->
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 4: #cart (8-Bit Arcade Librarian Bulk Order Cart & Quote Generator) -->
+    <section id="page-cart" class="page-section">
+      <div class="section-container pixel-panel">
+        <div class="cart-header">
+          <span class="pixel-badge badge-gold" data-i18n="cartBadge">LIBRARIAN CONSOLE</span>
+          <h2 class="page-title" data-i18n="cartTitle">Arcade Librarian Bulk Order Cart & Quote Console</h2>
+          <p class="page-desc" data-i18n="cartSubtitle">Auto-calculate library B2B procurement prices (10% discount) and export official 1-Click PDF quotes with Pixel Bit Seals and XLSX spreadsheets.</p>
+        </div>
+
+        <!-- Summary Stat Cards -->
+        <div class="cart-summary-grid">
+          <div class="summary-card pixel-panel-sm">
+            <div class="summary-icon">📖</div>
+            <div class="summary-content">
+              <div class="summary-label" data-i18n="statTotalTitles">선택 도서 종수</div>
+              <div class="summary-value text-cyan" id="cart-stat-titles">0종</div>
+            </div>
+          </div>
+          <div class="summary-card pixel-panel-sm">
+            <div class="summary-icon">📦</div>
+            <div class="summary-content">
+              <div class="summary-label" data-i18n="statTotalCopies">총 수서 권수</div>
+              <div class="summary-value text-green" id="cart-stat-copies">0권</div>
+            </div>
+          </div>
+          <div class="summary-card pixel-panel-sm">
+            <div class="summary-icon">💰</div>
+            <div class="summary-content">
+              <div class="summary-label" data-i18n="statRegularPrice">정가 합계</div>
+              <div class="summary-value text-muted" id="cart-stat-regular">0원</div>
+            </div>
+          </div>
+          <div class="summary-card pixel-panel-sm highlight-card">
+            <div class="summary-icon">⭐</div>
+            <div class="summary-content">
+              <div class="summary-label" data-i18n="statProcurementPrice">사서 납품가 (10% 할인)</div>
+              <div class="summary-value text-gold" id="cart-stat-supply">0원</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Librarian Institution Form -->
+        <div class="inst-form-box pixel-panel-inner">
+          <h3 class="form-title" data-i18n="instFormTitle">📋 수서 기관 및 담당 사서 공문 정보 입력</h3>
+          <div class="form-grid">
+            <div class="form-group">
+              <label data-i18n="lblInstName">기관명 (도서관명):</label>
+              <input type="text" id="inst-name" class="pixel-input" value="국립다문화 어린이도서관">
+            </div>
+            <div class="form-group">
+              <label data-i18n="lblLibrarianName">수서 담당 사서명:</label>
+              <input type="text" id="librarian-name" class="pixel-input" value="김사서 수서팀장">
+            </div>
+            <div class="form-group">
+              <label data-i18n="lblContact">연락처 / 직통전화:</label>
+              <input type="text" id="inst-contact" class="pixel-input" value="02-1234-5678">
+            </div>
+            <div class="form-group">
+              <label data-i18n="lblEmail">이메일 주소:</label>
+              <input type="email" id="inst-email" class="pixel-input" value="librarian@multicultural-pixel.go.kr">
+            </div>
+          </div>
+        </div>
+
+        <!-- Cart Toolbar -->
+        <div class="cart-toolbar">
+          <div class="toolbar-left">
+            <button id="btn-cart-select-all" class="pixel-btn-sm pixel-btn-cyan" data-i18n="btnSelectAll">전체 선택</button>
+            <button id="btn-cart-deselect-all" class="pixel-btn-sm pixel-btn-purple" data-i18n="btnDeselectAll">선택 해제</button>
+            <button id="btn-cart-delete-selected" class="pixel-btn-sm pixel-btn-red" data-i18n="btnDeleteSelected">선택 삭제</button>
+          </div>
+          <div class="toolbar-right">
+            <button id="btn-cart-clear" class="pixel-btn-sm pixel-btn-red" data-i18n="btnClearCart">장바구니 전체 비우기</button>
+          </div>
+        </div>
+
+        <!-- Cart Table -->
+        <div class="cart-table-wrap pixel-panel-inner">
+          <table class="cart-table">
+            <thead>
+              <tr>
+                <th class="col-chk"><input type="checkbox" id="chk-cart-all"></th>
+                <th class="col-cover" data-i18n="thCover">표지</th>
+                <th class="col-info" data-i18n="thBookInfo">서지 정보</th>
+                <th class="col-price" data-i18n="thRegularPrice">정가</th>
+                <th class="col-discount" data-i18n="thSupplyPrice">사서 납품가</th>
+                <th class="col-qty" data-i18n="thQty">수량</th>
+                <th class="col-subtotal" data-i18n="thSubtotal">합계금액</th>
+                <th class="col-action" data-i18n="thRemove">삭제</th>
+              </tr>
+            </thead>
+            <tbody id="cart-table-body">
+              <!-- Cart rows rendered dynamically -->
+            </tbody>
+          </table>
+
+          <!-- Empty Cart Banner -->
+          <div id="cart-empty-banner" class="empty-banner">
+            <div class="empty-icon">🛒</div>
+            <h3 data-i18n="emptyCartTitle">견적 장바구니가 비어 있습니다.</h3>
+            <p data-i18n="emptyCartDesc">픽셀 도서 검색이나 큐레이션 기획전에서 수서할 도서를 장바구니에 담아주세요.</p>
+            <a href="#search" class="pixel-btn pixel-btn-gold" data-i18n="btnGoSearch">픽셀 도서 탐색하러 가기</a>
+          </div>
+        </div>
+
+        <!-- 1-Click Export Actions Bar -->
+        <div class="cart-export-box pixel-panel-inner">
+          <div class="export-notice">
+            <div class="notice-title" data-i18n="quoteNoticeTitle">📌 1-Click 픽셀 비트 직인 공식 PDF 견적서 & 엑셀 사양서 다운로드</div>
+            <div class="notice-desc" data-i18n="quoteNoticeDesc">행정 제출용 픽셀 비트 직인이 포함된 PDF 공문 견적서 및 KOLAS III 표준 엑셀 사양서를 즉시 생성합니다.</div>
+          </div>
+          <div class="export-buttons">
+            <button id="btn-export-excel" class="pixel-btn pixel-btn-green btn-lg">
+              <i data-lucide="file-spreadsheet"></i>
+              <span data-i18n="btnExportExcel">📊 엑셀 사양서 다운로드 (.xlsx)</span>
+            </button>
+            <button id="btn-generate-pdf" class="pixel-btn pixel-btn-gold btn-lg">
+              <i data-lucide="file-text"></i>
+              <span data-i18n="btnGeneratePDF">📄 1-Click PDF 공문 견적서 발급</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 5: #detail (Book Metadata & 360° 3D Voxel Pixel Book Preview) -->
+    <section id="page-detail" class="page-section">
+      <div class="section-container pixel-panel">
+        <!-- Top Back Button -->
+        <div class="detail-top-bar">
+          <button id="btn-detail-back" class="pixel-btn pixel-btn-cyan btn-sm">
+            <i data-lucide="arrow-left"></i>
+            <span data-i18n="btnBackList">이전 목록으로 돌아가기</span>
+          </button>
+          <span class="pixel-badge badge-gold" data-i18n="detailBadge">360° 3D VOXEL PREVIEW</span>
+        </div>
+
+        <div class="detail-layout-grid">
+          <!-- Left 3D Voxel Canvas Container -->
+          <div class="detail-3d-box pixel-panel-inner">
+            <canvas id="detail-3d-canvas"></canvas>
+            <div class="detail-3d-hud">
+              <span class="hud-hint" data-i18n="canvas3dHint">🕹️ Drag mouse to rotate 3D Voxel Book in 360°</span>
+              <div class="hud-btn-group">
+                <button id="btn-detail-auto-rotate" class="pixel-btn-xs active" title="Auto Rotate Toggle">🔄 <span data-i18n="btnAutoRotate">자동 회전</span></button>
+                <button id="btn-detail-laser" class="pixel-btn-xs pixel-btn-cyan" title="Laser Scan Effect">⚡ <span data-i18n="btnLaserScan">픽셀 스캔</span></button>
+                <button id="btn-detail-reset-cam" class="pixel-btn-xs" title="Reset View"><i data-lucide="rotate-ccw"></i></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Book Metadata & Audio Synth Info -->
+          <div class="detail-info-box">
+            <div class="detail-badges" id="detail-badges-container">
+              <!-- Rendered dynamically -->
+            </div>
+
+            <h1 class="detail-book-title" id="detail-book-title">book title</h1>
+            <h3 class="detail-book-subtitle" id="detail-book-subtitle">multilingual title</h3>
+
+            <!-- Price Card Box -->
+            <div class="detail-price-box pixel-panel-sm">
+              <div class="price-row">
+                <span class="price-label" data-i18n="lblRegularPrice">정가:</span>
+                <span class="price-val-regular" id="detail-regular-price">0원</span>
+              </div>
+              <div class="price-row highlight">
+                <span class="price-label" data-i18n="lblSupplyPrice">사서 납품가 (10% 할인):</span>
+                <span class="price-val-supply" id="detail-supply-price">0원</span>
+              </div>
+            </div>
+
+            <!-- Bibliographic Spec Table -->
+            <div class="metadata-spec-box pixel-panel-inner">
+              <h4 class="spec-title" data-i18n="lblMetaTitle">📚 사서 수서용 표준 서지 상세 스펙</h4>
+              <table class="spec-table">
+                <tbody>
+                  <tr>
+                    <th data-i18n="lblAuthor">저자</th>
+                    <td id="detail-author">-</td>
+                    <th data-i18n="lblPublisher">출판사</th>
+                    <td id="detail-publisher">-</td>
+                  </tr>
+                  <tr>
+                    <th data-i18n="thIsbn">ISBN 번호</th>
+                    <td id="detail-isbn" class="text-code">-</td>
+                    <th data-i18n="thKdcCode">KDC 분류코드</th>
+                    <td id="detail-kdc" class="text-code">-</td>
+                  </tr>
+                  <tr>
+                    <th data-i18n="thPubDate">발행년월</th>
+                    <td id="detail-pubdate">2026.08</td>
+                    <th data-i18n="thPageCount">페이지 수</th>
+                    <td id="detail-pages">210 쪽</td>
+                  </tr>
+                  <tr>
+                    <th data-i18n="thOrigLang">원서 언어</th>
+                    <td id="detail-lang">-</td>
+                    <th data-i18n="thTags">퀘스트 태그</th>
+                    <td id="detail-tags">-</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- 8-Bit Chiptune Narration Audio Player Synth -->
+            <div class="audio-player-box pixel-panel-inner">
+              <div class="audio-header">
+                <span class="audio-title" data-i18n="lblAudioTitle">🔮 8-Bit 칩튠 낭독 & 다국어 오디오 발췌 샘플</span>
+                <span class="audio-status" id="audio-status-text" data-i18n="lblAudioReady">재생 준비 완료</span>
+              </div>
+              <div class="audio-controls">
+                <button id="btn-play-audio" class="pixel-btn pixel-btn-gold">
+                  <i data-lucide="play" id="audio-btn-icon"></i>
+                  <span id="audio-btn-text">8-Bit Audio 샘플 재생</span>
+                </button>
+                <div class="audio-visualizer-bars" id="audio-visualizer">
+                  <div class="v-bar"></div>
+                  <div class="v-bar"></div>
+                  <div class="v-bar"></div>
+                  <div class="v-bar"></div>
+                  <div class="v-bar"></div>
+                  <div class="v-bar"></div>
+                  <div class="v-bar"></div>
+                  <div class="v-bar"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Add to Cart Action Row -->
+            <div class="detail-cart-action pixel-panel-sm">
+              <div class="qty-control">
+                <label data-i18n="thQty">수량:</label>
+                <button class="qty-btn" id="btn-detail-qty-minus">-</button>
+                <input type="number" id="detail-qty-input" value="1" min="1" max="999" class="pixel-input-sm">
+                <button class="qty-btn" id="btn-detail-qty-plus">+</button>
+              </div>
+              <button id="btn-detail-add-cart" class="pixel-btn pixel-btn-gold btn-lg">
+                <i data-lucide="shopping-bag"></i>
+                <span data-i18n="btnAddCartDetail">수서 장바구니에 담기</span>
+              </button>
+            </div>
+
+            <!-- Book Synopsis / Excerpt -->
+            <div class="synopsis-box pixel-panel-inner">
+              <h4 class="synopsis-title" data-i18n="lblExcerptTitle">다국어 서평 & 본문 발췌</h4>
+              <p class="synopsis-text" id="detail-synopsis">Synopsis content...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="app-footer pixel-panel">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <div class="footer-logo">👾 다문화 픽셀 도서관 수서 몰 v24</div>
+        <p class="footer-desc" data-i18n="footerDesc">
+          Kenney Pixel Adventure 8-Bit Retro Library Procurement Portal for public and school libraries.
+        </p>
+      </div>
+      <div class="footer-nav">
+        <h4 data-i18n="footerQuickNav">빠른 이동</h4>
+        <ul>
+          <li><a href="#home" data-i18n="navHome">아케이드 메인</a></li>
+          <li><a href="#search" data-i18n="navSearch">픽셀 수서 검색</a></li>
+          <li><a href="#curation" data-i18n="navCuration">던전 큐레이션</a></li>
+          <li><a href="#cart" data-i18n="navCart">공문 견적함</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h4 data-i18n="footerContact">사서 수서 지원 센터</h4>
+        <p>TEL: 02-1234-5678 (평일 09:00 - 18:00)</p>
+        <p>EMAIL: b2b-library@multicultural-pixel.go.kr</p>
+        <p class="copyright">© 2026 Multicultural Pixel Library. Designed by Antigravity.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notification Box -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Application JS Engine -->
+  <script src="app.js"></script>
+</body>
+</html>
+

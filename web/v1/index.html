@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html class="dark" lang="ko">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cosmos Multicultural Library - 다문화도서관</title>
+
+  <!-- Tailwind CSS & Plugins -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-dim": "#0c1324",
+            "surface-container-lowest": "#070d1f",
+            "surface-container-low": "#151b2d",
+            "surface-container": "#191f31",
+            "surface-container-high": "#23293c",
+            "surface-container-highest": "#2e3447",
+            "surface-tint": "#facc15",
+            "primary": "#facc15",
+            "on-primary": "#3c2f00",
+            "primary-fixed-dim": "#eec200",
+            "secondary": "#c0c1ff",
+            "tertiary-fixed-dim": "#d0bcff",
+            "tertiary-container": "#d9c8ff",
+            "on-surface": "#dce1fb",
+            "on-surface-variant": "#d1c6ab",
+            "outline-variant": "#4d4632",
+            "background": "#0c1324"
+          },
+          spacing: {
+            "margin-desktop": "48px",
+            "container-max": "1280px",
+            "margin-mobile": "16px"
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts & Material Symbols -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+  <!-- Three.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex flex-col relative overflow-x-hidden selection:bg-surface-tint selection:text-on-primary">
+
+  <!-- Ambient Glow Backgrounds -->
+  <div class="fixed top-0 left-0 w-[800px] h-[800px] bg-tertiary-container/10 rounded-full blur-[140px] pointer-events-none -translate-x-1/2 -translate-y-1/2"></div>
+  <div class="fixed bottom-0 right-0 w-[700px] h-[700px] bg-surface-tint/5 rounded-full blur-[120px] pointer-events-none translate-x-1/3 translate-y-1/3"></div>
+
+  <!-- Header Navigation -->
+  <header class="fixed top-0 w-full z-50 glass-nav transition-all duration-300">
+    <div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+      
+      <!-- Brand Logo -->
+      <a href="#" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-xl bg-surface-tint/10 border border-surface-tint/30 flex items-center justify-center group-hover:scale-105 transition-transform">
+          <span class="material-symbols-outlined text-surface-tint group-hover:rotate-12 transition-transform">auto_awesome</span>
+        </div>
+        <div>
+          <span class="font-headline font-bold text-xl text-surface-tint tracking-tight block leading-none" data-i18n="nav_title">다문화도서관</span>
+          <span class="text-[10px] text-on-surface-variant tracking-widest uppercase font-semibold" data-i18n="nav_subtitle">Cosmos Library</span>
+        </div>
+      </a>
+
+      <!-- Language Selector Switcher -->
+      <nav class="hidden lg:flex items-center gap-2 glass-panel p-1.5 rounded-full border border-surface-tint/20">
+        <button onclick="setLanguage('ko')" data-lang="ko" class="lang-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-surface-tint text-on-primary transition-all">한국어</button>
+        <button onclick="setLanguage('en')" data-lang="en" class="lang-btn px-4 py-1.5 rounded-full text-xs font-semibold text-on-surface-variant hover:text-surface-tint transition-all">English</button>
+        <button onclick="setLanguage('vi')" data-lang="vi" class="lang-btn px-4 py-1.5 rounded-full text-xs font-semibold text-on-surface-variant hover:text-surface-tint transition-all">Tiếng Việt</button>
+        <button onclick="setLanguage('zh')" data-lang="zh" class="lang-btn px-4 py-1.5 rounded-full text-xs font-semibold text-on-surface-variant hover:text-surface-tint transition-all">中文</button>
+      </nav>
+
+      <!-- Instant Search Bar & Actions -->
+      <div class="flex items-center gap-4">
+        <div class="hidden md:flex relative group">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-surface-tint transition-colors text-[20px]">search</span>
+          <input id="search-input" type="text" data-i18n="search_placeholder" placeholder="우주 속 다문화 도서 검색..." class="bg-surface-container-low border border-outline-variant/40 rounded-full py-2 pl-10 pr-4 text-xs text-on-surface placeholder:text-on-surface-variant/60 focus:outline-none focus:border-surface-tint focus:ring-1 focus:ring-surface-tint transition-all w-52 focus:w-72 shadow-inner"/>
+        </div>
+
+        <button onclick="openReservationModal()" class="hidden sm:flex items-center gap-2 bg-primary text-on-primary font-semibold text-xs px-5 py-2.5 rounded-full hover:bg-primary-fixed-dim transition-all shadow-lg hover:shadow-surface-tint/20 scale-95 hover:scale-100 active:scale-95">
+          <span class="material-symbols-outlined text-[18px]">bookmark_add</span>
+          <span data-i18n="nav_login">회원 예약로그인</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Main View -->
+  <main class="flex-grow flex flex-col">
+
+    <!-- Hero Section with Three.js 3D Globe -->
+    <section class="relative min-h-[90vh] md:min-h-[100vh] flex items-center justify-center overflow-hidden pt-20">
+      
+      <!-- Three.js 3D Globe Canvas Container -->
+      <div id="three-globe-container" class="absolute inset-0 z-0"></div>
+
+      <!-- Gradient Mask Overlay -->
+      <div class="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent pointer-events-none"></div>
+
+      <!-- Hero Typography & CTAs -->
+      <div class="relative z-10 flex flex-col items-center text-center px-margin-mobile max-w-4xl mx-auto space-y-6 pointer-events-auto mt-12">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel border border-surface-tint/30 mb-2 shadow-lg animate-float">
+          <span class="w-2.5 h-2.5 rounded-full bg-surface-tint animate-ping"></span>
+          <span class="font-bold text-xs text-surface-tint uppercase tracking-widest" data-i18n="hero_badge">빛나는 세계의 이야기</span>
+        </div>
+
+        <h1 class="font-headline text-4xl sm:text-6xl md:text-7xl font-bold leading-tight text-transparent bg-clip-text bg-gradient-to-r from-primary via-on-surface to-secondary tracking-tight" data-i18n="hero_title">
+          지구 반대편의 이야기가 피어나는 곳
+        </h1>
+
+        <p class="text-base sm:text-lg text-on-surface-variant max-w-2xl mx-auto leading-relaxed" data-i18n="hero_desc">
+          Three.js 3D 지구본과 은하수 책들을 탐험해보세요. 한글과 원어가 어우러진 다문화 동화를 만나실 수 있습니다.
+        </p>
+
+        <div class="pt-6 flex flex-col sm:flex-row gap-4 justify-center w-full sm:w-auto">
+          <a href="#curated-sections" class="bg-surface-tint text-on-primary font-bold text-sm px-8 py-4 rounded-full hover:bg-primary-fixed-dim transition-all shadow-[0_0_30px_rgba(250,204,21,0.3)] hover:-translate-y-1 flex items-center justify-center gap-2 group">
+            <span data-i18n="btn_start">3D 도서 탐험하기</span>
+            <span class="material-symbols-outlined text-[20px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+          </a>
+          <a href="#curated-sections" class="glass-panel text-on-surface font-semibold text-sm px-8 py-4 rounded-full hover:bg-surface-container-high transition-all flex items-center justify-center gap-2">
+            <span data-i18n="btn_catalog">전체 큐레이션 보기</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Scroll Indicator -->
+      <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center animate-bounce opacity-80">
+        <span class="text-[11px] text-on-surface-variant mb-1 font-medium" data-i18n="scroll_explore">스크롤하여 큐레이션 탐색</span>
+        <span class="material-symbols-outlined text-surface-tint text-2xl">expand_more</span>
+      </div>
+    </section>
+
+    <!-- Curated Books Catalog Section -->
+    <section id="curated-sections" class="py-20 px-margin-mobile md:px-margin-desktop relative z-10 bg-background">
+      <div class="max-w-container-max mx-auto space-y-20">
+
+        <!-- Mobile Search Input Bar -->
+        <div class="md:hidden w-full mb-8">
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
+            <input id="mobile-search-input" type="text" data-i18n="search_placeholder" placeholder="도서 검색..." class="w-full bg-surface-container-low border border-outline-variant/40 rounded-full py-3 pl-10 pr-4 text-xs text-on-surface focus:outline-none focus:border-surface-tint"/>
+          </div>
+        </div>
+
+        <!-- Track 1: 오늘의 문화 여행 (Culture Discovery) -->
+        <div class="space-y-6">
+          <div class="flex items-end justify-between border-b border-outline-variant/20 pb-4">
+            <div class="flex items-center gap-3">
+              <div class="p-3 rounded-2xl bg-surface-tint/10 text-surface-tint border border-surface-tint/20">
+                <span class="material-symbols-outlined text-2xl">public</span>
+              </div>
+              <div>
+                <h3 class="font-headline text-2xl font-bold text-on-surface" data-i18n="cat_culture_title">오늘의 문화 여행</h3>
+                <p class="text-xs text-on-surface-variant mt-0.5" data-i18n="cat_culture_subtitle">지구촌 곳곳의 전통과 삶이 담긴 다문화 대표 도서</p>
+              </div>
+            </div>
+            <a href="#" class="hidden sm:flex items-center gap-1 text-surface-tint text-xs font-semibold hover:underline">
+              <span data-i18n="view_all">전체 보기</span>
+              <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+            </a>
+          </div>
+
+          <!-- Horizontal Scrollable Cards Track -->
+          <div id="track-culture-container" class="flex overflow-x-auto gap-6 pb-6 scrollbar-hide snap-x snap-mandatory">
+            <!-- Dynamically populated via app.js -->
+          </div>
+        </div>
+
+        <!-- Track 2: 아이들을 위한 듀얼 동화 (Dual-Language for Children) -->
+        <div class="space-y-6">
+          <div class="flex items-center gap-3 border-b border-outline-variant/20 pb-4">
+            <div class="p-3 rounded-2xl bg-secondary/10 text-secondary border border-secondary/20">
+              <span class="material-symbols-outlined text-2xl">translate</span>
+            </div>
+            <div>
+              <h3 class="font-headline text-2xl font-bold text-on-surface" data-i18n="cat_dual_title">아이들을 위한 듀얼 동화</h3>
+              <p class="text-xs text-on-surface-variant mt-0.5" data-i18n="cat_dual_subtitle">한국어와 원어가 함께 표기된 창의력 쑥쑥 이중언어 동화</p>
+            </div>
+          </div>
+
+          <!-- Dual Grid Layout -->
+          <div id="grid-dual-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+            <!-- Dynamically populated via app.js -->
+          </div>
+        </div>
+
+        <!-- Track 3: 마음이 따뜻해지는 감성 동화 (Warmhearted Stories) -->
+        <div class="space-y-6">
+          <div class="flex items-center gap-3 border-b border-outline-variant/20 pb-4">
+            <div class="p-3 rounded-2xl bg-pink-500/10 text-pink-400 border border-pink-500/20">
+              <span class="material-symbols-outlined text-2xl">favorite</span>
+            </div>
+            <div>
+              <h3 class="font-headline text-2xl font-bold text-on-surface" data-i18n="cat_warm_title">마음이 따뜻해지는 감성 동화</h3>
+              <p class="text-xs text-on-surface-variant mt-0.5" data-i18n="cat_warm_subtitle">가족과 이웃의 온기를 느낄 수 있는 가슴 따뜻한 이야기</p>
+            </div>
+          </div>
+
+          <!-- Warm Grid Layout -->
+          <div id="grid-warm-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Dynamically populated via app.js -->
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-surface-container-lowest text-on-surface border-t border-outline-variant/20 mt-auto">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 px-margin-mobile md:px-margin-desktop py-12 max-w-container-max mx-auto">
+      <div class="md:col-span-1 space-y-4">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-surface-tint text-2xl">auto_awesome</span>
+          <span class="font-headline text-lg font-bold text-surface-tint">다문화도서관</span>
+        </div>
+        <p class="text-on-surface-variant text-xs leading-relaxed">
+          지구 반대편의 이야기가 내 손끝에서 피어나는 3D 인터랙티브 다문화 스마트 라이브러리.
+        </p>
+      </div>
+
+      <div>
+        <h5 class="font-bold text-xs text-on-surface uppercase tracking-wider mb-4">카테고리 탐색</h5>
+        <ul class="space-y-2 text-xs text-on-surface-variant">
+          <li><a href="#" class="hover:text-surface-tint transition-colors">오늘의 문화 여행</a></li>
+          <li><a href="#" class="hover:text-surface-tint transition-colors">아이들을 위한 듀얼 동화</a></li>
+          <li><a href="#" class="hover:text-surface-tint transition-colors">마음이 따뜻해지는 감성 동화</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h5 class="font-bold text-xs text-on-surface uppercase tracking-wider mb-4">지원 언어</h5>
+        <ul class="space-y-2 text-xs text-on-surface-variant">
+          <li><a href="#" onclick="setLanguage('ko')" class="hover:text-surface-tint transition-colors">한국어 (Korean)</a></li>
+          <li><a href="#" onclick="setLanguage('en')" class="hover:text-surface-tint transition-colors">English (영어)</a></li>
+          <li><a href="#" onclick="setLanguage('vi')" class="hover:text-surface-tint transition-colors">Tiếng Việt (베트남어)</a></li>
+          <li><a href="#" onclick="setLanguage('zh')" class="hover:text-surface-tint transition-colors">中文 (중국어)</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h5 class="font-bold text-xs text-on-surface uppercase tracking-wider mb-4">안내 & 서비스</h5>
+        <ul class="space-y-2 text-xs text-on-surface-variant">
+          <li><a href="#" class="hover:text-surface-tint transition-colors">1초 즉시 대출 안내</a></li>
+          <li><a href="#" class="hover:text-surface-tint transition-colors">3D 스마트 독서기</a></li>
+          <li><a href="#" class="hover:text-surface-tint transition-colors">개인정보 처리방침</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="border-t border-outline-variant/10 py-6 px-margin-mobile md:px-margin-desktop">
+      <div class="max-w-container-max mx-auto flex flex-col sm:flex-row justify-between items-center text-xs text-on-surface-variant gap-4">
+        <p>© 2026 Cosmos Multicultural Library (다문화도서관). All rights reserved.</p>
+        <div class="flex gap-4">
+          <span class="material-symbols-outlined text-lg hover:text-surface-tint cursor-pointer">language</span>
+          <span class="material-symbols-outlined text-lg hover:text-surface-tint cursor-pointer">mail</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MODAL 1: 3D Book Preview Modal -->
+  <div id="book-preview-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-md transition-opacity">
+    <div class="glass-modal rounded-3xl max-w-3xl w-full p-6 md:p-8 relative overflow-hidden shadow-2xl animate-float">
+      <!-- Close Button -->
+      <button onclick="closeBookPreviewModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant hover:text-surface-tint hover:bg-surface-tint/20 transition-all z-10">
+        <span class="material-symbols-outlined text-xl">close</span>
+      </button>
+
+      <!-- Modal Content Body -->
+      <div id="preview-modal-content">
+        <!-- Dynamically injected via app.js openBookPreviewModal() -->
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: 1-Click Quick Reservation Modal -->
+  <div id="reservation-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-md transition-opacity">
+    <div class="glass-modal rounded-3xl max-w-md w-full p-6 relative overflow-hidden shadow-2xl">
+      <!-- Close Button -->
+      <button onclick="closeReservationModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant hover:text-surface-tint transition-all">
+        <span class="material-symbols-outlined text-xl">close</span>
+      </button>
+
+      <div class="text-center space-y-4">
+        <div class="w-16 h-16 rounded-2xl bg-surface-tint/10 border border-surface-tint/30 flex items-center justify-center mx-auto text-surface-tint">
+          <span class="material-symbols-outlined text-3xl">bookmark_add</span>
+        </div>
+
+        <h3 class="font-headline text-2xl font-bold text-on-surface" data-i18n="modal_reserve_title">1초 간편 도서 예약</h3>
+        <p id="reserve-book-title" class="text-xs text-surface-tint font-bold px-4 py-1.5 rounded-lg bg-surface-tint/10 inline-block">선택된 도서</p>
+
+        <form id="reservation-form" class="space-y-4 text-left pt-2">
+          <div>
+            <label class="block text-xs font-semibold text-on-surface mb-1.5" data-i18n="member_id_label">회원 번호 (또는 연락처)</label>
+            <input id="member-id-input" type="text" required data-i18n="member_id_placeholder" placeholder="예: M-2026-8801" value="M-2026-8801" class="w-full bg-surface-container-low border border-outline-variant/40 rounded-xl py-3 px-4 text-xs text-on-surface focus:outline-none focus:border-surface-tint focus:ring-1 focus:ring-surface-tint"/>
+          </div>
+
+          <button type="submit" class="w-full py-3.5 rounded-full bg-primary text-on-primary font-bold text-xs hover:bg-primary-fixed-dim transition-all shadow-lg shadow-surface-tint/20 flex items-center justify-center gap-2">
+            <span class="material-symbols-outlined text-[18px]">verified</span>
+            <span data-i18n="btn_confirm_reserve">즉시 대출 예약 신청</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Toast Notifications Container -->
+  <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-3 pointer-events-none"></div>
+
+  <!-- App Script -->
+  <script src="app.js"></script>
+</body>
+</html>

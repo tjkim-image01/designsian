@@ -1,0 +1,238 @@
+- generic [ref=f17e1]:
+  - banner [ref=f17e2]:
+    - generic [ref=f17e3]:
+      - link "다문화도서관 수서 몰 vc01 · Tiny Town Book Village" [ref=f17e4] [cursor=pointer]:
+        - /url: "#home"
+        - generic [ref=f17e8]:
+          - generic [ref=f17e9]: 다문화도서관 수서 몰
+          - generic [ref=f17e10]: vc01 · Tiny Town Book Village
+      - navigation [ref=f17e11]:
+        - link "메인" [ref=f17e12] [cursor=pointer]:
+          - /url: "#home"
+        - link "도서 검색" [ref=f17e13] [cursor=pointer]:
+          - /url: "#search"
+        - link "큐레이션" [ref=f17e14] [cursor=pointer]:
+          - /url: "#curation"
+        - link "공문 견적함0" [ref=f17e15] [cursor=pointer]:
+          - /url: "#cart"
+      - generic [ref=f17e16]:
+        - generic "Librarian mode" [ref=f17e17] [cursor=pointer]: 사서 모드
+        - button "sound" [ref=f17e21] [cursor=pointer]:
+          - generic [ref=f17e22]: ♪
+        - combobox "Language" [ref=f17e24] [cursor=pointer]:
+          - option "🇰🇷 한국어" [selected]
+          - option "🇺🇸 English"
+          - option "🇻🇳 Tiếng Việt"
+          - option "🇨🇳 中文"
+          - option "🇷🇺 Русский"
+          - option "🇯🇵 日本語"
+        - link "책가방 0" [ref=f17e25] [cursor=pointer]:
+          - /url: "#cart"
+          - generic [ref=f17e26]: 책가방
+          - generic [ref=f17e27]: "0"
+  - main [ref=f17e28]:
+    - generic [ref=f17e29]:
+      - generic [ref=f17e30]:
+        - generic [ref=f17e32]:
+          - paragraph [ref=f17e33]: MULTICULTURAL LIBRARY COLLECTION · 2026
+          - heading "세계의 이야기가 작은 마을 집집마다 살고 있습니다" [level=1] [ref=f17e34]: 세계의 이야기가작은 마을 집집마다 살고 있습니다
+          - paragraph [ref=f17e35]: 다문화 도서관을 위한 원서·이중언어 그림책 큐레이션. 사서를 위한 서지정보와 공문 견적을 한 화면에서.
+          - generic [ref=f17e36]:
+            - link "3D 전시실 입장" [ref=f17e37] [cursor=pointer]:
+              - /url: "#curation"
+            - link "도서 검색하기" [ref=f17e38] [cursor=pointer]:
+              - /url: "#search"
+          - generic [ref=f17e39]:
+            - generic [ref=f17e40]:
+              - strong [ref=f17e41]: 1,240
+              - generic [ref=f17e42]: 보유 종수
+            - generic [ref=f17e43]:
+              - strong [ref=f17e44]: "14"
+              - generic [ref=f17e45]: 지원 언어
+            - generic [ref=f17e46]:
+              - strong [ref=f17e47]: "312"
+              - generic [ref=f17e48]: 납품 도서관
+        - generic [ref=f17e49]:
+          - generic [ref=f17e50]: W
+          - generic [ref=f17e51]: A
+          - generic [ref=f17e52]: S
+          - generic [ref=f17e53]: D
+          - text: 로 책 수레를 끌고 집 앞에 가보세요 · 책 클릭 시 상세
+      - generic [ref=f17e54]:
+        - generic [ref=f17e55]:
+          - paragraph [ref=f17e56]: 3D EXHIBITION HALL
+          - heading "마을 곳곳 기획전" [level=2] [ref=f17e57]
+          - paragraph [ref=f17e58]: 광장 장터·성 도서관·숲속 독서 길, 마을의 세 장소에 책이 진열됩니다. 드래그로 둘러보고 책을 클릭하세요.
+        - generic [ref=f17e59]:
+          - button "마을 광장 장터 세계 전래동화 광장 장터전" [ref=f17e60] [cursor=pointer]:
+            - generic [ref=f17e61]: 마을 광장 장터
+            - text: 세계 전래동화 광장 장터전
+          - button "성 도서관 청소년 세계문학 성 도서관전" [ref=f17e62] [cursor=pointer]:
+            - generic [ref=f17e63]: 성 도서관
+            - text: 청소년 세계문학 성 도서관전
+          - button "숲속 독서 길 이중언어 그림책 숲속 독서 길전" [ref=f17e64] [cursor=pointer]:
+            - generic [ref=f17e65]: 숲속 독서 길
+            - text: 이중언어 그림책 숲속 독서 길전
+        - generic [ref=f17e66]:
+          - generic:
+            - generic: 마을 광장 장터 · 드래그하여 회전 · 책 클릭 시 상세
+            - text: 세계 전래동화 광장 장터전
+      - generic [ref=f17e68]:
+        - generic [ref=f17e69]:
+          - generic [ref=f17e70]:
+            - paragraph [ref=f17e71]: NEW ARRIVALS
+            - heading "2026 하반기 신간" [level=2] [ref=f17e72]
+          - generic [ref=f17e73]:
+            - button "서지 리스트" [ref=f17e74] [cursor=pointer]
+            - button "마을 길 책 수레 3D" [ref=f17e75] [cursor=pointer]
+        - table [ref=f17e77]:
+          - rowgroup [ref=f17e78]:
+            - row [ref=f17e79]:
+              - columnheader "표지" [ref=f17e80]
+              - columnheader "서지 정보" [ref=f17e81]
+              - columnheader "언어" [ref=f17e82]
+              - columnheader "연령" [ref=f17e83]
+              - columnheader "KDC" [ref=f17e84]
+              - columnheader "ISBN" [ref=f17e85]
+              - columnheader "정가" [ref=f17e86]
+              - columnheader "납품가" [ref=f17e87]
+              - columnheader [ref=f17e88]
+          - rowgroup [ref=f17e89]:
+            - row [ref=f17e90]:
+              - cell [ref=f17e91]
+              - cell "달을 먹은 호랑이 Con Hổ Ăn Mặt Trăng · Nguyễn Thị Lan · 무지개책방" [ref=f17e92]:
+                - text: 달을 먹은 호랑이
+                - generic [ref=f17e93]: Con Hổ Ăn Mặt Trăng · Nguyễn Thị Lan · 무지개책방
+              - cell "🇻🇳 VI" [ref=f17e94]
+              - cell "유아 (0–6)" [ref=f17e95]
+              - cell "813.8" [ref=f17e96]
+              - cell "9791168450011" [ref=f17e97]
+              - cell "15,000원" [ref=f17e98]
+              - cell [ref=f17e99]:
+                - strong [ref=f17e100]: 13,500원
+              - cell [ref=f17e101]:
+                - button "견적함 담기" [ref=f17e102] [cursor=pointer]
+            - row [ref=f17e103]:
+              - cell [ref=f17e104]
+              - cell "봄바람 편지 春风的信 · 林小雨 · 무지개책방" [ref=f17e105]:
+                - text: 봄바람 편지
+                - generic [ref=f17e106]: 春风的信 · 林小雨 · 무지개책방
+              - cell "🇨🇳 ZH" [ref=f17e107]
+              - cell "아동 (7–12)" [ref=f17e108]
+              - cell "813.8" [ref=f17e109]
+              - cell "9791168450028" [ref=f17e110]
+              - cell "15,000원" [ref=f17e111]
+              - cell [ref=f17e112]:
+                - strong [ref=f17e113]: 13,500원
+              - cell [ref=f17e114]:
+                - button "견적함 담기" [ref=f17e115] [cursor=pointer]
+            - row [ref=f17e116]:
+              - cell [ref=f17e117]
+              - cell "도쿄의 작은 서점 東京の小さな本屋 · 佐藤ゆき · 세계숲" [ref=f17e118]:
+                - text: 도쿄의 작은 서점
+                - generic [ref=f17e119]: 東京の小さな本屋 · 佐藤ゆき · 세계숲
+              - cell "🇯🇵 JA" [ref=f17e120]
+              - cell "청소년 (13+)" [ref=f17e121]
+              - cell "833.6" [ref=f17e122]
+              - cell "9791168450042" [ref=f17e123]
+              - cell "16,000원" [ref=f17e124]
+              - cell [ref=f17e125]:
+                - strong [ref=f17e126]: 14,400원
+              - cell [ref=f17e127]:
+                - button "견적함 담기" [ref=f17e128] [cursor=pointer]
+            - row [ref=f17e129]:
+              - cell [ref=f17e130]
+              - cell "레인보우 김치 Rainbow Kimchi · Grace Park · 별빛출판" [ref=f17e131]:
+                - text: 레인보우 김치
+                - generic [ref=f17e132]: Rainbow Kimchi · Grace Park · 별빛출판
+              - cell "🇺🇸 EN" [ref=f17e133]
+              - cell "유아 (0–6)" [ref=f17e134]
+              - cell "843" [ref=f17e135]
+              - cell "9791168450059" [ref=f17e136]
+              - cell "17,000원" [ref=f17e137]
+              - cell [ref=f17e138]:
+                - strong [ref=f17e139]: 15,300원
+              - cell [ref=f17e140]:
+                - button "견적함 담기" [ref=f17e141] [cursor=pointer]
+            - row [ref=f17e142]:
+              - cell [ref=f17e143]
+              - cell "초원의 말과 소년 Талын морь ба хүү · Батбаяр Дорж · 세계숲" [ref=f17e144]:
+                - text: 초원의 말과 소년
+                - generic [ref=f17e145]: Талын морь ба хүү · Батбаяр Дорж · 세계숲
+              - cell "🇲🇳 MN" [ref=f17e146]
+              - cell "아동 (7–12)" [ref=f17e147]
+              - cell "899.9" [ref=f17e148]
+              - cell "9791168450073" [ref=f17e149]
+              - cell "16,500원" [ref=f17e150]
+              - cell [ref=f17e151]:
+                - strong [ref=f17e152]: 14,850원
+              - cell [ref=f17e153]:
+                - button "견적함 담기" [ref=f17e154] [cursor=pointer]
+            - row [ref=f17e155]:
+              - cell [ref=f17e156]
+              - cell "사마르칸트의 별 지도 Samarqand yulduz xaritasi · Dilnoza Karimova · 지식나무" [ref=f17e157]:
+                - text: 사마르칸트의 별 지도
+                - generic [ref=f17e158]: Samarqand yulduz xaritasi · Dilnoza Karimova · 지식나무
+              - cell "🇺🇿 UZ" [ref=f17e159]
+              - cell "청소년 (13+)" [ref=f17e160]
+              - cell "998" [ref=f17e161]
+              - cell "9791168450097" [ref=f17e162]
+              - cell "21,000원" [ref=f17e163]
+              - cell [ref=f17e164]:
+                - strong [ref=f17e165]: 18,900원
+              - cell [ref=f17e166]:
+                - button "견적함 담기" [ref=f17e167] [cursor=pointer]
+            - row [ref=f17e168]:
+              - cell [ref=f17e169]
+              - cell "우리말 우리 노래 이중언어 동요집 Bài ca song ngữ Việt–Hàn · 김하늘 · Trần Minh · 별빛출판" [ref=f17e170]:
+                - text: 우리말 우리 노래 이중언어 동요집
+                - generic [ref=f17e171]: Bài ca song ngữ Việt–Hàn · 김하늘 · Trần Minh · 별빛출판
+              - cell "🇰🇷 KO" [ref=f17e172]
+              - cell "유아 (0–6)" [ref=f17e173]
+              - cell "673.5" [ref=f17e174]
+              - cell "9791168450103" [ref=f17e175]
+              - cell "19,000원" [ref=f17e176]
+              - cell [ref=f17e177]:
+                - strong [ref=f17e178]: 17,100원
+              - cell [ref=f17e179]:
+                - button "견적함 담기" [ref=f17e180] [cursor=pointer]
+            - row [ref=f17e181]:
+              - cell [ref=f17e182]
+              - cell "하노이 아침 시장 Chợ sáng Hà Nội · Phạm Quang Huy · 지식나무" [ref=f17e183]:
+                - text: 하노이 아침 시장
+                - generic [ref=f17e184]: Chợ sáng Hà Nội · Phạm Quang Huy · 지식나무
+              - cell "🇻🇳 VI" [ref=f17e185]
+              - cell "아동 (7–12)" [ref=f17e186]
+              - cell "981" [ref=f17e187]
+              - cell "9791168450127" [ref=f17e188]
+              - cell "14,500원" [ref=f17e189]
+              - cell [ref=f17e190]:
+                - strong [ref=f17e191]: 13,050원
+              - cell [ref=f17e192]:
+                - button "견적함 담기" [ref=f17e193] [cursor=pointer]
+      - generic [ref=f17e195]:
+        - generic [ref=f17e196]:
+          - paragraph [ref=f17e197]: FOR LIBRARIANS
+          - heading "수서 담당 사서를 위한 1클릭 공문 견적" [level=3] [ref=f17e198]
+          - paragraph [ref=f17e199]: 장바구니에 담은 도서는 납품가(정가 10% 할인)로 자동 산출되어 공문 양식 견적서(인쇄/PDF)와 엑셀 사양서로 내려받을 수 있습니다.
+        - generic [ref=f17e200]:
+          - generic [ref=f17e201]:
+            - generic [ref=f17e202]: ISBN · KDC
+            - generic [ref=f17e203]: 모든 카드에 상시 노출
+          - generic [ref=f17e204]:
+            - generic [ref=f17e205]: "-10%"
+            - generic [ref=f17e206]: 도서관 납품가 자동 적용
+          - generic [ref=f17e207]:
+            - generic [ref=f17e208]: PDF · XLSX
+            - generic [ref=f17e209]: 공문 견적서 즉시 출력
+        - link "견적함 열기" [ref=f17e210] [cursor=pointer]:
+          - /url: "#cart"
+  - contentinfo [ref=f17e211]:
+    - generic [ref=f17e212]:
+      - strong [ref=f17e213]: 다문화도서관 수서 몰
+      - paragraph [ref=f17e214]: 공공·학교 다문화 도서관 납품 전문 · 원서 및 이중언어 도서 · 사서 공문 견적 지원
+    - paragraph [ref=f17e215]:
+      - text: "© 2026 Multicultural Library Mall · vc01 Tiny Town Book VillagePixel tiles:"
+      - link "Kenney · Tiny Town" [ref=f17e216] [cursor=pointer]:
+        - /url: https://kenney.nl/assets/tiny-town
+      - text: (CC0)

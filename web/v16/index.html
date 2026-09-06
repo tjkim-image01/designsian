@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>다문화도서관 수서 몰 v16 | Bruno Simon 3D Lunar Rover & Galaxy Library Portal</title>
+  
+  <!-- Google Fonts: Orbitron, Inter, Noto Sans KR -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+KR:wght@300;400;500;700;900&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+  
+  <!-- CSS StyleSheet -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- External Libraries via CDN -->
+  <!-- Three.js r128 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- jsPDF for PDF Quote Generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <!-- SheetJS XLSX for Excel Spec Export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body class="cosmic-theme">
+
+  <!-- Laser Beam Visual Effects Overlay Canvas -->
+  <canvas id="laser-effect-canvas"></canvas>
+
+  <!-- Top Navigation Header -->
+  <header class="app-header">
+    <div class="header-container">
+      <!-- Logo & Brand -->
+      <a href="#home" class="brand-logo" id="brand-logo">
+        <div class="logo-orb">
+          <div class="orb-core"></div>
+          <div class="orb-ring"></div>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title" data-i18n="brandTitle">다문화도서관 수서 몰</span>
+          <span class="brand-badge">v16 GALAXY</span>
+        </div>
+      </a>
+
+      <!-- SPA Nav Tabs -->
+      <nav class="nav-menu">
+        <a href="#home" class="nav-link active" data-page="home">
+          <i data-lucide="compass"></i>
+          <span data-i18n="navHome">탐사 메인</span>
+        </a>
+        <a href="#search" class="nav-link" data-page="search">
+          <i data-lucide="search"></i>
+          <span data-i18n="navSearch">도서 검색</span>
+        </a>
+        <a href="#curation" class="nav-link" data-page="curation">
+          <i data-lucide="sparkles"></i>
+          <span data-i18n="navCuration">은하 큐레이션</span>
+        </a>
+        <a href="#cart" class="nav-link" data-page="cart">
+          <i data-lucide="file-text"></i>
+          <span data-i18n="navCart">공문 견적함</span>
+          <span class="cart-badge-count" id="nav-cart-badge">0</span>
+        </a>
+      </nav>
+
+      <!-- Right Utility Bar -->
+      <div class="header-actions">
+        <!-- Sound FX Synth Toggle -->
+        <button id="sound-toggle-btn" class="icon-btn" title="사운드 이펙트 토글" aria-label="Toggle Sound Effects">
+          <i data-lucide="volume-2" id="sound-icon-on"></i>
+          <i data-lucide="volume-x" id="sound-icon-off" class="hidden"></i>
+        </button>
+
+        <!-- 5-Language Switcher (KO, EN, VI, ZH, RU) -->
+        <div class="lang-selector-wrapper">
+          <i data-lucide="globe" class="globe-icon"></i>
+          <select id="language-switcher" aria-label="Select Language">
+            <option value="KO">🇰🇷 한국어</option>
+            <option value="EN">🇺🇸 English</option>
+            <option value="VI">🇻🇳 Tiếng Việt</option>
+            <option value="ZH">🇨🇳 中文</option>
+            <option value="RU">🇷🇺 Русский</option>
+          </select>
+        </div>
+
+        <!-- Quick Cart Trigger -->
+        <a href="#cart" class="cart-btn" id="header-cart-btn">
+          <i data-lucide="shopping-bag"></i>
+          <span data-i18n="cartButton">견적 장바구니</span>
+          <span class="badge" id="header-cart-count">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main View Router Container -->
+  <main id="app-viewport">
+
+    <!-- PAGE 1: HOME (#home) -->
+    <section id="page-home" class="page-view active">
+      
+      <!-- HERO SECTION: Bruno Simon 3D Lunar Rover Simulation -->
+      <div class="lunar-hero-section">
+        <div class="hero-header-overlay">
+          <h1 class="hero-title" data-i18n="heroTitle">3D 우주 로버 월면 탐사 수서 몰</h1>
+          <p class="hero-subtitle" data-i18n="heroSubtitle">WASD 또는 방향키로 3D 달 표면 로버를 직접 주행하여 다문화 도서 캡슐을 수집하고 레이저 빔을 발사하세요!</p>
+        </div>
+
+        <!-- Three.js 3D Canvas -->
+        <div id="lunar-canvas-wrapper">
+          <canvas id="lunar-canvas"></canvas>
+          
+          <!-- Rover Interactive HUD Overlay -->
+          <div class="rover-hud-container">
+            <div class="hud-panel hud-controls">
+              <div class="hud-label" data-i18n="hudControlsTitle">🎮 로버 조작 가이드</div>
+              <div class="key-hints">
+                <span class="key-badge">W/A/S/D</span> 또는 <span class="key-badge">방향키</span> : 주행 & 조향
+                <br>
+                <span class="key-badge">SPACE</span> : ⚡ 광선 레이저 발사
+              </div>
+            </div>
+
+            <div class="hud-panel hud-status">
+              <div class="hud-label" data-i18n="hudTelemetry">📡 로버 텔레메트리</div>
+              <div class="stat-row">
+                <span>속도 (SPD):</span>
+                <span id="rover-speed-val" class="stat-val">0 km/h</span>
+              </div>
+              <div class="stat-row">
+                <span>좌표 (POS):</span>
+                <span id="rover-pos-val" class="stat-val">X: 0.0 | Z: 0.0</span>
+              </div>
+              <div class="stat-row">
+                <span>탐사 수집 도서:</span>
+                <span id="rover-score-val" class="stat-val highlight">0 / 6 권</span>
+              </div>
+            </div>
+
+            <!-- Action Controls -->
+            <div class="hud-actions">
+              <button id="btn-rover-laser" class="btn-laser">
+                <i data-lucide="zap"></i>
+                <span data-i18n="btnLaser">⚡ 레이저 포 발사</span>
+              </button>
+              <button id="btn-rover-reset" class="btn-secondary-hud">
+                <i data-lucide="rotate-ccw"></i>
+                <span data-i18n="btnResetRover">로버 위치 리셋</span>
+              </button>
+            </div>
+
+            <!-- Mobile Touch D-Pad Controls -->
+            <div class="mobile-dpad-wrapper" id="mobile-dpad">
+              <button class="dpad-btn dpad-up" id="dpad-up"><i data-lucide="chevron-up"></i></button>
+              <div class="dpad-middle">
+                <button class="dpad-btn dpad-left" id="dpad-left"><i data-lucide="chevron-left"></i></button>
+                <button class="dpad-btn dpad-fire" id="dpad-fire"><i data-lucide="zap"></i></button>
+                <button class="dpad-btn dpad-right" id="dpad-right"><i data-lucide="chevron-right"></i></button>
+              </div>
+              <button class="dpad-btn dpad-down" id="dpad-down"><i data-lucide="chevron-down"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 2: 3D Planetary Orbit Exhibition -->
+      <div class="orbit-exhibition-section">
+        <div class="section-container">
+          <div class="section-header">
+            <div class="header-badge" data-i18n="orbitBadge">3D PLANETARY EXHIBITION</div>
+            <h2 class="section-title" data-i18n="orbitTitle">행성 궤도 3D 다문화 테마 기획전</h2>
+            <p class="section-desc" data-i18n="orbitDesc">우주 행성 궤도를 회전하는 테마를 클릭하여 맞춤 도서를 탐색하세요.</p>
+          </div>
+
+          <div class="orbit-layout">
+            <!-- 3D Orbit Canvas -->
+            <div id="orbit-canvas-wrapper">
+              <canvas id="orbit-canvas"></canvas>
+            </div>
+
+            <!-- Planet Interactive Info Cards -->
+            <div class="orbit-info-panel" id="orbit-info-panel">
+              <div class="planet-card active" data-planet="asia">
+                <div class="planet-icon-glow asia-glow"></div>
+                <div class="planet-details">
+                  <h3 class="planet-name" data-i18n="planetAsiaTitle">🌏 아시아 전통 & 현대 명작 궤도</h3>
+                  <p class="planet-desc" data-i18n="planetAsiaDesc">베트남, 중국, 필리핀 등 아시아 주요국의 이중언어 원서 및 번역 서적 수서 컬렉션.</p>
+                  <button class="btn-sm btn-outline filter-planet-btn" data-category="asia" data-i18n="btnBrowseCategory">컬렉션 도서 보기</button>
+                </div>
+              </div>
+
+              <div class="planet-card" data-planet="slavic">
+                <div class="planet-icon-glow slavic-glow"></div>
+                <div class="planet-details">
+                  <h3 class="planet-name" data-i18n="planetSlavicTitle">🌌 슬라브 & 중앙아시아 성좌</h3>
+                  <p class="planet-desc" data-i18n="planetSlavicDesc">러시아어, 우즈베크어 및 유라시아 문화권 고전 및 동화 원서 라인업.</p>
+                  <button class="btn-sm btn-outline filter-planet-btn" data-category="slavic" data-i18n="btnBrowseCategory">컬렉션 도서 보기</button>
+                </div>
+              </div>
+
+              <div class="planet-card" data-planet="global">
+                <div class="planet-icon-glow global-glow"></div>
+                <div class="planet-details">
+                  <h3 class="planet-name" data-i18n="planetGlobalTitle">⭐ 글로벌 영미권 아동 문학 행성</h3>
+                  <p class="planet-desc" data-i18n="planetGlobalDesc">전 세계 아동용 명작 동화, 그림책 및 다국어 학습 교재 시리즈.</p>
+                  <button class="btn-sm btn-outline filter-planet-btn" data-category="global" data-i18n="btnBrowseCategory">컬렉션 도서 보기</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 3: New Releases & Featured Books -->
+      <div class="new-releases-section">
+        <div class="section-container">
+          <div class="section-header flex-between">
+            <div>
+              <div class="header-badge" data-i18n="newBadge">NEW ARRIVALS</div>
+              <h2 class="section-title" data-i18n="newTitle">2026 하반기 신간 다문화 도서 목록</h2>
+            </div>
+            <a href="#search" class="btn-link" data-i18n="btnViewAll">전체 도서 검색하기 <i data-lucide="arrow-right"></i></a>
+          </div>
+
+          <div class="books-grid" id="home-books-grid">
+            <!-- Dynamic JavaScript Content -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 2: SEARCH (#search) -->
+    <section id="page-search" class="page-view">
+      <div class="section-container">
+        <div class="page-header">
+          <h1 class="page-title" data-i18n="searchTitle">우주 도서 검색 & 사서 수서 관제</h1>
+          <p class="page-subtitle" data-i18n="searchSubtitle">다국어 언어, ISBN, KDC 한국십진분류표, 연령별, 출판사별 정밀 필터링 시스템</p>
+        </div>
+
+        <!-- Search Controls Console -->
+        <div class="search-filter-console">
+          <!-- Main Keyword Search Bar -->
+          <div class="search-bar-wrapper">
+            <i data-lucide="search" class="search-input-icon"></i>
+            <input type="text" id="search-keyword" placeholder="도서명, 저자, 출판사, ISBN, KDC 코드로 검색하세요..." data-i18n-placeholder="searchPlaceholder">
+            <button id="search-clear-btn" class="search-clear-btn hidden"><i data-lucide="x"></i></button>
+          </div>
+
+          <!-- Multi Filter Controls Grid -->
+          <div class="filter-controls-grid">
+            <!-- Language Filter -->
+            <div class="filter-group">
+              <label for="filter-lang"><i data-lucide="languages"></i> <span data-i18n="filterLang">언어 (Language)</span></label>
+              <select id="filter-lang">
+                <option value="ALL" data-i18n="optAllLangs">전체 언어 (ALL)</option>
+                <option value="KO">🇰🇷 한국어 (KO)</option>
+                <option value="EN">🇺🇸 영어 (EN)</option>
+                <option value="VI">🇻🇳 베트남어 (VI)</option>
+                <option value="ZH">🇨🇳 중국어 (ZH)</option>
+                <option value="RU">🇷🇺 러시아어 (RU)</option>
+              </select>
+            </div>
+
+            <!-- Target Age Filter -->
+            <div class="filter-group">
+              <label for="filter-age"><i data-lucide="user-check"></i> <span data-i18n="filterAge">대상 연령 (Age)</span></label>
+              <select id="filter-age">
+                <option value="ALL" data-i18n="optAllAges">전체 연령 (ALL)</option>
+                <option value="CHILDREN" data-i18n="optChildren">유아/아동 (Children)</option>
+                <option value="YOUTH" data-i18n="optYouth">청소년 (Youth)</option>
+                <option value="ADULT" data-i18n="optAdult">성인/일반 (Adult)</option>
+              </select>
+            </div>
+
+            <!-- KDC Classification Filter -->
+            <div class="filter-group">
+              <label for="filter-kdc"><i data-lucide="bookmark"></i> <span data-i18n="filterKDC">KDC 분류 (Category)</span></label>
+              <select id="filter-kdc">
+                <option value="ALL" data-i18n="optAllKDC">전체 KDC 분류 (ALL)</option>
+                <option value="000">000 총류 (General)</option>
+                <option value="100">100 철학/심리 (Philosophy)</option>
+                <option value="300">300 사회과학 (Social Sciences)</option>
+                <option value="500">500 기술과학 (Technology)</option>
+                <option value="700">700 예술 (Arts)</option>
+                <option value="800">800 문학 (Literature)</option>
+                <option value="900">900 역사 (History)</option>
+              </select>
+            </div>
+
+            <!-- Publisher Filter -->
+            <div class="filter-group">
+              <label for="filter-publisher"><i data-lucide="building-2"></i> <span data-i18n="filterPublisher">출판사 (Publisher)</span></label>
+              <select id="filter-publisher">
+                <option value="ALL" data-i18n="optAllPublishers">전체 출판사 (ALL)</option>
+                <!-- Populated dynamically -->
+              </select>
+            </div>
+          </div>
+
+          <!-- Active Filters & Toolbar -->
+          <div class="search-results-bar flex-between">
+            <div class="results-count">
+              <span data-i18n="resultCountLabel">검색 결과:</span> <strong id="search-count-num" class="text-cyan">0</strong><span data-i18n="resultCountUnit">건</span>
+            </div>
+            <div class="search-actions">
+              <button id="reset-filters-btn" class="btn-sm btn-ghost">
+                <i data-lucide="rotate-ccw"></i> <span data-i18n="btnResetFilters">필터 초기화</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Search Results Grid -->
+        <div class="books-grid" id="search-books-grid">
+          <!-- Dynamic Content -->
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 3: CURATION (#curation) -->
+    <section id="page-curation" class="page-view">
+      <div class="section-container">
+        <div class="page-header">
+          <div class="header-badge" data-i18n="curationBadge">SPECIAL GALAXY PACKAGES</div>
+          <h1 class="page-title" data-i18n="curationTitle">은하수 특별 3D 큐레이션 기획전</h1>
+          <p class="page-subtitle" data-i18n="curationSubtitle">공공 및 학교 다문화 도서관 수서 담당 사서를 위한 테마별 맞춤 도서 패키지</p>
+        </div>
+
+        <div class="curation-packages-list" id="curation-packages-container">
+          <!-- Dynamic Curation Package Cards populated via app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 4: CART & QUOTE CONSOLE (#cart) -->
+    <section id="page-cart" class="page-view">
+      <div class="section-container">
+        <div class="page-header">
+          <h1 class="page-title" data-i18n="cartTitle">사서 은하 관제 공문 견적함</h1>
+          <p class="page-subtitle" data-i18n="cartSubtitle">선택한 다문화 도서의 납품 견적 자동 산출 및 1클릭 공식 공문 PDF/엑셀 사양서 생성</p>
+        </div>
+
+        <!-- Cart Summary Stats Bar -->
+        <div class="cart-stats-banner">
+          <div class="stat-card">
+            <div class="stat-icon"><i data-lucide="book-open"></i></div>
+            <div class="stat-info">
+              <div class="stat-title" data-i18n="statTotalTitles">총 선택 종수</div>
+              <div class="stat-value" id="cart-stat-titles">0종</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><i data-lucide="layers"></i></div>
+            <div class="stat-info">
+              <div class="stat-title" data-i18n="statTotalCopies">총 권수</div>
+              <div class="stat-value" id="cart-stat-copies">0권</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><i data-lucide="tag"></i></div>
+            <div class="stat-info">
+              <div class="stat-title" data-i18n="statRegularPrice">정가 합계</div>
+              <div class="stat-value" id="cart-stat-regular">0원</div>
+            </div>
+          </div>
+          <div class="stat-card highlight-card">
+            <div class="stat-icon"><i data-lucide="file-check-2"></i></div>
+            <div class="stat-info">
+              <div class="stat-title" data-i18n="statProcurementPrice">납품 납품가 (10% 할인가)</div>
+              <div class="stat-value" id="cart-stat-discount">0원</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Institution Details Form for Official PDF Invoice Header -->
+        <div class="cart-institution-card">
+          <h3 class="card-subtitle"><i data-lucide="building"></i> <span data-i18n="instFormTitle">수서 기관 및 담당자 공문 정보 입력</span></h3>
+          <div class="institution-form-grid">
+            <div class="form-group">
+              <label for="inst-name" data-i18n="lblInstName">기관명 (도서관명):</label>
+              <input type="text" id="inst-name" value="국립다문화중앙도서관" placeholder="예: OO시립도서관">
+            </div>
+            <div class="form-group">
+              <label for="inst-librarian" data-i18n="lblLibrarianName">수서 담당 사서명:</label>
+              <input type="text" id="inst-librarian" value="김수서 사서" placeholder="예: 홍길동 사서">
+            </div>
+            <div class="form-group">
+              <label for="inst-contact" data-i18n="lblContact">연락처 / 직통전화:</label>
+              <input type="text" id="inst-contact" value="02-555-0199" placeholder="예: 02-1234-5678">
+            </div>
+            <div class="form-group">
+              <label for="inst-email" data-i18n="lblEmail">이메일 주소:</label>
+              <input type="email" id="inst-email" value="librarian@multiculture.go.kr" placeholder="example@library.go.kr">
+            </div>
+          </div>
+        </div>
+
+        <!-- Cart Items Table Container -->
+        <div class="cart-table-wrapper">
+          <div class="cart-table-toolbar flex-between">
+            <div class="table-selection-actions">
+              <button id="btn-select-all" class="btn-sm btn-outline"><i data-lucide="check-square"></i> <span data-i18n="btnSelectAll">전체 선택</span></button>
+              <button id="btn-deselect-all" class="btn-sm btn-ghost"><i data-lucide="square"></i> <span data-i18n="btnDeselectAll">선택 해제</span></button>
+              <button id="btn-delete-selected" class="btn-sm btn-danger"><i data-lucide="trash-2"></i> <span data-i18n="btnDeleteSelected">선택 삭제</span></button>
+            </div>
+            <button id="btn-clear-cart" class="btn-sm btn-ghost text-red"><i data-lucide="x-circle"></i> <span data-i18n="btnClearCart">전체 비우기</span></button>
+          </div>
+
+          <!-- Items Table -->
+          <table class="cart-table">
+            <thead>
+              <tr>
+                <th width="40"><input type="checkbox" id="cart-check-all" checked></th>
+                <th width="80" data-i18n="thCover">표지</th>
+                <th data-i18n="thBookInfo">서지 정보 (도서명 / ISBN / KDC / 언어)</th>
+                <th width="100" data-i18n="thRegularPrice">정가</th>
+                <th width="100" data-i18n="thSupplyPrice">납품가</th>
+                <th width="120" data-i18n="thQty">수량</th>
+                <th width="120" data-i18n="thSubtotal">합계금액</th>
+                <th width="60" data-i18n="thRemove">삭제</th>
+              </tr>
+            </thead>
+            <tbody id="cart-table-body">
+              <!-- Cart rows populated dynamically -->
+            </tbody>
+          </table>
+
+          <div id="cart-empty-message" class="empty-state hidden">
+            <i data-lucide="shopping-bag" class="empty-icon"></i>
+            <h3 data-i18n="emptyCartTitle">견적함이 비어 있습니다.</h3>
+            <p data-i18n="emptyCartDesc">도서 목록 또는 큐레이션에서 수서할 도서를 추가해 주세요.</p>
+            <a href="#search" class="btn-primary" data-i18n="btnGoSearch">도서 탐색하러 가기</a>
+          </div>
+        </div>
+
+        <!-- Quote Generation B2B Action Box -->
+        <div class="quote-actions-card flex-between">
+          <div class="quote-notice">
+            <h4 data-i18n="quoteNoticeTitle">📌 사서 전용 1-Click 견적서 출력 시스템</h4>
+            <p data-i18n="quoteNoticeDesc">본 도서관 납품 포털은 행정 제출용 공식 직인이 포함된 PDF 공문 견적서 및 엑셀 수서 사양서를 즉시 생성합니다.</p>
+          </div>
+
+          <div class="quote-buttons">
+            <button id="btn-export-excel" class="btn-excel">
+              <i data-lucide="file-spreadsheet"></i>
+              <span data-i18n="btnExportExcel">📊 엑셀 사양서 다운로드 (.xlsx)</span>
+            </button>
+            <button id="btn-generate-pdf" class="btn-pdf">
+              <i data-lucide="file-text"></i>
+              <span data-i18n="btnGeneratePDF">📄 1-Click PDF 공문 견적서 발급</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 5: DETAIL & 360 3D BOOK (#detail) -->
+    <section id="page-detail" class="page-view">
+      <div class="section-container">
+        <!-- Back Navigation Button -->
+        <div class="detail-top-bar flex-between">
+          <button id="detail-back-btn" class="btn-back">
+            <i data-lucide="arrow-left"></i> <span data-i18n="btnBackList">이전 목록으로 돌아가기</span>
+          </button>
+          <span class="detail-kdc-badge" id="detail-kdc-badge">KDC 800 | 문학</span>
+        </div>
+
+        <div class="detail-main-layout">
+          <!-- Left Column: Interactive 360-Degree Three.js 3D Glowing Book Canvas -->
+          <div class="detail-3d-wrapper">
+            <div class="canvas-3d-header flex-between">
+              <span class="canvas-tag"><i data-lucide="box"></i> THREE.JS 360° 3D BOOK PREVIEW</span>
+              <span class="canvas-hint" data-i18n="canvas3dHint">마우스 드래그로 3D 도서를 360도 회전하세요</span>
+            </div>
+
+            <div id="detail-3d-canvas-container">
+              <canvas id="detail-3d-canvas"></canvas>
+            </div>
+
+            <div class="canvas-controls-bar flex-between">
+              <button id="btn-3d-rotate-toggle" class="btn-sm btn-outline">
+                <i data-lucide="play"></i> <span id="lbl-auto-rotate" data-i18n="btnAutoRotate">자동 회전 정지</span>
+              </button>
+              <button id="btn-3d-laser-scan" class="btn-sm btn-laser-scan">
+                <i data-lucide="scan"></i> <span data-i18n="btnLaserScan">⚡ 3D 레이저 서지 스캔</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Right Column: Bibliographic Metadata & Cart Purchase -->
+          <div class="detail-info-wrapper">
+            <div class="detail-lang-tag" id="detail-lang-tag">🇻🇳 베트남어 다문화 원서</div>
+            <h1 class="detail-book-title" id="detail-title">책 제목 출력 위치</h1>
+            <h3 class="detail-book-author" id="detail-author">저자 및 역자</h3>
+
+            <!-- Price Box -->
+            <div class="detail-price-box">
+              <div class="price-row">
+                <span class="lbl" data-i18n="lblRegularPrice">정가:</span>
+                <span class="val-original" id="detail-regular-price">0원</span>
+              </div>
+              <div class="price-row highlight">
+                <span class="lbl" data-i18n="lblSupplyPrice">사서 납품가 (10% 할인):</span>
+                <span class="val-discount" id="detail-discount-price">0원</span>
+              </div>
+            </div>
+
+            <!-- Multilingual Excerpt Box -->
+            <div class="detail-excerpt-box">
+              <div class="excerpt-title"><i data-lucide="book-open-check"></i> <span data-i18n="lblExcerptTitle">다국어 서평 & 본문 발췌</span></div>
+              <p class="excerpt-content" id="detail-excerpt">발췌문이 표시됩니다.</p>
+            </div>
+
+            <!-- Full Bibliographic Metadata Table -->
+            <div class="metadata-table-wrapper">
+              <h4 class="meta-section-title" data-i18n="lblMetaTitle">📚 사서 수서용 표준 서지 상세 스펙</h4>
+              <table class="meta-table">
+                <tbody>
+                  <tr>
+                    <th>ISBN</th>
+                    <td id="detail-isbn">-</td>
+                    <th>KDC 분류</th>
+                    <td id="detail-kdc">-</td>
+                  </tr>
+                  <tr>
+                    <th>출판사</th>
+                    <td id="detail-publisher">-</td>
+                    <th>발행연도</th>
+                    <td id="detail-year">-</td>
+                  </tr>
+                  <tr>
+                    <th>대상 연령</th>
+                    <td id="detail-age">-</td>
+                    <th>원서 언어</th>
+                    <td id="detail-lang">-</td>
+                  </tr>
+                  <tr>
+                    <th>제본/규격</th>
+                    <td>양장본 (하드커버 188*257mm)</td>
+                    <th>재고 상태</th>
+                    <td><span class="stock-tag">납품 가능 (직발송)</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Detail Action Bar -->
+            <div class="detail-purchase-bar">
+              <div class="qty-picker">
+                <button id="detail-qty-minus" class="qty-btn">-</button>
+                <input type="number" id="detail-qty-val" value="1" min="1" max="999">
+                <button id="detail-qty-plus" class="qty-btn">+</button>
+              </div>
+
+              <button id="detail-add-cart-btn" class="btn-primary btn-lg">
+                <i data-lucide="shopping-cart"></i>
+                <span data-i18n="btnAddCartDetail">견적 장바구니에 담기</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="app-footer">
+    <div class="footer-container flex-between">
+      <div class="footer-brand">
+        <div class="footer-title">🌐 다문화도서관 수서/구입 지원 센터 (v16 Galaxy)</div>
+        <div class="footer-contact">B2B 수서 직통: 02-555-0199 | 이메일: procurement@multiculture.or.kr</div>
+      </div>
+      <div class="footer-status flex-center">
+        <span class="status-indicator"></span>
+        <span>THREE.JS 3D ENGINE ACTIVE</span>
+        <span class="divider">|</span>
+        <span>WEB AUDIO SYNTH READY</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container"></div>
+
+  <!-- Main JavaScript App Code -->
+  <script src="app.js"></script>
+</body>
+</html>
+
